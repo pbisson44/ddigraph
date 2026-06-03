@@ -1,0 +1,262 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ddigraph"
+version = "0.4.0"
+description = "DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases (Neo4j, RDF, Gremlin, NetworkX)"
+authors = [{name = "ddigraph maintainers", email = "ddigraph@noreply.github.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.12,<3.15"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+  "Topic :: Database",
+  "Topic :: Database :: Front-Ends",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: Text Processing :: Markup :: XML",
+]
+keywords = [
+  "ddi",
+  "ddi-lifecycle",
+  "ddi-codebook",
+  "ddi-l",
+  "fragment-instance",
+  "knowledge-graph",
+  "graph-database",
+  "neo4j",
+  "rdf",
+  "sparql",
+  "gremlin",
+  "networkx",
+  "xml",
+  "metadata",
+  "survey",
+]
+# Core runtime: only what ``src/ddigraph/`` actually imports. Other
+# backends (RDF, Gremlin, NetworkX, pandas, SDMX) ship as optional
+# extras below, keeping the base install small.
+dependencies = [
+  "lxml>=5.1",
+  "neo4j>=5.19",
+  "orjson>=3.10",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.13.1",
+  "xmlschema>=3.4",
+]
+
+[project.scripts]
+ddigraph = "ddigraph.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/pbisson44/ddigraph"
+Repository = "https://github.com/pbisson44/ddigraph"
+Documentation = "https://pbisson44.github.io/ddigraph/"
+Changelog = "https://github.com/pbisson44/ddigraph/blob/main/CHANGELOG.md"
+Discussion = "https://github.com/pbisson44/ddigraph/discussions"
+Issues = "https://github.com/pbisson44/ddigraph/issues"
+
+[project.optional-dependencies]
+# Backend extras: install only what your target environment uses.
+# ``pip install ddigraph[rdf]`` enables the RDF/SPARQL demo path, etc.
+rdf = ["rdflib>=7.5.0,<8.0.0"]
+gremlin = ["gremlinpython>=3.8.1,<4.0.0"]
+networkx = ["networkx>=3.6.1"]
+pandas = ["pandas>=2.3.3", "openpyxl>=3.1.5"]
+sdmx = ["sdmx1>=2.26"]
+all = [
+  "rdflib>=7.5.0,<8.0.0",
+  "gremlinpython>=3.8.1,<4.0.0",
+  "networkx>=3.6.1",
+  "pandas>=2.3.3",
+  "openpyxl>=3.1.5",
+  "sdmx1>=2.26",
+]
+
+dev = [
+  "mypy>=1.10",
+  "ruff>=0.15.10",
+  "pytest>=8.2",
+  "pytest-asyncio>=0.23",
+  "pytest-cov>=4.1",
+  "psutil>=5.9",
+  "types-lxml>=2026.2.16",
+  "pre-commit>=3.7",
+  # Packaging audit tools used by the CI publish pipeline.
+  "build>=1.2",
+  "twine>=5.1",
+  "pyroma>=4.2",
+  "check-manifest>=0.50",
+]
+docs = [
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.5",
+  "mkdocs-static-i18n>=1.2",
+  "pymdown-extensions>=10.21.2",
+  "textstat>=0.7",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "F",
+  "I",
+  "B",
+  "UP",
+  "RUF",
+  "D",
+  "N",
+]
+# D100/D104/D105/D107: stop requiring docstrings on every module/package/magic.
+# D203/D213: pick the Google-convention sibling rules.
+# D1/D202: legacy ignores carried from the pre-package layout.
+# N802: function names mirroring stdlib mixed-case API (``fake_getLogger``).
+# N806: uppercase locals used as in-function namespaces in demos (``LFS``, ``DDI``).
+# N811: constant imports re-bound to lowercase aliases in tests.
+ignore = [
+  "E203",
+  "D1",
+  "D100",
+  "D104",
+  "D105",
+  "D107",
+  "D202",
+  "D203",
+  "D213",
+  "N802",
+  "N806",
+  "N811",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.lint.isort]
+known-first-party = ["ddigraph"]
+combine-as-imports = true
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+warn_unreachable = true
+mypy_path = "src"
+namespace_packages = true
+plugins = ["pydantic.mypy"]
+# demo/ scripts depend on optional extras (rdflib, sdmx1, etc.) that
+# the base install does not pull in. They are user-facing examples,
+# not part of the typed package surface; exclude them from strict
+# type checking so the CI matrix does not need every extra installed.
+exclude = ["^demo/"]
+
+[[tool.mypy.overrides]]
+module = ["lxml", "lxml.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# ``textstat`` is an optional ``docs`` extra used only by the
+# advisory readability script. The script wraps the import in a
+# try/except so the missing-package case is handled at runtime.
+module = ["textstat"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "-q"
+asyncio_mode = "auto"
+markers = [
+  "asyncio: mark test as requiring asyncio support",
+]
+filterwarnings = [
+  # neo4j driver uses deprecated asyncio.iscoroutinefunction (fixed in future neo4j versions)
+  "ignore:.*asyncio.iscoroutinefunction.*:DeprecationWarning:neo4j",
+]
+
+[tool.coverage.run]
+source = ["src/ddigraph"]
+branch = true
+omit = [
+  "*/tests/*",
+  "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+  "@abstractmethod",
+]
+fail_under = 70
+show_missing = true
+
+[tool.check-manifest]
+# The hatch sdist target intentionally ships only the runtime tree
+# (``src/ddigraph/**``, the bundled XSDs, the LICENSE and README). Tests,
+# demo data, docs, ops scripts, and editor / pre-commit fixtures live in
+# VCS but stay out of the published artefact -- listing them here keeps
+# ``check-manifest`` from flagging the omission as drift.
+ignore = [
+  ".github/**",
+  ".markdownlint.json",
+  ".markdownlintignore",
+  ".pre-commit-config.yaml",
+  ".gitignore",
+  "CHANGELOG.md",
+  "CODE_OF_CONDUCT.md",
+  "Makefile",
+  "SECURITY.md",
+  "mkdocs.yml",
+  "poetry.lock",
+  "uv.lock",
+  "demo/**",
+  "docs/**",
+  "hooks/**",
+  "scripts/**",
+  "tests/**",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ddigraph"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"schemas" = "ddigraph/schemas"
+"scripts/update_schemas.py" = "ddigraph/scripts/update_schemas.py"
+"src/ddigraph/py.typed" = "ddigraph/py.typed"
+"src/ddigraph/schema/_overrides/schema_overrides.toml" = "ddigraph/schema/_overrides/schema_overrides.toml"
+"LICENSE" = "LICENSE"
+"NOTICE" = "NOTICE"
+"README.md" = "README.md"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/ddigraph/**/*.py",
+  "src/ddigraph/**/*.toml",
+  "src/ddigraph/__init__.py",
+  "schemas",
+  "scripts/update_schemas.py",
+  "src/ddigraph/py.typed",
+  "CONTRIBUTING.md",
+  "LICENSE",
+  "NOTICE",
+  "README.md",
+]

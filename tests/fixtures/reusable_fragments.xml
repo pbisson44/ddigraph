@@ -1,0 +1,77 @@
+<codeBook xmlns:r="ddi:reusable:3_3">
+    <stdyDscr ID="study-reuse" agency="ACME" version="1.0" URN="urn:ddi:study:frag">
+        <r:URN>urn:ddi:study:frag</r:URN>
+        <r:Agency>ACME</r:Agency>
+        <r:ID>study-reuse</r:ID>
+        <r:Version>1.0</r:Version>
+        <citation><titlStmt><titl>Reusable Study Title</titl></titlStmt></citation>
+        <stdyInfo><abstract>Reusable study abstract</abstract></stdyInfo>
+    </stdyDscr>
+    <catgryScheme ID="scheme1">
+        <r:URN>urn:ddi:scheme:1</r:URN>
+        <r:Agency>ACME</r:Agency>
+        <r:ID>scheme-reuse</r:ID>
+        <r:Version>2.0</r:Version>
+        <labl>Scheme label</labl>
+        <catgry ID="cat1">
+            <r:URN>urn:ddi:cat:1</r:URN>
+            <r:Agency>ACME</r:Agency>
+            <r:ID>cat-reuse</r:ID>
+            <r:Version>2.0</r:Version>
+            <labl>Category label</labl>
+            <catValu>10</catValu>
+        </catgry>
+    </catgryScheme>
+    <serName ID="series1">
+        <r:URN>urn:ddi:series:1</r:URN>
+        <r:Agency>ACME</r:Agency>
+        <r:ID>series-reuse</r:ID>
+        <r:Version>1.2</r:Version>
+        <labl>Series label</labl>
+        <description>Series description</description>
+    </serName>
+    <group ID="group1">
+        <r:Agency>ACME</r:Agency>
+        <r:ID>group-reuse</r:ID>
+        <r:Version>0.9</r:Version>
+        <labl>Group label</labl>
+    </group>
+    <dataDscr>
+        <var ID="var-reuse" name="Variable Name" agency="ACME" version="3.1" URN="urn:ddi:var:1">
+            <r:URN>urn:ddi:var:1</r:URN>
+            <r:Agency>ACME</r:Agency>
+            <r:ID>var-reuse</r:ID>
+            <r:Version>3.1</r:Version>
+            <labl>Variable label</labl>
+            <concept>Concept name</concept>
+            <catgry ID="cat1"><catValu>10</catValu><labl>Category label</labl></catgry>
+        </var>
+    </dataDscr>
+    <qstnItem ID="qi1">
+        <r:URN>urn:ddi:qi:1</r:URN>
+        <r:Agency>ACME</r:Agency>
+        <r:ID>qi-reuse</r:ID>
+        <r:Version>1.0</r:Version>
+        <qstnLit>Question text</qstnLit>
+    </qstnItem>
+    <qstnGrid ID="qg1">
+        <r:URN>urn:ddi:qg:1</r:URN>
+        <r:Agency>ACME</r:Agency>
+        <r:ID>qg-reuse</r:ID>
+        <r:Version>1.0</r:Version>
+        <qstnLit>Grid text</qstnLit>
+    </qstnGrid>
+    <codeList ID="cl1">
+        <r:URN>urn:ddi:cl:1</r:URN>
+        <r:Agency>ACME</r:Agency>
+        <r:ID>cl-reuse</r:ID>
+        <r:Version>1.0</r:Version>
+        <labl>Code list label</labl>
+    </codeList>
+    <representation ID="rep1">
+        <r:Agency>ACME</r:Agency>
+        <r:ID>rep-reuse</r:ID>
+        <r:Version>1.0</r:Version>
+        <labl>Representation label</labl>
+    </representation>
+</codeBook>

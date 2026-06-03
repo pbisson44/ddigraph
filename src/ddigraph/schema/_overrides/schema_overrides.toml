@@ -1,0 +1,220 @@
+# Schema overrides applied to the XSD-derived data in
+# ``ddigraph.schema._generated/``.
+#
+# Each [[ddi_cdi.node]] entry produces one NodeDefinition. Fields fall
+# back to the [ddi_cdi.defaults] block when omitted; ``properties`` is
+# the full ordered tuple (defaults are not implicitly prepended).
+#
+# CDI relationship types are derived from CDI_GENERATED_ASSOCIATIONS by
+# converting the association verb to UPPER_SNAKE_CASE (so ``has`` -> ``HAS``,
+# ``isStructuredBy`` -> ``IS_STRUCTURED_BY``). Where that default produces an
+# ambiguous name -- typically ``HAS`` -- a curated rel_type lives in
+# [ddi_cdi.relationship_overrides] keyed by the association tag.
+
+[ddi_cdi.defaults]
+id_field = "cdi_id"
+properties = ["cdi_id", "name", "label", "description", "urn"]
+indexes = ["name"]
+
+[ddi_cdi.relationship_overrides]
+CategorySet_has_Category = "HAS_CATEGORY"
+ClassificationFamily_uses_ClassificationIndex = "USES_INDEX"
+ClassificationSeries_has_StatisticalClassification = "HAS_STATISTICAL_CLASSIFICATION"
+CodeList_has_Code = "HAS_CODE"
+ConceptSystemCorrespondence_has_ConceptMap = "HAS_CONCEPT_MAP"
+ConceptSystem_has_Concept = "HAS_CONCEPT"
+DataStore_has_LogicalRecord = "HAS_LOGICAL_RECORD"
+DataStructure_has_DataStructureComponent = "HAS_COMPONENT"
+PhysicalDataSet_has_PhysicalRecordSegment = "HAS_PHYSICAL_RECORD_SEGMENT"
+StatisticalClassification_has_ClassificationItem = "HAS_CLASSIFICATION_ITEM"
+
+[[ddi_cdi.node]]
+label = "CDIConcept"
+indexes = ["name", "label"]
+
+[[ddi_cdi.node]]
+label = "CDIConceptSystem"
+
+[[ddi_cdi.node]]
+label = "CDIConceptualVariable"
+indexes = ["name", "label"]
+
+[[ddi_cdi.node]]
+label = "CDIRepresentedVariable"
+indexes = ["name", "label"]
+
+[[ddi_cdi.node]]
+label = "CDIInstanceVariable"
+indexes = ["name", "label"]
+
+[[ddi_cdi.node]]
+label = "CDIUnitType"
+
+[[ddi_cdi.node]]
+label = "CDIUniverse"
+
+[[ddi_cdi.node]]
+label = "CDIPopulation"
+
+[[ddi_cdi.node]]
+label = "CDIAgent"
+properties = ["cdi_id", "name", "label", "agent_type", "urn"]
+indexes = ["name", "agent_type"]
+
+[[ddi_cdi.node]]
+label = "CDICategory"
+indexes = ["name", "label"]
+
+[[ddi_cdi.node]]
+label = "CDICategorySet"
+
+[[ddi_cdi.node]]
+label = "CDICode"
+properties = ["cdi_id", "name", "label", "value", "urn"]
+indexes = ["value"]
+
+[[ddi_cdi.node]]
+label = "CDICodeList"
+indexes = ["name", "label"]
+
+[[ddi_cdi.node]]
+label = "CDIStatisticalClassification"
+properties = ["cdi_id", "name", "label", "description", "version", "urn"]
+
+[[ddi_cdi.node]]
+label = "CDIClassificationItem"
+properties = ["cdi_id", "name", "label", "code", "description", "urn"]
+indexes = ["code", "name"]
+
+[[ddi_cdi.node]]
+label = "CDIDataStructure"
+properties = ["cdi_id", "name", "label", "description", "structure_type", "urn"]
+indexes = ["name", "structure_type"]
+
+[[ddi_cdi.node]]
+label = "CDIDataStructureComponent"
+properties = ["cdi_id", "name", "label", "component_type", "urn"]
+indexes = ["name", "component_type"]
+
+[[ddi_cdi.node]]
+label = "CDIDataSet"
+properties = ["cdi_id", "name", "label", "description", "dataset_type", "urn"]
+indexes = ["name", "dataset_type"]
+
+[[ddi_cdi.node]]
+label = "CDIDataStore"
+
+[[ddi_cdi.node]]
+label = "CDILogicalRecord"
+
+[[ddi_cdi.node]]
+label = "CDIPhysicalDataSet"
+
+[[ddi_cdi.node]]
+label = "CDIActivity"
+
+[[ddi_cdi.node]]
+label = "CDIProcessingAgent"
+properties = ["cdi_id", "name", "label", "agent_type", "urn"]
+indexes = ["name", "agent_type"]
+
+[[ddi_cdi.node]]
+label = "CDIValueDomain"
+properties = ["cdi_id", "name", "label", "description", "domain_type", "urn"]
+indexes = ["name", "domain_type"]
+
+[[ddi_cdi.node]]
+label = "CDICorrespondenceTable"
+
+[[ddi_cdi.node]]
+label = "CDIVariableRelationship"
+
+[[ddi_cdi.node]]
+label = "CDIConceptMap"
+
+[[ddi_cdi.node]]
+label = "CDIConceptSystemCorrespondence"
+
+[[ddi_cdi.node]]
+label = "CDIPhysicalRecordSegment"
+
+[[ddi_cdi.node]]
+label = "CDIClassificationFamily"
+
+[[ddi_cdi.node]]
+label = "CDIClassificationIndex"
+
+[[ddi_cdi.node]]
+label = "CDIClassificationSeries"
+
+# DDI-L relationship overrides. Every *Reference element name in the XSDs
+# emits a runtime relationship; without an override the rel_type defaults
+# to ``<tag>.removesuffix("Reference").upper()`` (e.g. ``ArchiveReference``
+# -> ``ARCHIVE``). The 64 curated names below use semantic prefixes
+# (USES_*, IN_*, HAS_*, REFERENCES_*) that survive the wire-in.
+
+[ddi_l.relationship_overrides]
+AssignedVariableReference = "ASSIGNS_VARIABLE"
+BasedOnReference = "BASED_ON"
+CategoryGroupReference = "IN_CATEGORY_GROUP"
+CategoryReference = "HAS_CATEGORY"
+CategorySchemeReference = "USES_CATEGORY_SCHEME"
+ClassificationFamilyReference = "IN_CLASSIFICATION_FAMILY"
+CodeListReference = "USES_CODELIST"
+CodeListSchemeReference = "IN_CODELIST_SCHEME"
+ConceptReference = "USES_CONCEPT"
+ConceptSchemeReference = "IN_CONCEPT_SCHEME"
+ConceptualVariableReference = "USES_CONCEPTUAL_VARIABLE"
+ConceptualVariableSchemeReference = "IN_CONCEPTUAL_VARIABLE_SCHEME"
+ControlConstructReference = "HAS_CONSTRUCT"
+ControlConstructSchemeReference = "IN_CONTROL_CONSTRUCT_SCHEME"
+DataCollectionReference = "HAS_DATA_COLLECTION"
+DataRelationshipReference = "HAS_DATA_RELATIONSHIP"
+DefiningConceptReference = "DEFINED_BY_CONCEPT"
+DevelopmentActivityReference = "USES_DEVELOPMENT_ACTIVITY"
+DevelopmentActivitySchemeReference = "IN_DEVELOPMENT_ACTIVITY_SCHEME"
+ElseConstructReference = "ELSE"
+ExternalURLReference = "HAS_EXTERNAL_URL"
+GeographicLocationSchemeReference = "IN_GEOGRAPHIC_LOCATION_SCHEME"
+GeographicStructureSchemeReference = "IN_GEOGRAPHIC_STRUCTURE_SCHEME"
+IndividualReference = "REFERENCES_INDIVIDUAL"
+InstructionReference = "HAS_INSTRUCTION"
+InstrumentReference = "USES_INSTRUMENT"
+InstrumentSchemeReference = "IN_INSTRUMENT_SCHEME"
+InterviewerInstructionReference = "HAS_INSTRUCTION"
+InterviewerInstructionSchemeReference = "IN_INSTRUCTION_SCHEME"
+LoopVariableReference = "LOOP_VARIABLE"
+ManagedRepresentationReference = "HAS_REPRESENTATION"
+MeasurementItemReference = "USES_MEASUREMENT"
+MeasurementReference = "USES_MEASUREMENT"
+MeasurementSchemeReference = "IN_MEASUREMENT_SCHEME"
+MethodologyReference = "USES_METHODOLOGY"
+NCubeSchemeReference = "IN_NCUBE_SCHEME"
+OrganizationReference = "REFERENCES_ORGANIZATION"
+PhysicalInstanceReference = "HAS_PHYSICAL_INSTANCE"
+ProcessingEventSchemeReference = "IN_PROCESSING_EVENT_SCHEME"
+ProcessingInstructionSchemeReference = "IN_PROCESSING_INSTRUCTION_SCHEME"
+QuestionBlockReference = "ASKS_QUESTION"
+QuestionGridReference = "ASKS_QUESTION"
+QuestionItemReference = "ASKS_QUESTION"
+QuestionReference = "REFERENCES_QUESTION"
+QuestionSchemeReference = "IN_QUESTION_SCHEME"
+RelatedOtherMaterialReference = "HAS_RELATED_MATERIAL"
+RepresentedVariableGroupReference = "IN_REPRESENTED_VARIABLE_GROUP"
+RepresentedVariableReference = "USES_REPRESENTED_VARIABLE"
+RepresentedVariableSchemeReference = "HAS_REPRESENTED_VARIABLE_SCHEME"
+ResourcePackageReference = "USES_RESOURCE_PACKAGE"
+SamplingInformationSchemeReference = "IN_SAMPLING_INFORMATION_SCHEME"
+SourceParameterReference = "SOURCE_PARAM"
+StatisticalClassificationReference = "USES_STATISTICAL_CLASSIFICATION"
+TargetParameterReference = "TARGET_PARAM"
+ThenConstructReference = "THEN"
+UnitTypeSchemeReference = "IN_UNIT_TYPE_SCHEME"
+UniverseReference = "IN_UNIVERSE"
+UniverseSchemeReference = "IN_UNIVERSE_SCHEME"
+UntilConstructReference = "UNTIL"
+ValueRepresentationReference = "HAS_VALUE_REPRESENTATION"
+VariableReference = "REFERENCES_VARIABLE"
+VariableSchemeReference = "IN_VARIABLE_SCHEME"
+VariableUsedReference = "USES_VARIABLE"
+WhileConstructReference = "WHILE"

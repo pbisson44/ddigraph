@@ -1,0 +1,532 @@
+[
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "label"
+    ],
+    "is_fragment": false,
+    "label": "CDIConcept",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIConceptSystem",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "label"
+    ],
+    "is_fragment": false,
+    "label": "CDIConceptualVariable",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "label"
+    ],
+    "is_fragment": false,
+    "label": "CDIRepresentedVariable",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "label"
+    ],
+    "is_fragment": false,
+    "label": "CDIInstanceVariable",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIUnitType",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIUniverse",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIPopulation",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "agent_type"
+    ],
+    "is_fragment": false,
+    "label": "CDIAgent",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "agent_type",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "label"
+    ],
+    "is_fragment": false,
+    "label": "CDICategory",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDICategorySet",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "value"
+    ],
+    "is_fragment": false,
+    "label": "CDICode",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "value",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "label"
+    ],
+    "is_fragment": false,
+    "label": "CDICodeList",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIStatisticalClassification",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "version",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "code",
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIClassificationItem",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "code",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "structure_type"
+    ],
+    "is_fragment": false,
+    "label": "CDIDataStructure",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "structure_type",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "component_type"
+    ],
+    "is_fragment": false,
+    "label": "CDIDataStructureComponent",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "component_type",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "dataset_type"
+    ],
+    "is_fragment": false,
+    "label": "CDIDataSet",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "dataset_type",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIDataStore",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDILogicalRecord",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIPhysicalDataSet",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIActivity",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "agent_type"
+    ],
+    "is_fragment": false,
+    "label": "CDIProcessingAgent",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "agent_type",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name",
+      "domain_type"
+    ],
+    "is_fragment": false,
+    "label": "CDIValueDomain",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "domain_type",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDICorrespondenceTable",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIVariableRelationship",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIConceptMap",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIConceptSystemCorrespondence",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIPhysicalRecordSegment",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIClassificationFamily",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIClassificationIndex",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  },
+  {
+    "composite_id_fields": [],
+    "id_field": "cdi_id",
+    "indexes": [
+      "name"
+    ],
+    "is_fragment": false,
+    "label": "CDIClassificationSeries",
+    "properties": [
+      "cdi_id",
+      "name",
+      "label",
+      "description",
+      "urn"
+    ]
+  }
+]

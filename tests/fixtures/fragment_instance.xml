@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Minimal DDI-L FragmentInstance fixture for testing -->
+<FragmentInstance xmlns="ddi:instance:3_3"
+                  xmlns:r="ddi:reusable:3_3"
+                  xmlns:d="ddi:datacollection:3_3"
+                  xmlns:l="ddi:logicalproduct:3_3">
+    <Fragment>
+        <d:Instrument id="inst1" agency="test.org" version="1.0">
+            <r:URN>urn:ddi:test.org:inst1:1.0</r:URN>
+            <r:Agency>test.org</r:Agency>
+            <r:ID>inst1</r:ID>
+            <r:Version>1.0</r:Version>
+            <r:Label><r:Content>Test Instrument</r:Content></r:Label>
+            <d:InstrumentName><r:String>TestInstrument</r:String></d:InstrumentName>
+            <d:ControlConstructReference>
+                <r:Agency>test.org</r:Agency>
+                <r:ID>seq1</r:ID>
+                <r:Version>1.0</r:Version>
+                <r:TypeOfObject>Sequence</r:TypeOfObject>
+            </d:ControlConstructReference>
+        </d:Instrument>
+    </Fragment>
+    <Fragment>
+        <d:Sequence id="seq1" agency="test.org" version="1.0">
+            <r:URN>urn:ddi:test.org:seq1:1.0</r:URN>
+            <r:Agency>test.org</r:Agency>
+            <r:ID>seq1</r:ID>
+            <r:Version>1.0</r:Version>
+            <r:Label><r:Content>Main Sequence</r:Content></r:Label>
+            <d:ControlConstructReference>
+                <r:Agency>test.org</r:Agency>
+                <r:ID>qc1</r:ID>
+                <r:Version>1.0</r:Version>
+                <r:TypeOfObject>QuestionConstruct</r:TypeOfObject>
+            </d:ControlConstructReference>
+        </d:Sequence>
+    </Fragment>
+    <Fragment>
+        <d:QuestionConstruct id="qc1" agency="test.org" version="1.0">
+            <r:URN>urn:ddi:test.org:qc1:1.0</r:URN>
+            <r:Agency>test.org</r:Agency>
+            <r:ID>qc1</r:ID>
+            <r:Version>1.0</r:Version>
+            <d:QuestionReference>
+                <r:Agency>test.org</r:Agency>
+                <r:ID>q1</r:ID>
+                <r:Version>1.0</r:Version>
+                <r:TypeOfObject>QuestionItem</r:TypeOfObject>
+            </d:QuestionReference>
+        </d:QuestionConstruct>
+    </Fragment>
+    <Fragment>
+        <d:QuestionItem id="q1" agency="test.org" version="1.0">
+            <r:URN>urn:ddi:test.org:q1:1.0</r:URN>
+            <r:Agency>test.org</r:Agency>
+            <r:ID>q1</r:ID>
+            <r:Version>1.0</r:Version>
+            <r:Label><r:Content>Question 1</r:Content></r:Label>
+            <d:QuestionItemName><r:String>Q1</r:String></d:QuestionItemName>
+            <d:QuestionText><d:LiteralText><d:Text>What is your age?</d:Text></d:LiteralText></d:QuestionText>
+            <d:CodeDomain>
+                <r:CodeListReference>
+                    <r:Agency>test.org</r:Agency>
+                    <r:ID>cl1</r:ID>
+                    <r:Version>1.0</r:Version>
+                    <r:TypeOfObject>CodeList</r:TypeOfObject>
+                </r:CodeListReference>
+            </d:CodeDomain>
+        </d:QuestionItem>
+    </Fragment>
+    <Fragment>
+        <l:CodeList id="cl1" agency="test.org" version="1.0">
+            <r:URN>urn:ddi:test.org:cl1:1.0</r:URN>
+            <r:Agency>test.org</r:Agency>
+            <r:ID>cl1</r:ID>
+            <r:Version>1.0</r:Version>
+            <r:Label><r:Content>Age Groups</r:Content></r:Label>
+            <l:Code>
+                <r:CategoryReference>
+                    <r:Agency>test.org</r:Agency>
+                    <r:ID>cat1</r:ID>
+                    <r:Version>1.0</r:Version>
+                    <r:TypeOfObject>Category</r:TypeOfObject>
+                </r:CategoryReference>
+            </l:Code>
+        </l:CodeList>
+    </Fragment>
+    <Fragment>
+        <l:Category id="cat1" agency="test.org" version="1.0">
+            <r:Agency>test.org</r:Agency>
+            <r:ID>cat1</r:ID>
+            <r:Version>1.0</r:Version>
+            <r:Label><r:Content>Under 18</r:Content></r:Label>
+        </l:Category>
+    </Fragment>
+</FragmentInstance>

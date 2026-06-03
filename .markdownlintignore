@@ -1,0 +1,8 @@
+node_modules/
+site/
+dist/
+build/
+.venv/
+.tox/
+**/site-packages/
+**/.venv/

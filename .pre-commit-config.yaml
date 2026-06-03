@@ -1,0 +1,42 @@
+# Pre-commit hooks for ddigraph. Install with: pre-commit install
+#
+# The gates here mirror the CI gates in .github/workflows/ci.yml so a
+# clean ``git commit`` should always survive CI. Run on every commit:
+#
+#   pre-commit run --all-files   # one-off across the repo
+#   pre-commit run               # only files staged for commit
+#
+# Update pinned hook versions periodically with:
+#
+#   pre-commit autoupdate
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.13
+    hooks:
+      - id: ruff-format
+      - id: ruff
+        args: [--fix]
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+      - id: markdownlint-cli2
+
+  - repo: local
+    hooks:
+      - id: generated-schema-up-to-date
+        name: Generated schema definitions up to date
+        language: system
+        entry: python scripts/generate_schema_definitions.py --check
+        pass_filenames: false
+        files: ^(schemas/|src/ddigraph/schema/_overrides/|scripts/generate_schema_definitions\.py)

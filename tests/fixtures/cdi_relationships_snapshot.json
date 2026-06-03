@@ -1,0 +1,132 @@
+{
+  "Activity_hasSubActivity_Activity": [
+    "HAS_SUB_ACTIVITY",
+    "CDIActivity",
+    "CDIActivity"
+  ],
+  "CategorySet_has_Category": [
+    "HAS_CATEGORY",
+    "CDICategorySet",
+    "CDICategory"
+  ],
+  "ClassificationFamily_groups_ClassificationSeries": [
+    "GROUPS",
+    "CDIClassificationFamily",
+    "CDIClassificationSeries"
+  ],
+  "ClassificationFamily_uses_ClassificationIndex": [
+    "USES_INDEX",
+    "CDIClassificationFamily",
+    "CDIClassificationIndex"
+  ],
+  "ClassificationSeries_has_StatisticalClassification": [
+    "HAS_STATISTICAL_CLASSIFICATION",
+    "CDIClassificationSeries",
+    "CDIStatisticalClassification"
+  ],
+  "CodeList_has_Code": [
+    "HAS_CODE",
+    "CDICodeList",
+    "CDICode"
+  ],
+  "Code_denotes_Category": [
+    "DENOTES",
+    "CDICode",
+    "CDICategory"
+  ],
+  "ConceptMap_hasSource_Concept": [
+    "HAS_SOURCE",
+    "CDIConceptMap",
+    "CDIConcept"
+  ],
+  "ConceptMap_hasTarget_Concept": [
+    "HAS_TARGET",
+    "CDIConceptMap",
+    "CDIConcept"
+  ],
+  "ConceptSystemCorrespondence_has_ConceptMap": [
+    "HAS_CONCEPT_MAP",
+    "CDIConceptSystemCorrespondence",
+    "CDIConceptMap"
+  ],
+  "ConceptSystemCorrespondence_maps_ConceptSystem": [
+    "MAPS",
+    "CDIConceptSystemCorrespondence",
+    "CDIConceptSystem"
+  ],
+  "ConceptSystem_has_Concept": [
+    "HAS_CONCEPT",
+    "CDIConceptSystem",
+    "CDIConcept"
+  ],
+  "ConceptualVariable_measures_UnitType": [
+    "MEASURES",
+    "CDIConceptualVariable",
+    "CDIUnitType"
+  ],
+  "CorrespondenceTable_mapsTo_StatisticalClassification": [
+    "MAPS_TO",
+    "CDICorrespondenceTable",
+    "CDIStatisticalClassification"
+  ],
+  "DataSet_isStructuredBy_DataStructure": [
+    "IS_STRUCTURED_BY",
+    "CDIDataSet",
+    "CDIDataStructure"
+  ],
+  "DataStore_has_LogicalRecord": [
+    "HAS_LOGICAL_RECORD",
+    "CDIDataStore",
+    "CDILogicalRecord"
+  ],
+  "DataStructureComponent_isDefinedBy_RepresentedVariable": [
+    "IS_DEFINED_BY",
+    "CDIDataStructureComponent",
+    "CDIRepresentedVariable"
+  ],
+  "DataStructure_has_DataStructureComponent": [
+    "HAS_COMPONENT",
+    "CDIDataStructure",
+    "CDIDataStructureComponent"
+  ],
+  "PhysicalDataSet_correspondsTo_DataSet": [
+    "CORRESPONDS_TO",
+    "CDIPhysicalDataSet",
+    "CDIDataSet"
+  ],
+  "PhysicalDataSet_formats_DataStore": [
+    "FORMATS",
+    "CDIPhysicalDataSet",
+    "CDIDataStore"
+  ],
+  "PhysicalDataSet_has_PhysicalRecordSegment": [
+    "HAS_PHYSICAL_RECORD_SEGMENT",
+    "CDIPhysicalDataSet",
+    "CDIPhysicalRecordSegment"
+  ],
+  "PhysicalRecordSegment_mapsTo_LogicalRecord": [
+    "MAPS_TO",
+    "CDIPhysicalRecordSegment",
+    "CDILogicalRecord"
+  ],
+  "ProcessingAgent_performs_Activity": [
+    "PERFORMS",
+    "CDIProcessingAgent",
+    "CDIActivity"
+  ],
+  "StatisticalClassification_has_ClassificationItem": [
+    "HAS_CLASSIFICATION_ITEM",
+    "CDIStatisticalClassification",
+    "CDIClassificationItem"
+  ],
+  "VariableRelationship_hasSource_ConceptualVariable": [
+    "HAS_SOURCE",
+    "CDIVariableRelationship",
+    "CDIConceptualVariable"
+  ],
+  "VariableRelationship_hasTarget_ConceptualVariable": [
+    "HAS_TARGET",
+    "CDIVariableRelationship",
+    "CDIConceptualVariable"
+  ]
+}

@@ -1,0 +1,153 @@
+site_name: ddigraph
+site_description: DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases
+site_url: https://pbisson44.github.io/ddigraph/
+repo_url: https://github.com/pbisson44/ddigraph
+repo_name: pbisson44/ddigraph
+copyright: Copyright &copy; 2025 Philippe Bisson - MIT License
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quickstart.md
+      - 10 Minutes to ddigraph: getting-started/ten-minutes.md
+      - Your First Queries: getting-started/first-queries.md
+  - Understanding ddigraph:
+      - How It Loads Your Data: user-guide/architecture.md
+      - Relationship Model: user-guide/relationships.md
+      - DDI-L FragmentInstance: user-guide/fragments.md
+  - Graph Backends:
+      - Neo4j: backends/neo4j.md
+      - RDF / SPARQL: backends/rdf.md
+      - Gremlin: backends/gremlin.md
+      - NetworkX: backends/networkx.md
+  - Reference:
+      - CLI: reference/cli.md
+      - Configuration: reference/configuration.md
+      - Glossary: reference/glossary.md
+  - Advanced:
+      - Performance Tuning: advanced/tuning.md
+      - Custom Adapters: user-guide/adapter.md
+      - Graph vs Relational: advanced/graph-vs-relational.md
+      - AI Readiness: advanced/ai-readiness.md
+      - Standards Interoperability: advanced/interoperability.md
+  - Project:
+      - Presentation: project/presentation.md
+      - FAQ: project/faq.md
+      - Contributing: project/contributing.md
+      - "Codebook DSL design": project/dsl-design.md
+      - Changelog: project/changelog.md
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.tracking
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - header.autohide
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: Fira Code
+  language: en
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  alternate:
+    - name: English
+      link: /ddigraph/
+      lang: en
+    - name: Français
+      link: /ddigraph/fr/
+      lang: fr
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.emoji
+  - pymdownx.tasklist
+  - tables
+  - attr_list
+  - md_in_html
+
+hooks:
+  - hooks/copy_sitemap.py
+  
+plugins:
+  - search
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: fr
+          name: Français
+          build: true
+          nav_translations:
+            Home: Accueil
+            Getting Started: Pour commencer
+            Installation: Installation
+            Quick Start: Démarrage rapide
+            10 Minutes to ddigraph: 10 minutes avec ddigraph
+            Your First Queries: Vos premières requêtes
+            Understanding ddigraph: Comprendre ddigraph
+            How It Loads Your Data: Comment ddigraph charge vos données
+            Relationship Model: Modèle relationnel
+            DDI-L FragmentInstance: DDI-L FragmentInstance
+            Graph Backends: Bases de données graphe
+            Neo4j: Neo4j
+            RDF / SPARQL: RDF / SPARQL
+            Gremlin: Gremlin
+            NetworkX: NetworkX
+            Reference: Référence
+            CLI: CLI
+            Configuration: Configuration
+            Glossary: Glossaire
+            Advanced: Avancé
+            Performance Tuning: Optimisation des performances
+            Custom Adapters: Adaptateurs personnalisés
+            Graph vs Relational: Graphe vs Relationnel
+            AI Readiness: Préparation pour l'IA
+            Standards Interoperability: Interopérabilité des standards
+            Project: Projet
+            Presentation: Présentation
+            FAQ: FAQ
+            Contributing: Contribuer
+            Changelog: Journal des modifications

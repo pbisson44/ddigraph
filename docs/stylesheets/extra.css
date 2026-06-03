@@ -1,0 +1,8 @@
+/* Hide the H1 on the home page so the H2 title renders as the visual hero heading.
+   MkDocs uses the H1 for page title / navigation; the H2 serves as the visible title. */
+.md-typeset h1 {
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+}

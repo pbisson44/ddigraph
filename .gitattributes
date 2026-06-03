@@ -1,0 +1,2 @@
+demo/*.xml filter=lfs diff=lfs merge=lfs -text
+demo/*.ttl filter=lfs diff=lfs merge=lfs -text

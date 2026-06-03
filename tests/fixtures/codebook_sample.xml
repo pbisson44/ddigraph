@@ -1,0 +1,83 @@
+<codeBook xmlns:l="ddi:logicalproduct:3_3" xmlns:p="ddi:physicaldataproduct:3_3">
+    <docDscr>
+        <citation>
+            <prodStmt>
+                <producer ID="org1">
+                    <abbr>NSO</abbr>
+                    <producerName>National Statistics Office</producerName>
+                </producer>
+            </prodStmt>
+        </citation>
+    </docDscr>
+    <stdyDscr ID="s1">
+        <citation><titlStmt><titl>Demo Study</titl></titlStmt></citation>
+        <stdyInfo><abstract>Study abstract</abstract></stdyInfo>
+        <stdyInfo><universe ID="u1">Adults 18+</universe></stdyInfo>
+        <stdyInfo><serName ID="series1">Household Panel</serName></stdyInfo>
+        <stdyInfo><group ID="grp1"><labl>Urban Cohort</labl></group></stdyInfo>
+        <method><dataColl><collDate ID="dc1">2020-01-01</collDate></dataColl></method>
+    </stdyDscr>
+    <fileDscr ID="f1">
+        <fileTxt>
+            <fileName>data.csv</fileName>
+            <fileURI>https://example.com/data.csv</fileURI>
+        </fileTxt>
+    </fileDscr>
+    <catgryScheme ID="cs1">
+        <labl>Age categories</labl>
+        <catgry ID="c1"><labl>18-25</labl></catgry>
+    </catgryScheme>
+    <qstnItem ID="qi1" agency="NSO" URN="urn:ddi:qi1" version="2.0" name="Standalone">
+        <qstnLit>Standalone question?</qstnLit>
+    </qstnItem>
+    <qstnGrid ID="qg1" agency="NSO" URN="urn:ddi:qg1">
+        <qstnLit>Grid question?</qstnLit>
+        <qstnItem ID="q1"><qstnLit>Grid item detail</qstnLit></qstnItem>
+    </qstnGrid>
+    <qstnFlow ID="qf1">Skip if not applicable</qstnFlow>
+    <sampProc ID="sp1">Random sampling</sampProc>
+    <weight ID="wt1">Household weight</weight>
+    <representation ID="rep1"><labl>Numeric</labl></representation>
+    <codeList ID="cl1"><labl>Yes/No</labl></codeList>
+    <methodology ID="mn1">Descriptive methodology note</methodology>
+    <processingEvent ID="pe1">Imputed missing values</processingEvent>
+    <software ID="sw1" version="1.0"><name>DDI Tool</name></software>
+    <accessConditions ID="ac1">Public use file</accessConditions>
+    <l:logicalProduct>
+        <l:logicalRecord ID="lr1"><l:labl>Logical record</l:labl></l:logicalRecord>
+    </l:logicalProduct>
+    <p:physicalDataProduct>
+        <p:physicalStructure ID="ps1">
+            <p:labl>Physical structure</p:labl>
+        </p:physicalStructure>
+    </p:physicalDataProduct>
+    <otherMat ID="mat1">
+        <labl>Codebook PDF</labl>
+        <URI>https://example.com/codebook.pdf</URI>
+    </otherMat>
+    <varGrp ID="vg1" var="v1 v2"><labl>Core Variables</labl></varGrp>
+    <catgryGrp ID="cg1"><labl>Age buckets</labl><catgryRef IDREF="c1" /></catgryGrp>
+    <dataDscr>
+        <var ID="v1" agency="NSO" URN="urn:ddi:v1" version="1.0" name="Age variable">
+            <labl>Age</labl>
+            <concept>Demographics</concept>
+            <qstn ID="q1"><qstnLit>How old are you?</qstnLit></qstn>
+            <universe ID="u1">Adults 18+</universe>
+            <location fileid="f1" />
+            <catgry ID="c1"><catValu>1</catValu><labl>18-25</labl></catgry>
+            <catgry ID="c2"><catValu>2</catValu><labl>26-35</labl></catgry>
+        </var>
+        <var ID="v2">
+            <labl>Income</labl>
+            <concept>Economics</concept>
+            <qstn><qstnLit>What is your income?</qstnLit></qstn>
+            <location fileid="f1" />
+            <qstnItem ID="qi_var"><qstnLit>Income detail</qstnLit></qstnItem>
+        </var>
+        <var ID="v3">
+            <labl>Zip</labl>
+            <concept>Location</concept>
+            <universe ID="u2">All households</universe>
+        </var>
+    </dataDscr>
+</codeBook>
