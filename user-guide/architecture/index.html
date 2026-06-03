@@ -1,0 +1,2418 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/user-guide/architecture/">
+      
+      
+        <link rel="prev" href="../../getting-started/first-queries/">
+      
+      
+        <link rel="next" href="../relationships/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../fr/user-guide/architecture/" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>How It Loads Your Data - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-it-loads-your-data" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How It Loads Your Data
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../fr/user-guide/architecture/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 Minutes to ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your First Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Understanding ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Understanding ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Loads Your Data
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Loads Your Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#supported-ddi-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported DDI Formats
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Supported DDI Formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-codebook-ddiloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI Codebook (DDILoader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance-ddifragmentloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance (DDIFragmentLoader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-cdi-10-cdiloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-CDI 1.0 (CDILoader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-auto-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format Auto-Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-gets-loaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Gets Loaded
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Gets Loaded">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI Codebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-cdi-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-CDI 1.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-schema-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Schema Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the Schema Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-large-files-stay-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Large Files Stay Fast
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Large Files Stay Fast">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#streaming-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streaming Parsing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#back-pressure-codebook-loader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Back-Pressure (Codebook Loader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batched-writes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batched Writes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#async-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async I/O
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fault-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault Tolerance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-custom-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a Custom Backend
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding a Custom Backend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-custom-node-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding Custom Node Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relationship Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph Backends
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Graph Backends
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Advanced
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph vs Relational
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Readiness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standards Interoperability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#supported-ddi-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported DDI Formats
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Supported DDI Formats">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-codebook-ddiloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI Codebook (DDILoader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance-ddifragmentloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance (DDIFragmentLoader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-cdi-10-cdiloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-CDI 1.0 (CDILoader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-auto-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format Auto-Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-gets-loaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Gets Loaded
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Gets Loaded">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI Codebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-cdi-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-CDI 1.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-schema-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Schema Works
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the Schema Works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-large-files-stay-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Large Files Stay Fast
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How Large Files Stay Fast">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#streaming-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streaming Parsing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#back-pressure-codebook-loader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Back-Pressure (Codebook Loader)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#batched-writes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Batched Writes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#async-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async I/O
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fault-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault Tolerance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-custom-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding a Custom Backend
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding a Custom Backend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-custom-node-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding Custom Node Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="how-it-loads-your-data">How It Loads Your Data<a class="headerlink" href="#how-it-loads-your-data" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Optional deep-dive</p>
+<p>You don't need to read this page to use ddigraph. It explains the internal design —
+useful when you want to tune performance or understand why something behaves a certain way.
+If you're just getting started, go to <a href="../../getting-started/first-queries/">Your First Queries</a>.</p>
+</div>
+<hr />
+<p>ddigraph converts DDI XML files into a graph database. It is built around three goals:</p>
+<ul>
+<li><strong>Scalability</strong> — works on files of any size without running out of memory</li>
+<li><strong>Observability</strong> — you can see what is happening during a load</li>
+<li><strong>Fault isolation</strong> — if one record fails, the rest still succeed</li>
+</ul>
+<hr />
+<h2 id="supported-ddi-formats">Supported DDI Formats<a class="headerlink" href="#supported-ddi-formats" title="Permanent link">&para;</a></h2>
+<p>ddigraph supports three DDI format families, each with its own loader:</p>
+<h3 id="ddi-codebook-ddiloader">DDI Codebook (<code>DDILoader</code>)<a class="headerlink" href="#ddi-codebook-ddiloader" title="Permanent link">&para;</a></h3>
+<p>The older, simpler format. All metadata connects to a central <code>Dataset</code> node.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Input
+        XML[DDI Codebook XML]
+    end
+    subgraph Parser
+        P[lxml.iterparse]&lt;--&gt;Q[asyncio.Queue]
+    end
+    subgraph Writer
+        B[DDIBatch]
+        C[Async Cypher UNWIND]
+    end
+    DB[(Neo4j)]
+    XML --&gt; P --&gt; Q --&gt; B --&gt; C --&gt; DB</code></pre>
+<p><em>The file is read piece-by-piece (Parser), buffered in a queue, then written to Neo4j in
+batches (Writer).</em></p>
+<h3 id="ddi-l-fragmentinstance-ddifragmentloader">DDI-L FragmentInstance (<code>DDIFragmentLoader</code>)<a class="headerlink" href="#ddi-l-fragmentinstance-ddifragmentloader" title="Permanent link">&para;</a></h3>
+<p>The newer DDI Lifecycle 3.x format. Each <code>&lt;Fragment&gt;</code> is a reusable piece of metadata that
+can reference other fragments, naturally forming a graph structure.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Input
+        XML[FragmentInstance XML]
+    end
+    subgraph Parser
+        P[iterparse streaming]
+        FB[FragmentBatch by type]
+    end
+    subgraph Writer
+        C[Batched UNWIND Cypher]
+    end
+    DB[(Neo4j)]
+    XML --&gt; P --&gt; FB --&gt; C --&gt; DB</code></pre>
+<h3 id="ddi-cdi-10-cdiloader">DDI-CDI 1.0 (<code>CDILoader</code>)<a class="headerlink" href="#ddi-cdi-10-cdiloader" title="Permanent link">&para;</a></h3>
+<p>DDI Cross-Domain Integration — the newest DDI standard. It describes a wider range of data
+types: concepts, variables, classifications, data structures, and processes.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Input
+        XML[DDI-CDI XML]
+    end
+    subgraph Parser
+        P[iterparse streaming]
+        EB[EntityBatch by type]
+    end
+    subgraph Writer
+        C[Batched UNWIND Cypher]
+    end
+    DB[(Neo4j)]
+    XML --&gt; P --&gt; EB --&gt; C --&gt; DB</code></pre>
+<h3 id="format-auto-detection">Format Auto-Detection<a class="headerlink" href="#format-auto-detection" title="Permanent link">&para;</a></h3>
+<p>ddigraph can detect which format your file uses automatically. It reads the root XML element:</p>
+<ul>
+<li><code>FragmentInstance</code> → uses the lifecycle loader</li>
+<li><code>codeBook</code>, <code>codebook</code>, <code>DDIInstance</code> → uses the codebook loader</li>
+<li>DDI-CDI namespace or root elements → uses the CDI loader</li>
+</ul>
+<p>You can also call <code>detect_ddi_format("your_file.xml")</code> in Python, or let the CLI choose
+automatically with <code>ddigraph load</code>.</p>
+<hr />
+<h2 id="what-gets-loaded">What Gets Loaded<a class="headerlink" href="#what-gets-loaded" title="Permanent link">&para;</a></h2>
+<h3 id="ddi-codebook">DDI Codebook<a class="headerlink" href="#ddi-codebook" title="Permanent link">&para;</a></h3>
+<p>The Codebook loader extracts these categories of metadata into graph nodes:</p>
+<ul>
+<li><strong>Datasets &amp; studies</strong> — the overall study and its data collection events</li>
+<li><strong>Files &amp; structures</strong> — data files, logical records, and physical data structures</li>
+<li><strong>Variables &amp; questions</strong> — survey questions, question grids, question flows, and
+  variables (including links to universes, categories, and source questions)</li>
+<li><strong>Codes &amp; concepts</strong> — code lists, categories, concepts, universes, and representations</li>
+<li><strong>Groups &amp; organizations</strong> — organizations, series, groups, and category groups</li>
+<li><strong>Methodology &amp; processing</strong> — sampling procedures, weights, methodology notes, and
+  processing events</li>
+<li><strong>Extended coverage</strong> — citations, geographic/temporal coverage, funding, collection
+  instruments, and access policies</li>
+</ul>
+<h3 id="ddi-l-fragmentinstance">DDI-L FragmentInstance<a class="headerlink" href="#ddi-l-fragmentinstance" title="Permanent link">&para;</a></h3>
+<p>The FragmentInstance loader preserves the graph structure of DDI-L 3.x files:</p>
+<table>
+<thead>
+<tr>
+<th>Node Type</th>
+<th>What it represents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Instrument</code></td>
+<td>The survey instrument (entry point)</td>
+</tr>
+<tr>
+<td><code>Sequence</code></td>
+<td>An ordered list of questions</td>
+</tr>
+<tr>
+<td><code>IfThenElse</code></td>
+<td>A conditional branch (show question only if...)</td>
+</tr>
+<tr>
+<td><code>Loop</code></td>
+<td>A repeated section</td>
+</tr>
+<tr>
+<td><code>QuestionConstruct</code></td>
+<td>A question reference within the flow</td>
+</tr>
+<tr>
+<td><code>QuestionItem</code></td>
+<td>A single question</td>
+</tr>
+<tr>
+<td><code>QuestionGrid</code></td>
+<td>A grid/matrix of questions</td>
+</tr>
+<tr>
+<td><code>CodeList</code></td>
+<td>A list of answer choices</td>
+</tr>
+<tr>
+<td><code>Category</code></td>
+<td>One answer choice</td>
+</tr>
+<tr>
+<td><code>StatementItem</code></td>
+<td>Display text (not a question)</td>
+</tr>
+<tr>
+<td><code>ComputationItem</code></td>
+<td>A derived or calculated variable</td>
+</tr>
+<tr>
+<td><code>Universe</code></td>
+<td>The population this question applies to</td>
+</tr>
+<tr>
+<td><code>Concept</code></td>
+<td>A conceptual definition</td>
+</tr>
+<tr>
+<td><code>Variable</code></td>
+<td>A data variable</td>
+</tr>
+<tr>
+<td><code>StudyUnit</code></td>
+<td>Overall study metadata</td>
+</tr>
+<tr>
+<td><code>DataCollection</code></td>
+<td>Data collection metadata</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="../fragments/">DDI-L FragmentInstance</a> for detailed coverage.</p>
+<h3 id="ddi-cdi-10">DDI-CDI 1.0<a class="headerlink" href="#ddi-cdi-10" title="Permanent link">&para;</a></h3>
+<p>The CDI loader covers all 210 concrete top-level entity elements declared in <code>ddi-cdi.xsd</code>.
+The ~35 most commonly referenced types use hand-tuned record classes; the remaining entities
+round-trip through <code>CDIGenericRecord</code>. A representative sample of the bespoke types by domain:</p>
+<table>
+<thead>
+<tr>
+<th>Node Type</th>
+<th>Domain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Concept</code>, <code>ConceptualDomain</code>, <code>ConceptSystem</code>, <code>UnitType</code>, <code>Universe</code>, <code>Population</code></td>
+<td>Concepts</td>
+</tr>
+<tr>
+<td><code>InstanceVariable</code>, <code>RepresentedVariable</code>, <code>ConceptualVariable</code></td>
+<td>Variables</td>
+</tr>
+<tr>
+<td><code>Category</code>, <code>Code</code>, <code>ClassificationIndex</code>, <code>ClassificationItem</code>, <code>CodeList</code>, <code>StatisticalClassification</code></td>
+<td>Classifications</td>
+</tr>
+<tr>
+<td><code>WideDataSet</code>, <code>WideDataStructure</code>, <code>DataStore</code>, <code>LogicalRecord</code></td>
+<td>Data structures</td>
+</tr>
+<tr>
+<td><code>Agent</code>, <code>Activity</code>, <code>CorrespondenceTable</code></td>
+<td>Agents &amp; process</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<p>ddigraph reads its settings from environment variables (or a <code>.env</code> file). The main settings are:</p>
+<ul>
+<li><strong>Neo4j connection</strong> — URI, username, password, database name</li>
+<li><strong>Batching</strong> — <code>chunk_size</code> (records per batch), <code>queue_maxsize</code>, <code>writer_concurrency</code></li>
+<li><strong>Retry</strong> — <code>write_retry_attempts</code>, <code>write_retry_base_delay</code>, <code>write_retry_jitter</code></li>
+<li><strong>Parsing</strong> — <code>strict_parsing</code> (fail on invalid XML), <code>dry_run</code>, <code>replace</code></li>
+</ul>
+<p>See <a href="../../reference/configuration/">Configuration</a> for all available settings.</p>
+<hr />
+<h2 id="how-the-schema-works">How the Schema Works<a class="headerlink" href="#how-the-schema-works" title="Permanent link">&para;</a></h2>
+<p>All node types, relationships, and database constraints are defined in one place:
+<code>ddigraph.schema.definitions</code>. This single source of truth is used by the loaders,
+the schema bootstrap, and the adapters.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDISchema</span>
+
+<span class="c1"># Generate all index/constraint queries</span>
+<span class="n">queries</span> <span class="o">=</span> <span class="n">DDISchema</span><span class="o">.</span><span class="n">generate_all_schema_queries</span><span class="p">(</span><span class="n">include_fragments</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_cdi</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Look up the relationship type for a DDI-L reference field</span>
+<span class="n">rel_type</span> <span class="o">=</span> <span class="n">DDISchema</span><span class="o">.</span><span class="n">get_fragment_relationship_type</span><span class="p">(</span><span class="s2">&quot;ControlConstructReference&quot;</span><span class="p">)</span>
+<span class="c1"># Returns: &quot;HAS_CONSTRUCT&quot;</span>
+</code></pre></div>
+<h3 id="schema-bootstrap">Schema Bootstrap<a class="headerlink" href="#schema-bootstrap" title="Permanent link">&para;</a></h3>
+<p>Run <code>ddigraph bootstrap</code> once before your first load. It creates:</p>
+<ul>
+<li><strong>Unique constraints</strong> on identity fields (<code>id</code> for Codebook nodes, <code>fragment_id</code> for
+  FragmentInstance nodes) — prevents duplicate nodes</li>
+<li><strong>Secondary indexes</strong> on <code>name</code>, <code>label</code>, and <code>description</code> — makes lookups fast</li>
+</ul>
+<p>It is safe to run more than once. If the index or constraint already exists, nothing changes.</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>bootstrap<span class="w">                          </span><span class="c1"># Codebook + DDI-L (default)</span>
+ddigraph<span class="w"> </span>bootstrap<span class="w"> </span>--no-include-fragments<span class="w">   </span><span class="c1"># Codebook only</span>
+</code></pre></div>
+<hr />
+<h2 id="how-large-files-stay-fast">How Large Files Stay Fast<a class="headerlink" href="#how-large-files-stay-fast" title="Permanent link">&para;</a></h2>
+<h3 id="streaming-parsing">Streaming Parsing<a class="headerlink" href="#streaming-parsing" title="Permanent link">&para;</a></h3>
+<p>ddigraph uses <code>iterparse</code> — a streaming XML parser that reads one element at a time.
+After each element is processed, it is deleted from memory. This keeps memory usage
+constant no matter how large the file is.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Each element is processed then immediately cleared from memory</span>
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">etree</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">,)):</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+    <span class="n">elem</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">elem</span><span class="o">.</span><span class="n">getprevious</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">elem</span><span class="o">.</span><span class="n">getparent</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+<p>Without streaming, a 5 GB file would require 5 GB of RAM. With streaming, the same file
+uses only a small, fixed amount of memory.</p>
+<h3 id="back-pressure-codebook-loader">Back-Pressure (Codebook Loader)<a class="headerlink" href="#back-pressure-codebook-loader" title="Permanent link">&para;</a></h3>
+<p>A queue sits between the parser and the database writer. If the database is writing slowly,
+the queue fills up. Once full, it pauses the parser until the writer catches up. This prevents
+memory from growing without limit when writing is slower than reading.</p>
+<p>Think of it like a buffer at a car wash: if the wash bay is full, no more cars are admitted
+until one exits.</p>
+<h3 id="batched-writes">Batched Writes<a class="headerlink" href="#batched-writes" title="Permanent link">&para;</a></h3>
+<p>Instead of writing one record to Neo4j at a time, ddigraph groups records into batches and
+sends them all in a single query using Cypher's <code>UNWIND</code> clause:</p>
+<div class="highlight"><pre><span></span><code><span class="k">UNWIND</span><span class="w"> </span><span class="err">$</span><span class="n">batch</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">props</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="n">Sequence</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="n">props</span><span class="p">.</span><span class="n">fragment_id</span><span class="p">})</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="err">+</span><span class="p">=</span><span class="w"> </span><span class="n">props</span>
+</code></pre></div>
+<p>This reduces database round trips by 10–100x. Instead of 1,000 queries (one per record),
+there might be 10 queries (100 records each).</p>
+<h3 id="async-io">Async I/O<a class="headerlink" href="#async-io" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Codebook loader</strong> — reads and writes at the same time using multiple concurrent writer tasks</li>
+<li><strong>FragmentInstance loader</strong> — writes asynchronously while parsing proceeds in batches</li>
+</ul>
+<hr />
+<h2 id="fault-tolerance">Fault Tolerance<a class="headerlink" href="#fault-tolerance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Schema bootstrap is safe to repeat</td>
+<td>Uses <code>IF NOT EXISTS</code> — running it twice won't break anything</td>
+</tr>
+<tr>
+<td>Batch-level isolation</td>
+<td>Each batch is its own transaction — a failure in one batch doesn't affect others</td>
+</tr>
+<tr>
+<td><code>MERGE</code> semantics</td>
+<td>Retrying a failed batch won't create duplicate nodes</td>
+</tr>
+<tr>
+<td>Retry with backoff</td>
+<td>Temporary Neo4j errors are retried automatically with increasing wait times</td>
+</tr>
+<tr>
+<td>Input validation</td>
+<td>Bad configuration values are caught at startup, not mid-load</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="adding-a-custom-backend">Adding a Custom Backend<a class="headerlink" href="#adding-a-custom-backend" title="Permanent link">&para;</a></h2>
+<p>The loader sends data through a <code>GraphWriteAdapter</code> interface (a standard set of methods).
+You can plug in any database by writing a class that implements this interface.
+See <a href="../adapter/">Custom Adapters</a> for examples.</p>
+<h3 id="adding-custom-node-types">Adding Custom Node Types<a class="headerlink" href="#adding-custom-node-types" title="Permanent link">&para;</a></h3>
+<p>To add your own node types or relationships:</p>
+<ol>
+<li>Extend <code>DDISchema</code> in <code>src/ddigraph/schema/definitions.py</code></li>
+<li>Update the appropriate loader to extract the new XML elements</li>
+<li>Regenerate bootstrap queries from the schema</li>
+</ol>
+<hr />
+<h2 id="cicd">CI/CD<a class="headerlink" href="#cicd" title="Permanent link">&para;</a></h2>
+<p>GitHub Actions runs Ruff (code style), mypy (type checking), and pytest (tests) on every
+push and pull request. This prevents regressions and keeps code quality consistent.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

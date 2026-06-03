@@ -1,0 +1,2445 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/project/faq/">
+      
+      
+        <link rel="prev" href="../presentation/">
+      
+      
+        <link rel="next" href="../contributing/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../fr/project/faq/" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>FAQ - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#faq" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FAQ
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../fr/project/faq/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 Minutes to ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your First Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Understanding ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Understanding ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Loads Your Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relationship Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph Backends
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Graph Backends
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Advanced
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph vs Relational
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Readiness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standards Interoperability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-ddi-formats-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What DDI formats are supported?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#do-i-need-neo4j-to-use-ddigraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do I need Neo4j to use ddigraph?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-handle-large-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I handle large files?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-is-ingestion-slow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is ingestion slow?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-connect-to-neo4j-aura-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I connect to Neo4j Aura (cloud)?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-use-ddigraph-without-async" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can I use ddigraph without async?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-add-a-custom-graph-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I add a custom graph backend?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-python-versions-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Python versions are supported?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-migrate-from-neo4ddi-to-ddigraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I migrate from neo4ddi to ddigraph?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I migrate from neo4ddi to ddigraph?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-update-the-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Update the package
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-update-imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Update imports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-update-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Update environment variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-update-cli-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Update CLI usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-connection-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting: Connection Errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting: Connection Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#serviceunavailable-unable-to-retrieve-routing-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "ServiceUnavailable: Unable to retrieve routing information"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autherror-the-client-is-unauthorized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "AuthError: The client is unauthorized"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clienterror-database-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "ClientError: database not found"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-memory-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting: Memory Errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting: Memory Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memoryerror-or-process-killed-during-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "MemoryError" or process killed during parsing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-ddigraph-different-from-other-ddi-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How is ddigraph different from other DDI tools?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-ddi-formats-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What DDI formats are supported?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#do-i-need-neo4j-to-use-ddigraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do I need Neo4j to use ddigraph?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-handle-large-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I handle large files?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-is-ingestion-slow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is ingestion slow?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-connect-to-neo4j-aura-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I connect to Neo4j Aura (cloud)?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-i-use-ddigraph-without-async" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can I use ddigraph without async?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-add-a-custom-graph-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I add a custom graph backend?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-python-versions-are-supported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Python versions are supported?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-migrate-from-neo4ddi-to-ddigraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I migrate from neo4ddi to ddigraph?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I migrate from neo4ddi to ddigraph?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-update-the-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Update the package
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-update-imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Update imports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-update-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Update environment variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-update-cli-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Update CLI usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-connection-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting: Connection Errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting: Connection Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#serviceunavailable-unable-to-retrieve-routing-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "ServiceUnavailable: Unable to retrieve routing information"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autherror-the-client-is-unauthorized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "AuthError: The client is unauthorized"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clienterror-database-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "ClientError: database not found"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-memory-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting: Memory Errors
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting: Memory Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memoryerror-or-process-killed-during-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "MemoryError" or process killed during parsing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-ddigraph-different-from-other-ddi-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How is ddigraph different from other DDI tools?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h1>
+<p>Frequently asked questions about ddigraph.</p>
+<hr />
+<h2 id="what-ddi-formats-are-supported">What DDI formats are supported?<a class="headerlink" href="#what-ddi-formats-are-supported" title="Permanent link">&para;</a></h2>
+<p>ddigraph supports three DDI formats:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>DDI Version</th>
+<th>Root Element</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DDI Codebook</strong></td>
+<td>2.5 / 2.6</td>
+<td><code>&lt;codeBook&gt;</code></td>
+<td>Survey archives, data catalogs, variable-level metadata</td>
+</tr>
+<tr>
+<td><strong>DDI Lifecycle</strong></td>
+<td>3.2 / 3.3</td>
+<td><code>&lt;FragmentInstance&gt;</code></td>
+<td>Questionnaire flows, CAPI/CAWI instruments, complex study designs</td>
+</tr>
+<tr>
+<td><strong>DDI-CDI</strong></td>
+<td>1.0</td>
+<td><code>&lt;Wrapper&gt;</code></td>
+<td>Cross-domain integration, variable harmonisation, concept mapping</td>
+</tr>
+</tbody>
+</table>
+<p>The CLI auto-detects the format by inspecting the XML root element and namespace. You can also
+force a specific format with <code>--format codebook</code> or <code>--format lifecycle</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Auto-detect (default)</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>survey.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+
+<span class="c1"># Explicit format</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>survey.xml<span class="w"> </span>--format<span class="w"> </span>codebook<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+ddigraph<span class="w"> </span>load<span class="w"> </span>questionnaire.xml<span class="w"> </span>--format<span class="w"> </span>lifecycle
+</code></pre></div>
+<hr />
+<h2 id="do-i-need-neo4j-to-use-ddigraph">Do I need Neo4j to use ddigraph?<a class="headerlink" href="#do-i-need-neo4j-to-use-ddigraph" title="Permanent link">&para;</a></h2>
+<p>No. While Neo4j is the default and most fully supported backend, ddigraph supports a
+multi-backend adapter architecture. You can load DDI data into:</p>
+<ul>
+<li><strong>Neo4j</strong> -- full support with Bolt driver, schema bootstrap, UNWIND batching</li>
+<li><strong>RDF / SPARQL</strong> -- via rdflib, with export to Turtle, N-Triples, RDF/XML, JSON-LD</li>
+<li><strong>Gremlin</strong> -- compatible with JanusGraph, Amazon Neptune, Azure Cosmos DB</li>
+<li><strong>NetworkX</strong> -- in-memory graph for local analysis, no external services needed</li>
+<li><strong>pandas</strong> -- DataFrames for tabular analysis and Excel/CSV export</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Quick start without a database</p>
+<p>For exploration and prototyping, the NetworkX backend requires no external services:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDIFragmentParser</span>
+
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">DDIFragmentParser</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;survey.xml&quot;</span><span class="p">):</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">fragment</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span><span class="si">}</span><span class="s2"> nodes&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>See <a href="../../backends/neo4j/">Graph Backends</a> for detailed setup guides for each backend.</p>
+<hr />
+<h2 id="how-do-i-handle-large-files">How do I handle large files?<a class="headerlink" href="#how-do-i-handle-large-files" title="Permanent link">&para;</a></h2>
+<p>ddigraph is designed for large files. The streaming <code>iterparse</code>-based parser processes XML
+incrementally, so memory usage stays bounded regardless of file size.</p>
+<p>Key strategies for large files:</p>
+<ol>
+<li>
+<p><strong>Tune batch size</strong>: Increase <code>--chunk-size</code> to reduce transaction overhead for large files.
+   Start with 500-1000 for files with 10,000+ elements.</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>large_survey.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--chunk-size<span class="w"> </span><span class="m">1000</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Increase writer concurrency</strong> (Codebook only): Allow multiple batches to flush in parallel.</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>large_codebook.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--chunk-size<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--writer-concurrency<span class="w"> </span><span class="m">4</span><span class="w"> </span>--queue-maxsize<span class="w"> </span><span class="m">4</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Monitor with batch metrics</strong>: Enable per-batch timing to identify bottlenecks.</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>large_survey.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--batch-metrics
+</code></pre></div>
+</li>
+<li>
+<p><strong>Increase transaction timeout</strong>: Large batches may exceed the default server-side timeout.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_TRANSACTION_TIMEOUT</span><span class="o">=</span><span class="m">60</span>
+</code></pre></div>
+</li>
+</ol>
+<p>See <a href="../../advanced/tuning/">Performance Tuning</a> for detailed recommendations.</p>
+<hr />
+<h2 id="why-is-ingestion-slow">Why is ingestion slow?<a class="headerlink" href="#why-is-ingestion-slow" title="Permanent link">&para;</a></h2>
+<p>Common causes of slow ingestion and their solutions:</p>
+<p><strong>1. Missing indexes or constraints</strong></p>
+<p>Always run schema bootstrap before loading data:</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>bootstrap
+</code></pre></div>
+<p>Without indexes, Neo4j performs full scans for every MERGE operation.</p>
+<p><strong>2. Batch size too small</strong></p>
+<p>The default <code>chunk_size</code> of 200 is conservative. For large files, increase it:</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--chunk-size<span class="w"> </span><span class="m">1000</span>
+</code></pre></div>
+<p><strong>3. Network latency to Neo4j</strong></p>
+<p>For cloud instances (Neo4j Aura, remote clusters), network round-trips dominate. Use larger
+batches and increase retry tolerance:</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--chunk-size<span class="w"> </span><span class="m">500</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--write-retry-attempts<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--write-retry-base-delay<span class="w"> </span><span class="m">2</span>.0
+</code></pre></div>
+<p><strong>4. Neo4j server resources</strong></p>
+<p>Check that the Neo4j instance has sufficient memory and CPU. The Neo4j browser
+(<code>http://localhost:7474</code>) shows active queries and resource usage.</p>
+<div class="admonition note">
+<p class="admonition-title">DDI-L performance</p>
+<p>DDI-L FragmentInstance ingestion uses UNWIND batching, reducing Neo4j queries to ~30 for a
+typical file.</p>
+</div>
+<hr />
+<h2 id="how-do-i-connect-to-neo4j-aura-cloud">How do I connect to Neo4j Aura (cloud)?<a class="headerlink" href="#how-do-i-connect-to-neo4j-aura-cloud" title="Permanent link">&para;</a></h2>
+<p>Neo4j Aura uses encrypted connections. Use the <code>neo4j+s://</code> URI scheme, which enables TLS
+automatically:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_NEO4J_URI</span><span class="o">=</span>neo4j+s://xxxx.databases.neo4j.io
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_NEO4J_USER</span><span class="o">=</span>neo4j
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_NEO4J_PASSWORD</span><span class="o">=</span>your-aura-password
+</code></pre></div>
+<p>Then run commands as usual:</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>bootstrap
+ddigraph<span class="w"> </span>load<span class="w"> </span>survey.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Aura tuning</p>
+<p>Cloud instances have higher network latency. Consider these settings:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CONNECTION_TIMEOUT</span><span class="o">=</span><span class="m">10</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">200</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_ATTEMPTS</span><span class="o">=</span><span class="m">5</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_BASE_DELAY</span><span class="o">=</span><span class="m">2</span>.0
+</code></pre></div>
+</div>
+<p>You do <strong>not</strong> need <code>--encrypted</code> or <code>--trusted-certificates</code> when using the <code>neo4j+s://</code> scheme,
+as TLS is handled by the URI scheme itself.</p>
+<hr />
+<h2 id="can-i-use-ddigraph-without-async">Can I use ddigraph without async?<a class="headerlink" href="#can-i-use-ddigraph-without-async" title="Permanent link">&para;</a></h2>
+<p>The <code>GraphWriteAdapter</code> protocol accepts both synchronous and asynchronous implementations.
+Your adapter can return <code>None</code> (sync) or <code>Awaitable[None]</code> (async):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.schema.adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphWriteAdapter</span>
+
+<span class="c1"># Synchronous adapter</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SyncAdapter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">purge_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">delete_by_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+</code></pre></div>
+<p>The CLI and built-in loaders use <code>asyncio.run()</code> internally, so you do not need to manage an
+event loop yourself when using the command line. The async machinery is transparent.</p>
+<hr />
+<h2 id="how-do-i-add-a-custom-graph-backend">How do I add a custom graph backend?<a class="headerlink" href="#how-do-i-add-a-custom-graph-backend" title="Permanent link">&para;</a></h2>
+<p>Implement the <code>GraphWriteAdapter</code> protocol with two methods: <code>write_batch</code> and <code>purge_dataset</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.schema.adapter</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphWriteAdapter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.schema.ddi_graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDIIngestGraph</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyBackendAdapter</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">write_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="n">DDIIngestGraph</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">session_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">transaction_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">relationships</span><span class="p">():</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">rel</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">],</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">],</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">])</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">purge_dataset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">session_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">transaction_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">delete_all</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+</code></pre></div>
+<p>Then pass your adapter to the loader:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.ingest.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDILoader</span>
+
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">MyBackendAdapter</span><span class="p">()</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">DDILoader</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adapter</span><span class="o">=</span><span class="n">adapter</span><span class="p">)</span>
+</code></pre></div>
+<p>See <a href="../../user-guide/adapter/">Adapter Architecture</a> for complete examples and
+<a href="../contributing/">Contributing</a> for guidelines on submitting new backends.</p>
+<hr />
+<h2 id="what-python-versions-are-supported">What Python versions are supported?<a class="headerlink" href="#what-python-versions-are-supported" title="Permanent link">&para;</a></h2>
+<p>ddigraph supports <strong>Python 3.12-3.14</strong>. This is specified
+in <code>pyproject.toml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.12,&lt;3.15&quot;</span>
+</code></pre></div>
+<p>Python 3.12-3.14 is required for:</p>
+<ul>
+<li>Modern <code>type</code> statement syntax and <code>type</code> aliases</li>
+<li><code>collections.abc</code> improvements used in protocol definitions</li>
+<li>Performance improvements in <code>asyncio</code></li>
+</ul>
+<hr />
+<h2 id="how-do-i-migrate-from-neo4ddi-to-ddigraph">How do I migrate from neo4ddi to ddigraph?<a class="headerlink" href="#how-do-i-migrate-from-neo4ddi-to-ddigraph" title="Permanent link">&para;</a></h2>
+<p>The package was renamed from <code>neo4ddi</code> to <code>ddigraph</code> to reflect multi-backend support.</p>
+<h3 id="step-1-update-the-package">Step 1: Update the package<a class="headerlink" href="#step-1-update-the-package" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>uninstall<span class="w"> </span>neo4ddi
+pip<span class="w"> </span>install<span class="w"> </span>ddigraph
+</code></pre></div>
+<h3 id="step-2-update-imports">Step 2: Update imports<a class="headerlink" href="#step-2-update-imports" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">neo4ddi.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">neo4ddi.ingest.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDILoader</span>
+
+<span class="c1"># After</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.ingest.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDILoader</span>
+</code></pre></div>
+<h3 id="step-3-update-environment-variables">Step 3: Update environment variables<a class="headerlink" href="#step-3-update-environment-variables" title="Permanent link">&para;</a></h3>
+<p>The <code>DDIGRAPH_</code> prefix is now preferred, but <code>NEO4DDI_</code> is still recognized:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NEO4DDI_NEO4J_URI</span><span class="o">=</span>bolt://localhost:7687
+
+<span class="c1"># After (preferred)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_NEO4J_URI</span><span class="o">=</span>bolt://localhost:7687
+</code></pre></div>
+<h3 id="step-4-update-cli-usage">Step 4: Update CLI usage<a class="headerlink" href="#step-4-update-cli-usage" title="Permanent link">&para;</a></h3>
+<p>The CLI command changed from <code>neo4ddi</code> to <code>ddigraph</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Before</span>
+neo4ddi<span class="w"> </span>load<span class="w"> </span>survey.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+
+<span class="c1"># After</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>survey.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Backward compatibility</p>
+<p>The <code>NEO4DDI_</code> environment variable prefix and bare <code>NEO4J_</code> variables are still recognized
+for backward compatibility. The <code>DDIGRAPH_</code> prefix takes precedence when multiple prefixes
+are set.</p>
+</div>
+<hr />
+<h2 id="troubleshooting-connection-errors">Troubleshooting: Connection Errors<a class="headerlink" href="#troubleshooting-connection-errors" title="Permanent link">&para;</a></h2>
+<h3 id="serviceunavailable-unable-to-retrieve-routing-information">"ServiceUnavailable: Unable to retrieve routing information"<a class="headerlink" href="#serviceunavailable-unable-to-retrieve-routing-information" title="Permanent link">&para;</a></h3>
+<p>This usually means ddigraph cannot reach the Neo4j server.</p>
+<ol>
+<li>
+<p><strong>Check that Neo4j is running</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Docker</span>
+docker<span class="w"> </span>ps<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>neo4j
+
+<span class="c1"># Or try connecting directly</span>
+curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:7474
+</code></pre></div>
+</li>
+<li>
+<p><strong>Verify the URI</strong>: Make sure <code>DDIGRAPH_NEO4J_URI</code> uses the correct protocol and port:</p>
+<ul>
+<li>Local: <code>bolt://localhost:7687</code></li>
+<li>Aura: <code>neo4j+s://xxxx.databases.neo4j.io</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Check credentials</strong>: Verify username and password are correct.</p>
+</li>
+<li>
+<p><strong>Firewall/network</strong>: Ensure port 7687 (Bolt) is open and accessible.</p>
+</li>
+</ol>
+<h3 id="autherror-the-client-is-unauthorized">"AuthError: The client is unauthorized"<a class="headerlink" href="#autherror-the-client-is-unauthorized" title="Permanent link">&para;</a></h3>
+<p>The username or password is incorrect. Double-check:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="nv">$DDIGRAPH_NEO4J_USER</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$DDIGRAPH_NEO4J_PASSWORD</span>
+</code></pre></div>
+<h3 id="clienterror-database-not-found">"ClientError: database not found"<a class="headerlink" href="#clienterror-database-not-found" title="Permanent link">&para;</a></h3>
+<p>The specified database does not exist. Check <code>DDIGRAPH_NEO4J_DATABASE</code> (default: <code>neo4j</code>).
+Neo4j Community Edition only supports the default <code>neo4j</code> database.</p>
+<hr />
+<h2 id="troubleshooting-memory-errors">Troubleshooting: Memory Errors<a class="headerlink" href="#troubleshooting-memory-errors" title="Permanent link">&para;</a></h2>
+<h3 id="memoryerror-or-process-killed-during-parsing">"MemoryError" or process killed during parsing<a class="headerlink" href="#memoryerror-or-process-killed-during-parsing" title="Permanent link">&para;</a></h3>
+<p>ddigraph uses streaming XML parsing (<code>iterparse</code>), which should keep memory usage bounded. If
+you still hit memory limits:</p>
+<ol>
+<li>
+<p><strong>Reduce batch size</strong>:</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--chunk-size<span class="w"> </span><span class="m">50</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Reduce queue size</strong> (Codebook format):</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--queue-maxsize<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Reduce writer concurrency</strong>:</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--writer-concurrency<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong>Check for non-streaming parsing</strong>: If you are using a custom adapter, make sure you are not
+   accumulating all nodes in memory. Process and discard batches incrementally.</p>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Monitoring memory</p>
+<p>Use <code>--batch-metrics</code> to see per-batch statistics. If batch sizes look unexpectedly large,
+your <code>chunk_size</code> may be too high for the available memory.</p>
+</div>
+<hr />
+<h2 id="how-is-ddigraph-different-from-other-ddi-tools">How is ddigraph different from other DDI tools?<a class="headerlink" href="#how-is-ddigraph-different-from-other-ddi-tools" title="Permanent link">&para;</a></h2>
+<p>ddigraph is specifically designed for <strong>graph-based</strong> representations of DDI metadata. Here is
+how it compares to other approaches:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>ddigraph</th>
+<th>Colectica</th>
+<th>NESSTAR</th>
+<th>Custom scripts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Output</strong></td>
+<td>Knowledge graph (Neo4j, RDF, etc.)</td>
+<td>Relational database</td>
+<td>Proprietary format</td>
+<td>Varies</td>
+</tr>
+<tr>
+<td><strong>DDI formats</strong></td>
+<td>Codebook + Lifecycle + CDI</td>
+<td>Lifecycle</td>
+<td>Codebook</td>
+<td>Usually one</td>
+</tr>
+<tr>
+<td><strong>Graph backends</strong></td>
+<td>5 (Neo4j, RDF, Gremlin, NetworkX, pandas)</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>Usually one</td>
+</tr>
+<tr>
+<td><strong>Streaming</strong></td>
+<td>Yes (bounded memory)</td>
+<td>Yes</td>
+<td>Varies</td>
+<td>Usually no</td>
+</tr>
+<tr>
+<td><strong>Open source</strong></td>
+<td>Yes (MIT)</td>
+<td>No (commercial)</td>
+<td>No (discontinued)</td>
+<td>Varies</td>
+</tr>
+<tr>
+<td><strong>Extensible</strong></td>
+<td>Adapter protocol</td>
+<td>Plugin API</td>
+<td>No</td>
+<td>By definition</td>
+</tr>
+</tbody>
+</table>
+<p>Key differentiators:</p>
+<ul>
+<li><strong>Graph-native</strong>: ddigraph preserves the inherent graph structure of DDI metadata (variables
+  linked to questions linked to concepts linked to code lists), making traversals and path
+  queries natural.</li>
+<li><strong>Multi-backend</strong>: A single parsing pipeline feeds any graph backend through the
+  <code>GraphWriteAdapter</code> interface.</li>
+<li><strong>Streaming architecture</strong>: Memory usage is bounded regardless of file size, making it suitable
+  for large national survey archives.</li>
+<li><strong>Production-ready</strong>: Built-in retry logic, structured logging, and configurable back-pressure
+  support automated pipelines and CI/CD workflows.</li>
+</ul>
+<hr />
+<p>Still have questions? Open an issue on <a href="https://github.com/pbisson44/ddigraph/issues">GitHub</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2809 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/fr/advanced/graph-vs-relational/">
+      
+      
+        <link rel="prev" href="../../user-guide/adapter/">
+      
+      
+        <link rel="next" href="../ai-readiness/">
+      
+      
+        
+          <link rel="alternate" href="../../../advanced/graph-vs-relational/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Graphe vs Relationnel - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#graphe-vs-relationnel" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Graphe vs Relationnel
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../advanced/graph-vs-relational/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pour commencer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pour commencer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 minutes avec ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vos premières requêtes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comprendre ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Comprendre ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comment ddigraph charge vos données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de données graphe
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de données graphe
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Référence
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossaire
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avancé
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avancé
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation des performances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptateurs personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphe vs Relationnel
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphe vs Relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#le-defi-la-complexite-inherente-du-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le défi : la complexité inhérente du DDI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Le défi : la complexité inhérente du DDI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#une-requete-ddi-typique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une requête DDI typique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approche-base-de-donnees-relationnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approche base de données relationnelle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Approche base de données relationnelle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conception-du-schema-relationnel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conception du schéma relationnel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-probleme-des-requetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le problème des requêtes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-du-relationnel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations du relationnel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Limitations du relationnel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-requete-de-profondeur-variable-en-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple : requête de profondeur variable en SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approche-base-de-donnees-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approche base de données graphe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Approche base de données graphe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conception-du-schema-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conception du schéma graphe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-meme-requete-simplifiee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La même requête, simplifiée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traversee-de-profondeur-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traversée de profondeur variable
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avantages-des-bases-de-donnees-graphe-pour-le-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avantages des bases de données graphe pour le DDI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Avantages des bases de données graphe pour le DDI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-modele-de-donnees-naturel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Modèle de données naturel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-performance-des-requetes-pour-les-traversees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Performance des requêtes pour les traversées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-flexibilite-du-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Flexibilité du schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-langage-de-requete-expressif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Langage de requête expressif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-analyse-dimpact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Analyse d'impact
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inconvenients-potentiels-et-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inconvénients potentiels et considérations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inconvénients potentiels et considérations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-courbe-dapprentissage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Courbe d'apprentissage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-complexite-operationnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Complexité opérationnelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ecosysteme-doutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Écosystème d'outils
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-semantique-transactionnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Sémantique transactionnelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-requetes-dagregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Requêtes d'agrégation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-considerations-de-volume-de-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Considérations de volume de données
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quand-utiliser-chaque-approche" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quand utiliser chaque approche
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quand utiliser chaque approche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-base-de-donnees-graphe-neo4j-est-preferable-quand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La base de données graphe (Neo4j) est préférable quand
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-base-de-donnees-relationnelle-peut-etre-preferable-quand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La base de données relationnelle peut être préférable quand
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approches-hybrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approches hybrides
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Approches hybrides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-graphe-pour-la-navigation-relationnel-pour-le-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Graphe pour la navigation, relationnel pour le reporting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-graphe-comme-couche-de-metadonnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Graphe comme couche de métadonnées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-export-pour-lanalyse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Export pour l'analyse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-de-comparaison-des-requetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence de comparaison des requêtes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pour-aller-plus-loin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pour aller plus loin
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préparation pour l'IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interopérabilité des standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Présentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribuer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journal des modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#le-defi-la-complexite-inherente-du-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le défi : la complexité inhérente du DDI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Le défi : la complexité inhérente du DDI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#une-requete-ddi-typique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Une requête DDI typique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approche-base-de-donnees-relationnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approche base de données relationnelle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Approche base de données relationnelle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conception-du-schema-relationnel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conception du schéma relationnel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-probleme-des-requetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Le problème des requêtes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-du-relationnel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations du relationnel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Limitations du relationnel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-requete-de-profondeur-variable-en-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple : requête de profondeur variable en SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approche-base-de-donnees-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approche base de données graphe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Approche base de données graphe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conception-du-schema-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conception du schéma graphe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-meme-requete-simplifiee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La même requête, simplifiée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traversee-de-profondeur-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traversée de profondeur variable
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avantages-des-bases-de-donnees-graphe-pour-le-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avantages des bases de données graphe pour le DDI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Avantages des bases de données graphe pour le DDI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-modele-de-donnees-naturel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Modèle de données naturel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-performance-des-requetes-pour-les-traversees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Performance des requêtes pour les traversées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-flexibilite-du-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Flexibilité du schéma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-langage-de-requete-expressif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Langage de requête expressif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-analyse-dimpact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Analyse d'impact
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inconvenients-potentiels-et-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inconvénients potentiels et considérations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inconvénients potentiels et considérations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-courbe-dapprentissage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Courbe d'apprentissage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-complexite-operationnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Complexité opérationnelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-ecosysteme-doutils" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Écosystème d'outils
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-semantique-transactionnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Sémantique transactionnelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-requetes-dagregation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Requêtes d'agrégation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-considerations-de-volume-de-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Considérations de volume de données
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quand-utiliser-chaque-approche" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quand utiliser chaque approche
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quand utiliser chaque approche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-base-de-donnees-graphe-neo4j-est-preferable-quand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La base de données graphe (Neo4j) est préférable quand
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-base-de-donnees-relationnelle-peut-etre-preferable-quand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        La base de données relationnelle peut être préférable quand
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#approches-hybrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approches hybrides
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Approches hybrides">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-graphe-pour-la-navigation-relationnel-pour-le-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Graphe pour la navigation, relationnel pour le reporting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-graphe-comme-couche-de-metadonnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Graphe comme couche de métadonnées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-export-pour-lanalyse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Export pour l'analyse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-de-comparaison-des-requetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence de comparaison des requêtes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pour-aller-plus-loin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pour aller plus loin
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="graphe-vs-relationnel">Graphe vs Relationnel<a class="headerlink" href="#graphe-vs-relationnel" title="Permanent link">&para;</a></h1>
+<p>Ce document explique pourquoi ddigraph utilise une base de données graphe (Neo4j) plutôt
+qu'une base de données relationnelle traditionnelle, les avantages que cela apporte pour les
+métadonnées DDI, et les considérations pour les équipes évaluant cette approche.</p>
+<h2 id="le-defi-la-complexite-inherente-du-ddi">Le défi : la complexité inhérente du DDI<a class="headerlink" href="#le-defi-la-complexite-inherente-du-ddi" title="Permanent link">&para;</a></h2>
+<p>DDI (Data Documentation Initiative) décrit les instruments d'enquête, les questionnaires, les
+variables et leurs relations. Cela crée une structure naturellement interconnectée :</p>
+<ul>
+<li>Les questions référencent des listes de codes et des catégories</li>
+<li>Les variables sont liées aux questions, concepts et univers</li>
+<li>Les construits de flux de contrôle (séquences, conditionnels, boucles) forment des chemins
+  d'exécution</li>
+<li>Les instruments contiennent des hiérarchies imbriquées de construits</li>
+</ul>
+<h3 id="une-requete-ddi-typique">Une requête DDI typique<a class="headerlink" href="#une-requete-ddi-typique" title="Permanent link">&para;</a></h3>
+<p>Considérez cette question : <em>"Quelles questions utilisent une liste de codes particulière, et
+quelles variables sont dérivées de ces questions ?"</em></p>
+<p>Cela nécessite de traverser :</p>
+<div class="highlight"><pre><span></span><code>CodeList → QuestionItem → QuestionConstruct → Variable
+</code></pre></div>
+<h2 id="approche-base-de-donnees-relationnelle">Approche base de données relationnelle<a class="headerlink" href="#approche-base-de-donnees-relationnelle" title="Permanent link">&para;</a></h2>
+<h3 id="conception-du-schema-relationnel">Conception du schéma relationnel<a class="headerlink" href="#conception-du-schema-relationnel" title="Permanent link">&para;</a></h3>
+<p>Dans une base de données relationnelle, vous pourriez modéliser cela avec des tables
+normalisées :</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">code_lists</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">agency</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">version</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="nb">TEXT</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">question_items</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">agency</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">version</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">question_text</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">code_list_id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">code_lists</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">question_constructs</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">question_item_id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">question_items</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">question_construct_id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">question_constructs</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="le-probleme-des-requetes">Le problème des requêtes<a class="headerlink" href="#le-probleme-des-requetes" title="Permanent link">&para;</a></h3>
+<p>Trouver toutes les variables utilisant une liste de codes spécifique nécessite plusieurs
+JOINs :</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="n">v</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">question_constructs</span><span class="w"> </span><span class="n">qc</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">question_construct_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qc</span><span class="p">.</span><span class="n">id</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">question_items</span><span class="w"> </span><span class="n">qi</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">qc</span><span class="p">.</span><span class="n">question_item_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qi</span><span class="p">.</span><span class="n">id</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">qi</span><span class="p">.</span><span class="n">code_list_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;cl-age-groups&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p>Cela semble gérable, mais la complexité du DDI croît rapidement :</p>
+<ol>
+<li><strong>Chemins de profondeur variable</strong> : Le flux d'enquête peut s'imbriquer arbitrairement
+   (Sequence -&gt; Sequence -&gt; IfThenElse -&gt; Sequence -&gt; QuestionConstruct)</li>
+<li><strong>Types de relations multiples</strong> : Une seule entité peut avoir de nombreuses relations
+   différentes</li>
+<li><strong>Références polymorphes</strong> : ControlConstructReference peut pointer vers Sequence,
+   QuestionConstruct, IfThenElse, Loop, etc.</li>
+<li><strong>Préoccupations transversales</strong> : Trouver tous les construits affectés par un changement
+   de liste de codes nécessite de traverser plusieurs chemins</li>
+</ol>
+<h3 id="limitations-du-relationnel">Limitations du relationnel<a class="headerlink" href="#limitations-du-relationnel" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Défi</th>
+<th>Impact relationnel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Traversée de profondeur variable</td>
+<td>Nécessite des CTE récursifs ou plusieurs requêtes</td>
+</tr>
+<tr>
+<td>Recherche de chemins</td>
+<td>Auto-jointures complexes, difficiles à optimiser</td>
+</tr>
+<tr>
+<td>Évolution du schéma</td>
+<td>L'ajout de types de relations nécessite ALTER TABLE</td>
+</tr>
+<tr>
+<td>Références polymorphes</td>
+<td>Nécessite des colonnes de type ou des clés étrangères multiples</td>
+</tr>
+<tr>
+<td>Analyse d'impact</td>
+<td>Scans multi-tables coûteux</td>
+</tr>
+</tbody>
+</table>
+<h4 id="exemple-requete-de-profondeur-variable-en-sql">Exemple : requête de profondeur variable en SQL<a class="headerlink" href="#exemple-requete-de-profondeur-variable-en-sql" title="Permanent link">&para;</a></h4>
+<p>Trouver tous les construits atteignables depuis un instrument :</p>
+<div class="highlight"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="k">RECURSIVE</span><span class="w"> </span><span class="n">reachable</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="c1">-- Base case: start from instrument</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">child_id</span><span class="p">,</span><span class="w"> </span><span class="n">child_type</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">depth</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">control_construct_refs</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;instrument-1&#39;</span>
+
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+
+<span class="w">    </span><span class="c1">-- Recursive case: follow references</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">ccr</span><span class="p">.</span><span class="n">child_id</span><span class="p">,</span><span class="w"> </span><span class="n">ccr</span><span class="p">.</span><span class="n">child_type</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">depth</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">control_construct_refs</span><span class="w"> </span><span class="n">ccr</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">reachable</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">ccr</span><span class="p">.</span><span class="n">parent_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">child_id</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">depth</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">20</span><span class="w">  </span><span class="c1">-- Safety limit</span>
+<span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">reachable</span><span class="p">;</span>
+</code></pre></div>
+<p>Cette requête :</p>
+<ul>
+<li>Devient lente à mesure que la profondeur augmente</li>
+<li>Nécessite un réglage minutieux des index</li>
+<li>Peut atteindre les limites de récursion de la base de données</li>
+<li>Ne filtre pas facilement par type de relation</li>
+</ul>
+<h2 id="approche-base-de-donnees-graphe">Approche base de données graphe<a class="headerlink" href="#approche-base-de-donnees-graphe" title="Permanent link">&para;</a></h2>
+<h3 id="conception-du-schema-graphe">Conception du schéma graphe<a class="headerlink" href="#conception-du-schema-graphe" title="Permanent link">&para;</a></h3>
+<p>Dans Neo4j, la même structure est exprimée sous forme de nœuds et de relations :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Nodes</span>
+<span class="p">(:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cl-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Age Groups&quot;</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">QuestionItem</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;q-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">question_text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;What is your age?&quot;</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">QuestionConstruct</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;qc-1&quot;</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">Variable</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v-1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Age&quot;</span><span class="p">})</span>
+
+<span class="c1">// Relationships</span>
+<span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="p">)</span>
+<span class="p">(</span><span class="n">qc</span><span class="p">:</span><span class="n">QuestionConstruct</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ASKS_QUESTION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span>
+<span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">DERIVED_FROM</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">qc</span><span class="p">:</span><span class="n">QuestionConstruct</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="la-meme-requete-simplifiee">La même requête, simplifiée<a class="headerlink" href="#la-meme-requete-simplifiee" title="Permanent link">&para;</a></h3>
+<p>Trouver toutes les variables utilisant une liste de codes spécifique :</p>
+<div class="highlight"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cl-age-groups&#39;</span><span class="p">})</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-</span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">ASKS_QUESTION</span><span class="o">]-</span><span class="p">(</span><span class="n">qc</span><span class="p">:</span><span class="n">QuestionConstruct</span><span class="p">)</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">DERIVED_FROM</span><span class="o">]-</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span>
+</code></pre></div>
+<h3 id="traversee-de-profondeur-variable">Traversée de profondeur variable<a class="headerlink" href="#traversee-de-profondeur-variable" title="Permanent link">&para;</a></h3>
+<p>Trouver tous les construits atteignables depuis un instrument :</p>
+<div class="highlight"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">inst</span><span class="p">:</span><span class="n">Instrument</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;instrument-1&#39;</span><span class="p">})</span>
+<span class="w">      </span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CONSTRUCT</span><span class="p">*</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">construct</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">construct</span>
+</code></pre></div>
+<p>L'opérateur <code>*</code> gère la profondeur arbitraire naturellement, sans limites de récursion ni CTE
+complexes.</p>
+<h2 id="avantages-des-bases-de-donnees-graphe-pour-le-ddi">Avantages des bases de données graphe pour le DDI<a class="headerlink" href="#avantages-des-bases-de-donnees-graphe-pour-le-ddi" title="Permanent link">&para;</a></h2>
+<h3 id="1-modele-de-donnees-naturel">1. Modèle de données naturel<a class="headerlink" href="#1-modele-de-donnees-naturel" title="Permanent link">&para;</a></h3>
+<p>Les métadonnées DDI <em>sont</em> un graphe. La structure XML définit explicitement des nœuds
+(fragments) et des arêtes (références) :</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;QuestionConstruct&gt;</span>
+<span class="w">    </span><span class="nt">&lt;QuestionReference&gt;</span><span class="w">           </span><span class="cm">&lt;!-- This IS an edge --&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ID&gt;</span>question-1<span class="nt">&lt;/ID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/QuestionReference&gt;</span>
+<span class="nt">&lt;/QuestionConstruct&gt;</span>
+</code></pre></div>
+<p>Les bases de données graphe représentent cela directement, tandis que les bases relationnelles
+doivent l'encoder indirectement.</p>
+<h3 id="2-performance-des-requetes-pour-les-traversees">2. Performance des requêtes pour les traversées<a class="headerlink" href="#2-performance-des-requetes-pour-les-traversees" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Opération</th>
+<th>Relationnel</th>
+<th>Graphe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JOIN unique</td>
+<td>Rapide</td>
+<td>Rapide</td>
+</tr>
+<tr>
+<td>3-4 JOINs</td>
+<td>Modéré</td>
+<td>Rapide</td>
+</tr>
+<tr>
+<td>Traversée de profondeur variable</td>
+<td>Lent/Complexe</td>
+<td>Rapide</td>
+</tr>
+<tr>
+<td>Recherche de chemins</td>
+<td>Très lent</td>
+<td>Optimisé</td>
+</tr>
+<tr>
+<td>Correspondance de motifs</td>
+<td>Codage manuel</td>
+<td>Support natif</td>
+</tr>
+</tbody>
+</table>
+<p>Les bases de données graphe utilisent l'adjacence sans index, ce qui signifie que chaque nœud
+référence directement ses voisins. Le temps de traversée est proportionnel à la taille du
+résultat, pas à la taille totale des données.</p>
+<h3 id="3-flexibilite-du-schema">3. Flexibilité du schéma<a class="headerlink" href="#3-flexibilite-du-schema" title="Permanent link">&para;</a></h3>
+<p>Ajouter un nouveau type de relation dans une base relationnelle :</p>
+<div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">question_items</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">instruction_id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">instructions</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="c1">-- Plus migration scripts, ORM updates, etc.</span>
+</code></pre></div>
+<p>Ajouter un nouveau type de relation dans Neo4j :</p>
+<div class="highlight"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;q-1&#39;</span><span class="p">})</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">Instruction</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;inst-1&#39;</span><span class="p">})</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_INSTRUCTION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+<p>Aucune migration de schéma requise. Les nouveaux types de relations peuvent coexister avec les
+données existantes.</p>
+<h3 id="4-langage-de-requete-expressif">4. Langage de requête expressif<a class="headerlink" href="#4-langage-de-requete-expressif" title="Permanent link">&para;</a></h3>
+<p>Cypher exprime les motifs de graphe directement :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Find questions with conditional branching that use a specific code list</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cl-yes-no&#39;</span><span class="p">})</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-</span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">ASKS_QUESTION</span><span class="o">]-</span><span class="p">(</span><span class="n">qc</span><span class="p">:</span><span class="n">QuestionConstruct</span><span class="p">)</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_CONSTRUCT</span><span class="o">]-</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span><span class="n">Sequence</span><span class="p">)</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="k">THEN</span><span class="p">|</span><span class="n">ELSE</span><span class="o">]-</span><span class="p">(</span><span class="n">ite</span><span class="p">:</span><span class="n">IfThenElse</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">fragment_id</span><span class="p">,</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">question_text</span><span class="p">,</span><span class="w"> </span><span class="n">ite</span><span class="p">.</span><span class="n">condition</span>
+</code></pre></div>
+<h3 id="5-analyse-dimpact">5. Analyse d'impact<a class="headerlink" href="#5-analyse-dimpact" title="Permanent link">&para;</a></h3>
+<p>Comprendre ce qui est affecté par un changement :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Find everything that depends on a code list</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cl-occupation&#39;</span><span class="p">})</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">5</span><span class="o">]-</span><span class="p">(</span><span class="n">dependent</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">labels</span><span class="p">(</span><span class="n">dependent</span><span class="p">)</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">type</span><span class="p">,</span>
+<span class="w">       </span><span class="n">dependent</span><span class="p">.</span><span class="n">fragment_id</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
+<span class="w">       </span><span class="n">length</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">distance</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">distance</span>
+</code></pre></div>
+<h2 id="inconvenients-potentiels-et-considerations">Inconvénients potentiels et considérations<a class="headerlink" href="#inconvenients-potentiels-et-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="1-courbe-dapprentissage">1. Courbe d'apprentissage<a class="headerlink" href="#1-courbe-dapprentissage" title="Permanent link">&para;</a></h3>
+<p><strong>Défi</strong> : Les équipes habituées au SQL doivent apprendre Cypher et la pensée en graphe.</p>
+<p><strong>Atténuation</strong> :</p>
+<ul>
+<li>La syntaxe Cypher est intuitive pour la correspondance de motifs</li>
+<li>ddigraph fournit des requêtes prêtes à l'emploi dans les scripts d'audit</li>
+<li>La documentation inclut les motifs de requête courants</li>
+</ul>
+<h3 id="2-complexite-operationnelle">2. Complexité opérationnelle<a class="headerlink" href="#2-complexite-operationnelle" title="Permanent link">&para;</a></h3>
+<p><strong>Défi</strong> : L'exécution de Neo4j nécessite une infrastructure supplémentaire.</p>
+<p><strong>Atténuation</strong> :</p>
+<ul>
+<li>Neo4j Aura fournit un hébergement cloud géré</li>
+<li>Docker simplifie le déploiement local</li>
+<li>Neo4j Community Edition est gratuit pour un usage mono-instance</li>
+</ul>
+<h3 id="3-ecosysteme-doutils">3. Écosystème d'outils<a class="headerlink" href="#3-ecosysteme-doutils" title="Permanent link">&para;</a></h3>
+<p><strong>Défi</strong> : Moins d'outils de BI prennent en charge nativement les bases de données graphe.</p>
+<p><strong>Atténuation</strong> :</p>
+<ul>
+<li>Neo4j dispose de connecteurs JDBC/ODBC pour les outils de BI</li>
+<li>Le motif adaptateur de ddigraph permet l'export vers pandas, JSON, CSV</li>
+<li>Les résultats graphe peuvent être aplatis pour le reporting traditionnel</li>
+</ul>
+<h3 id="4-semantique-transactionnelle">4. Sémantique transactionnelle<a class="headerlink" href="#4-semantique-transactionnelle" title="Permanent link">&para;</a></h3>
+<p><strong>Défi</strong> : Les bases de données graphe optimisent les lectures ; les charges d'écriture
+intensives peuvent différer.</p>
+<p><strong>Atténuation</strong> :</p>
+<ul>
+<li>Les métadonnées DDI sont dominées par la lecture (charger une fois, interroger souvent)</li>
+<li>ddigraph utilise des écritures par lots avec UNWIND pour une ingestion efficace</li>
+<li>Neo4j prend en charge les transactions ACID</li>
+</ul>
+<h3 id="5-requetes-dagregation">5. Requêtes d'agrégation<a class="headerlink" href="#5-requetes-dagregation" title="Permanent link">&para;</a></h3>
+<p><strong>Défi</strong> : Certaines opérations d'agrégation sont plus naturelles en SQL.</p>
+<p><strong>Exemple</strong> : Compter les variables par jeu de données est plus simple en SQL :</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">dataset_id</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">dataset_id</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Équivalent Cypher</strong> :</p>
+<div class="highlight"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dataset</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">IN_DATASET</span><span class="o">]-</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</code></pre></div>
+<p>Les deux fonctionnent, mais le GROUP BY de SQL peut sembler plus familier.</p>
+<h3 id="6-considerations-de-volume-de-donnees">6. Considérations de volume de données<a class="headerlink" href="#6-considerations-de-volume-de-donnees" title="Permanent link">&para;</a></h3>
+<p><strong>Défi</strong> : Les très grands jeux de données (millions de nœuds) nécessitent un réglage.</p>
+<p><strong>Atténuation</strong> :</p>
+<ul>
+<li>ddigraph crée des index sur les champs clés</li>
+<li>Les tailles de lots sont configurables</li>
+<li>Neo4j Enterprise offre le clustering pour la montée en charge</li>
+</ul>
+<h2 id="quand-utiliser-chaque-approche">Quand utiliser chaque approche<a class="headerlink" href="#quand-utiliser-chaque-approche" title="Permanent link">&para;</a></h2>
+<h3 id="la-base-de-donnees-graphe-neo4j-est-preferable-quand">La base de données graphe (Neo4j) est préférable quand<a class="headerlink" href="#la-base-de-donnees-graphe-neo4j-est-preferable-quand" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Les requêtes traversent fréquemment des relations</li>
+<li>L'analyse de chemins est importante (accessibilité, impact)</li>
+<li>Le schéma évolue avec de nouveaux types de relations</li>
+<li>Vous devez visualiser la structure des métadonnées</li>
+<li>Intégration avec d'autres données graphe (SDMX, ontologies)</li>
+</ul>
+<h3 id="la-base-de-donnees-relationnelle-peut-etre-preferable-quand">La base de données relationnelle peut être préférable quand<a class="headerlink" href="#la-base-de-donnees-relationnelle-peut-etre-preferable-quand" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Les requêtes sont principalement des agrégations et des comptages</li>
+<li>L'équipe n'a aucune expérience des bases de données graphe et un temps d'apprentissage limité</li>
+<li>L'infrastructure existante est purement relationnelle</li>
+<li>Le volume de données est faible et les requêtes sont simples</li>
+<li>La conformité exige des technologies de base de données spécifiques</li>
+</ul>
+<h2 id="approches-hybrides">Approches hybrides<a class="headerlink" href="#approches-hybrides" title="Permanent link">&para;</a></h2>
+<p>Vous n'avez pas à choisir exclusivement. Les motifs courants incluent :</p>
+<h3 id="1-graphe-pour-la-navigation-relationnel-pour-le-reporting">1. Graphe pour la navigation, relationnel pour le reporting<a class="headerlink" href="#1-graphe-pour-la-navigation-relationnel-pour-le-reporting" title="Permanent link">&para;</a></h3>
+<p>Utilisez Neo4j pour les requêtes structurelles et l'analyse de chemins, mais synchronisez les
+résumés vers un entrepôt de données relationnel pour les tableaux de bord BI.</p>
+<h3 id="2-graphe-comme-couche-de-metadonnees">2. Graphe comme couche de métadonnées<a class="headerlink" href="#2-graphe-comme-couche-de-metadonnees" title="Permanent link">&para;</a></h3>
+<p>Conservez les données de réponse aux enquêtes dans une base relationnelle, mais utilisez Neo4j
+pour les métadonnées qui décrivent ces données. Liez-les via les identifiants de jeu de
+données/variable.</p>
+<h3 id="3-export-pour-lanalyse">3. Export pour l'analyse<a class="headerlink" href="#3-export-pour-lanalyse" title="Permanent link">&para;</a></h3>
+<p>Utilisez le motif adaptateur de ddigraph pour exporter les données graphe vers des DataFrames
+pandas ou des fichiers CSV pour les équipes plus à l'aise avec ces outils :</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>demo/load_pandas.py<span class="w">    </span><span class="c1"># Export to DataFrames</span>
+python<span class="w"> </span>demo/export_files.py<span class="w">   </span><span class="c1"># Export to JSON/CSV</span>
+</code></pre></div>
+<h2 id="reference-de-comparaison-des-requetes">Référence de comparaison des requêtes<a class="headerlink" href="#reference-de-comparaison-des-requetes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tâche</th>
+<th>SQL</th>
+<th>Cypher</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recherche par ID</td>
+<td><code>SELECT * FROM questions WHERE id = 'q1'</code></td>
+<td><code>MATCH (q:QuestionItem {fragment_id: 'q1'}) RETURN q</code></td>
+</tr>
+<tr>
+<td>JOIN simple</td>
+<td><code>SELECT * FROM questions q JOIN code_lists cl ON q.code_list_id = cl.id</code></td>
+<td><code>MATCH (q:QuestionItem)-[:USES_CODELIST]-&gt;(cl) RETURN q, cl</code></td>
+</tr>
+<tr>
+<td>Profondeur variable</td>
+<td>CTE récursif (complexe)</td>
+<td><code>MATCH path = (a)-[*1..5]-&gt;(b) RETURN path</code></td>
+</tr>
+<tr>
+<td>Plus court chemin</td>
+<td>Non natif</td>
+<td><code>MATCH p = shortestPath((a)-[*]-(b)) RETURN p</code></td>
+</tr>
+<tr>
+<td>Tous les chemins</td>
+<td>Très complexe</td>
+<td><code>MATCH p = allShortestPaths((a)-[*]-(b)) RETURN p</code></td>
+</tr>
+<tr>
+<td>Correspondance de motifs</td>
+<td>JOINs multiples + conditions</td>
+<td><code>MATCH (a)-[:R1]-&gt;(b)-[:R2]-&gt;(c) WHERE ...</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>Pour les métadonnées DDI, les bases de données graphe offrent des avantages significatifs en
+expressivité des requêtes, performance de traversée et flexibilité du schéma. Les compromis
+(courbe d'apprentissage, complexité opérationnelle) sont gérables, notamment grâce à :</p>
+<ol>
+<li>La structure intrinsèquement graphe du DDI</li>
+<li>L'importance de la traversée des relations dans les cas d'usage des métadonnées</li>
+<li>Les outils matures et les options cloud de Neo4j</li>
+<li>Le motif adaptateur de ddigraph pour la flexibilité d'intégration</li>
+</ol>
+<p>Les équipes devraient évaluer en fonction de leurs motifs de requête spécifiques, de leur
+infrastructure existante et de leur volonté d'investir dans les compétences en bases de données
+graphe.</p>
+<h2 id="pour-aller-plus-loin">Pour aller plus loin<a class="headerlink" href="#pour-aller-plus-loin" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://neo4j.com/docs/getting-started/">Concepts des bases de données graphe Neo4j</a></li>
+<li><a href="https://neo4j.com/docs/cypher-manual/">Langage de requête Cypher</a></li>
+<li><a href="https://ddialliance.org/Specification/DDI-Lifecycle/">Spécification DDI Lifecycle</a></li>
+<li><a href="../../user-guide/architecture/">Architecture ddigraph</a></li>
+<li><a href="../interoperability/">Interopérabilité des standards</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

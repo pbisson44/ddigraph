@@ -1,0 +1,2641 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/fr/advanced/tuning/">
+      
+      
+        <link rel="prev" href="../../reference/glossary/">
+      
+      
+        <link rel="next" href="../../user-guide/adapter/">
+      
+      
+        
+          <link rel="alternate" href="../../../advanced/tuning/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Optimisation des performances - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#optimisation-des-performances" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Optimisation des performances
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../advanced/tuning/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pour commencer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pour commencer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 minutes avec ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vos premières requêtes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comprendre ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Comprendre ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comment ddigraph charge vos données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de données graphe
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de données graphe
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Référence
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossaire
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avancé
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avancé
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation des performances
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation des performances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reference-rapide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence rapide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taille-des-lots-ddigraph_chunk_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taille des lots (DDIGRAPH_CHUNK_SIZE)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Taille des lots (DDIGRAPH_CHUNK_SIZE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI Codebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taille-de-la-file-dattente-ddigraph_queue_maxsize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taille de la file d'attente (DDIGRAPH_QUEUE_MAXSIZE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrence-decriture-ddigraph_writer_concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concurrence d'écriture (DDIGRAPH_WRITER_CONCURRENCY)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pool-de-connexions-du-pilote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pool de connexions du pilote
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pool de connexions du pilote">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#taille-du-pool-de-connexions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taille du pool de connexions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delais-dexpiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Délais d'expiration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-des-reessais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration des réessais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dry-run-et-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dry Run et Replace
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dry Run et Replace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mode-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-remplacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode remplacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reglage-specifique-au-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réglage spécifique au format
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Réglage spécifique au format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#surveillance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Surveillance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Surveillance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metriques-utiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métriques utiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-pratiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples pratiques
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples pratiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grand-ddi-codebook-10k-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grand DDI Codebook (10K+ variables)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grand-ddi-l-fragmentinstance-5k-fragments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grand DDI-L FragmentInstance (5K+ fragments)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-cloud-auradb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance cloud AuraDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environnement-a-memoire-limitee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environnement à mémoire limitée
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparaison-des-performances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparaison des performances
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparaison des performances">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performances-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performances DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#depannage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépannage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dépannage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingestion-lente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestion lente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problemes-de-memoire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problèmes de mémoire
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erreurs-de-connexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Erreurs de connexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delais-de-transaction-depasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Délais de transaction dépassés
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptateurs personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphe vs Relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préparation pour l'IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interopérabilité des standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Présentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribuer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journal des modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reference-rapide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Référence rapide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taille-des-lots-ddigraph_chunk_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taille des lots (DDIGRAPH_CHUNK_SIZE)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Taille des lots (DDIGRAPH_CHUNK_SIZE)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI Codebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taille-de-la-file-dattente-ddigraph_queue_maxsize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taille de la file d'attente (DDIGRAPH_QUEUE_MAXSIZE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrence-decriture-ddigraph_writer_concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concurrence d'écriture (DDIGRAPH_WRITER_CONCURRENCY)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pool-de-connexions-du-pilote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pool de connexions du pilote
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pool de connexions du pilote">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#taille-du-pool-de-connexions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taille du pool de connexions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delais-dexpiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Délais d'expiration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-des-reessais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration des réessais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dry-run-et-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dry Run et Replace
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dry Run et Replace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mode-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-remplacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode remplacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reglage-specifique-au-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réglage spécifique au format
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Réglage spécifique au format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddi-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ddi-l-fragmentinstance_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#surveillance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Surveillance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Surveillance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metriques-utiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métriques utiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-pratiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples pratiques
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples pratiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grand-ddi-codebook-10k-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grand DDI Codebook (10K+ variables)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grand-ddi-l-fragmentinstance-5k-fragments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grand DDI-L FragmentInstance (5K+ fragments)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-cloud-auradb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance cloud AuraDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environnement-a-memoire-limitee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environnement à mémoire limitée
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparaison-des-performances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparaison des performances
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparaison des performances">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#performances-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performances DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#depannage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépannage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dépannage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ingestion-lente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestion lente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problemes-de-memoire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problèmes de mémoire
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erreurs-de-connexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Erreurs de connexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delais-de-transaction-depasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Délais de transaction dépassés
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="optimisation-des-performances">Optimisation des performances<a class="headerlink" href="#optimisation-des-performances" title="Permanent link">&para;</a></h1>
+<p>Ce guide couvre les paramètres de réglage pour l'ingestion DDI Codebook et DDI-L
+FragmentInstance.</p>
+<h2 id="reference-rapide">Référence rapide<a class="headerlink" href="#reference-rapide" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Paramètre</th>
+<th>Défaut</th>
+<th>DDI Codebook</th>
+<th>DDI-L FragmentInstance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chunk_size</code></td>
+<td>200</td>
+<td>Enregistrements par lot</td>
+<td>Fragments par lot</td>
+</tr>
+<tr>
+<td><code>queue_maxsize</code></td>
+<td>2</td>
+<td>Lots en mémoire tampon</td>
+<td>N/A (analyse synchrone)</td>
+</tr>
+<tr>
+<td><code>writer_concurrency</code></td>
+<td>4</td>
+<td>Écritures parallèles</td>
+<td>N/A (lots séquentiels)</td>
+</tr>
+<tr>
+<td><code>write_retry_attempts</code></td>
+<td>3</td>
+<td>Nombre de réessais</td>
+<td>Nombre de réessais</td>
+</tr>
+</tbody>
+</table>
+<h2 id="taille-des-lots-ddigraph_chunk_size">Taille des lots (<code>DDIGRAPH_CHUNK_SIZE</code>)<a class="headerlink" href="#taille-des-lots-ddigraph_chunk_size" title="Permanent link">&para;</a></h2>
+<p>Contrôle le nombre d'enregistrements/fragments regroupés avant l'écriture dans Neo4j.</p>
+<h3 id="ddi-codebook">DDI Codebook<a class="headerlink" href="#ddi-codebook" title="Permanent link">&para;</a></h3>
+<p>Des lots plus grands réduisent le surcoût transactionnel mais augmentent la latence par
+transaction. Le seuil compte tous les types d'enregistrements analysés ensemble (variables,
+questions, catégories, etc.) :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Lots plus grands pour une ingestion à haut débit</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">1000</span>
+
+<span class="c1"># Lots plus petits pour les environnements à mémoire limitée</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">100</span>
+</code></pre></div>
+<p>Pour les codebooks avec un mélange de métadonnées et de variables, 500-1000 enregistrements
+combinés maintient l'efficacité des écritures.</p>
+<h3 id="ddi-l-fragmentinstance">DDI-L FragmentInstance<a class="headerlink" href="#ddi-l-fragmentinstance" title="Permanent link">&para;</a></h3>
+<p>Les fragments sont regroupés par type d'élément avant les écritures UNWIND :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Pour les gros fichiers FragmentInstance (&gt;5000 fragments)</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>questionnaire.xml<span class="w"> </span>--chunk-size<span class="w"> </span><span class="m">500</span>
+
+<span class="c1"># Pour les fichiers plus petits ou le débogage</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>questionnaire.xml<span class="w"> </span>--chunk-size<span class="w"> </span><span class="m">50</span>
+</code></pre></div>
+<p><strong>Recommandation</strong> : Commencez avec 200-300 pour les fichiers FragmentInstance et ajustez en
+fonction de la mémoire et de la latence d'écriture.</p>
+<h2 id="taille-de-la-file-dattente-ddigraph_queue_maxsize">Taille de la file d'attente (<code>DDIGRAPH_QUEUE_MAXSIZE</code>)<a class="headerlink" href="#taille-de-la-file-dattente-ddigraph_queue_maxsize" title="Permanent link">&para;</a></h2>
+<p><em>S'applique uniquement au DDI Codebook.</em></p>
+<p>Contrôle la contre-pression entre l'analyse et l'écriture en limitant le nombre d'objets
+<code>DDIBatch</code> en file d'attente :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Maintenir l&#39;écrivain occupé sur les systèmes rapides</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_QUEUE_MAXSIZE</span><span class="o">=</span><span class="m">4</span>
+
+<span class="c1"># Réduire l&#39;utilisation mémoire</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_QUEUE_MAXSIZE</span><span class="o">=</span><span class="m">1</span>
+</code></pre></div>
+<p>Le chargeur FragmentInstance utilise une analyse synchrone par lots, donc la taille de la
+file d'attente ne s'applique pas.</p>
+<h2 id="concurrence-decriture-ddigraph_writer_concurrency">Concurrence d'écriture (<code>DDIGRAPH_WRITER_CONCURRENCY</code>)<a class="headerlink" href="#concurrence-decriture-ddigraph_writer_concurrency" title="Permanent link">&para;</a></h2>
+<p><em>S'applique uniquement au DDI Codebook.</em></p>
+<p>Définit le nombre de lots écrits en parallèle dans Neo4j :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Concurrence plus élevée pour les clusters Neo4j rapides</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITER_CONCURRENCY</span><span class="o">=</span><span class="m">4</span>
+
+<span class="c1"># Écrivain unique pour le débogage ou les connexions limitées</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITER_CONCURRENCY</span><span class="o">=</span><span class="m">1</span>
+</code></pre></div>
+<p>Assurez-vous que <code>max_connection_pool_size</code> &gt;= <code>writer_concurrency</code> pour éviter la famine
+des écrivains.</p>
+<h2 id="pool-de-connexions-du-pilote">Pool de connexions du pilote<a class="headerlink" href="#pool-de-connexions-du-pilote" title="Permanent link">&para;</a></h2>
+<h3 id="taille-du-pool-de-connexions">Taille du pool de connexions<a class="headerlink" href="#taille-du-pool-de-connexions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Égaler ou dépasser la concurrence d&#39;écriture</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_MAX_CONNECTION_POOL_SIZE</span><span class="o">=</span><span class="m">10</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITER_CONCURRENCY</span><span class="o">=</span><span class="m">4</span>
+</code></pre></div>
+<h3 id="delais-dexpiration">Délais d'expiration<a class="headerlink" href="#delais-dexpiration" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Paramètre</th>
+<th>Objectif</th>
+<th>Recommandation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>connection_timeout</code></td>
+<td>Temps pour établir la connexion</td>
+<td>5-30s</td>
+</tr>
+<tr>
+<td><code>max_connection_lifetime</code></td>
+<td>Recyclage des connexions inactives</td>
+<td>300-3600s</td>
+</tr>
+<tr>
+<td><code>session_timeout</code></td>
+<td>Durée de vie de la session</td>
+<td>Adapter aux besoins transactionnels</td>
+</tr>
+<tr>
+<td><code>transaction_timeout</code></td>
+<td>Limite de transaction côté serveur</td>
+<td>30-120s</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="c1"># Défaillance rapide sur les problèmes de connexion</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CONNECTION_TIMEOUT</span><span class="o">=</span><span class="m">5</span>
+
+<span class="c1"># Transactions longues pour les gros lots</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_TRANSACTION_TIMEOUT</span><span class="o">=</span><span class="m">60</span>
+</code></pre></div>
+<h2 id="configuration-des-reessais">Configuration des réessais<a class="headerlink" href="#configuration-des-reessais" title="Permanent link">&para;</a></h2>
+<p>Les deux chargeurs prennent en charge le backoff exponentiel avec gigue pour les défaillances
+transitoires :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Réessais agressifs pour les réseaux instables</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_ATTEMPTS</span><span class="o">=</span><span class="m">5</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_BASE_DELAY</span><span class="o">=</span><span class="m">1</span>.0
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_JITTER</span><span class="o">=</span><span class="m">0</span>.5
+
+<span class="c1"># Défaillance rapide pour les environnements stables</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_ATTEMPTS</span><span class="o">=</span><span class="m">2</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_BASE_DELAY</span><span class="o">=</span><span class="m">0</span>.1
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_JITTER</span><span class="o">=</span><span class="m">0</span>
+</code></pre></div>
+<p>Équivalent CLI :</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--write-retry-attempts<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--write-retry-base-delay<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--write-retry-jitter<span class="w"> </span><span class="m">0</span>.5
+</code></pre></div>
+<h2 id="dry-run-et-replace">Dry Run et Replace<a class="headerlink" href="#dry-run-et-replace" title="Permanent link">&para;</a></h2>
+<h3 id="mode-validation">Mode validation<a class="headerlink" href="#mode-validation" title="Permanent link">&para;</a></h3>
+<p>Analyser et planifier sans écrire :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Valider avant l&#39;ingestion en production</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--dry-run
+
+<span class="c1"># Ou via variable d&#39;environnement</span>
+<span class="nv">DDIGRAPH_DRY_RUN</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+</code></pre></div>
+<h3 id="mode-remplacement">Mode remplacement<a class="headerlink" href="#mode-remplacement" title="Permanent link">&para;</a></h3>
+<p>Purger les données existantes avant le chargement :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Réingérer un jeu de données depuis zéro</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--replace
+
+<span class="c1"># Replace est ignoré pendant le dry-run</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--dry-run<span class="w"> </span>--replace<span class="w">  </span><span class="c1"># Aucune purge n&#39;a lieu</span>
+</code></pre></div>
+<h2 id="reglage-specifique-au-format">Réglage spécifique au format<a class="headerlink" href="#reglage-specifique-au-format" title="Permanent link">&para;</a></h2>
+<h3 id="ddi-c">DDI-C<a class="headerlink" href="#ddi-c" title="Permanent link">&para;</a></h3>
+<p>Optimiser pour le pipeline producteur/consommateur :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Configuration à haut débit</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">1000</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_QUEUE_MAXSIZE</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITER_CONCURRENCY</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_MAX_CONNECTION_POOL_SIZE</span><span class="o">=</span><span class="m">10</span>
+</code></pre></div>
+<h3 id="ddi-l-fragmentinstance_1">DDI-L FragmentInstance<a class="headerlink" href="#ddi-l-fragmentinstance_1" title="Permanent link">&para;</a></h3>
+<p>Optimiser pour les écritures UNWIND par lots :</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Gros fichiers FragmentInstance</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">500</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_TRANSACTION_TIMEOUT</span><span class="o">=</span><span class="m">60</span>
+<span class="c1"># Environnements à mémoire limitée</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">100</span>
+</code></pre></div>
+<h2 id="surveillance">Surveillance<a class="headerlink" href="#surveillance" title="Permanent link">&para;</a></h2>
+<p>Activez les métriques par lot pour la visibilité :</p>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo<span class="w"> </span>--batch-metrics
+</code></pre></div>
+<p>Cela émet des métriques de chronométrage et de comptage pouvant être capturées par les
+systèmes d'observabilité.</p>
+<h3 id="metriques-utiles">Métriques utiles<a class="headerlink" href="#metriques-utiles" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Métrique</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>batch_duration_seconds</code></td>
+<td>Durée par écriture de lot</td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td>Enregistrements/fragments par lot</td>
+</tr>
+<tr>
+<td><code>batches</code></td>
+<td>Nombre total de lots traités</td>
+</tr>
+<tr>
+<td><code>batch_write_retries</code></td>
+<td>Nombre de réessais</td>
+</tr>
+</tbody>
+</table>
+<h2 id="exemples-pratiques">Exemples pratiques<a class="headerlink" href="#exemples-pratiques" title="Permanent link">&para;</a></h2>
+<h3 id="grand-ddi-codebook-10k-variables">Grand DDI Codebook (10K+ variables)<a class="headerlink" href="#grand-ddi-codebook-10k-variables" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_NEO4J_URI</span><span class="o">=</span>bolt://cluster:7687
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_MAX_CONNECTION_POOL_SIZE</span><span class="o">=</span><span class="m">20</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">1000</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_QUEUE_MAXSIZE</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITER_CONCURRENCY</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_TRANSACTION_TIMEOUT</span><span class="o">=</span><span class="m">60</span>
+ddigraph<span class="w"> </span>bootstrap
+ddigraph<span class="w"> </span>load<span class="w"> </span>large_codebook.xml<span class="w"> </span>--dataset-id<span class="w"> </span>survey2024<span class="w"> </span>--batch-metrics
+</code></pre></div>
+<h3 id="grand-ddi-l-fragmentinstance-5k-fragments">Grand DDI-L FragmentInstance (5K+ fragments)<a class="headerlink" href="#grand-ddi-l-fragmentinstance-5k-fragments" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_NEO4J_URI</span><span class="o">=</span>bolt://cluster:7687
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">500</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_TRANSACTION_TIMEOUT</span><span class="o">=</span><span class="m">60</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_ATTEMPTS</span><span class="o">=</span><span class="m">5</span>
+ddigraph<span class="w"> </span>bootstrap
+ddigraph<span class="w"> </span>load<span class="w"> </span>large_questionnaire.xml<span class="w"> </span>--batch-metrics<span class="w"> </span>--json
+</code></pre></div>
+<h3 id="instance-cloud-auradb">Instance cloud AuraDB<a class="headerlink" href="#instance-cloud-auradb" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_NEO4J_URI</span><span class="o">=</span>neo4j+s://xxxx.databases.neo4j.io
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_ENCRYPTED</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CONNECTION_TIMEOUT</span><span class="o">=</span><span class="m">10</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">200</span><span class="w">  </span><span class="c1"># Lots plus petits pour la latence cloud</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_ATTEMPTS</span><span class="o">=</span><span class="m">5</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITE_RETRY_BASE_DELAY</span><span class="o">=</span><span class="m">2</span>.0
+ddigraph<span class="w"> </span>bootstrap
+ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+</code></pre></div>
+<h3 id="environnement-a-memoire-limitee">Environnement à mémoire limitée<a class="headerlink" href="#environnement-a-memoire-limitee" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_CHUNK_SIZE</span><span class="o">=</span><span class="m">50</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_QUEUE_MAXSIZE</span><span class="o">=</span><span class="m">1</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DDIGRAPH_WRITER_CONCURRENCY</span><span class="o">=</span><span class="m">1</span>
+ddigraph<span class="w"> </span>load<span class="w"> </span>file.xml<span class="w"> </span>--dataset-id<span class="w"> </span>demo
+</code></pre></div>
+<h2 id="comparaison-des-performances">Comparaison des performances<a class="headerlink" href="#comparaison-des-performances" title="Permanent link">&para;</a></h2>
+<h3 id="performances-ddi-l-fragmentinstance">Performances DDI-L FragmentInstance<a class="headerlink" href="#performances-ddi-l-fragmentinstance" title="Permanent link">&para;</a></h3>
+<p>Pour <code>Ireland_LabourSurvey.xml</code> (148K lignes, 2 762 fragments) :</p>
+<table>
+<thead>
+<tr>
+<th>Métrique</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requêtes Neo4j</td>
+<td>~30</td>
+</tr>
+<tr>
+<td>Profil mémoire</td>
+<td>O(chunk_size)</td>
+</tr>
+<tr>
+<td>Opérations async</td>
+<td>Toutes les écritures</td>
+</tr>
+<tr>
+<td>Requêtes par fragment</td>
+<td>~0.01</td>
+</tr>
+</tbody>
+</table>
+<p>Le faible nombre de requêtes provient du regroupement UNWIND par type de fragment.</p>
+<h2 id="depannage">Dépannage<a class="headerlink" href="#depannage" title="Permanent link">&para;</a></h2>
+<h3 id="ingestion-lente">Ingestion lente<a class="headerlink" href="#ingestion-lente" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Augmentez <code>chunk_size</code> pour réduire le surcoût transactionnel</li>
+<li>Augmentez <code>writer_concurrency</code> (Codebook) si le pool a de la capacité</li>
+<li>Vérifiez les ressources du serveur Neo4j et les index</li>
+</ol>
+<h3 id="problemes-de-memoire">Problèmes de mémoire<a class="headerlink" href="#problemes-de-memoire" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Diminuez <code>chunk_size</code> pour réduire les données en cours de traitement</li>
+<li>Diminuez <code>queue_maxsize</code> (Codebook) pour limiter la mise en mémoire tampon</li>
+<li>Assurez-vous que l'analyse XML utilise le traitement en flux (<code>iterparse</code>)</li>
+</ol>
+<h3 id="erreurs-de-connexion">Erreurs de connexion<a class="headerlink" href="#erreurs-de-connexion" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Augmentez <code>connection_timeout</code> pour les réseaux lents</li>
+<li>Augmentez <code>write_retry_attempts</code> pour les défaillances transitoires</li>
+<li>Vérifiez les paramètres TLS pour les instances cloud</li>
+</ol>
+<h3 id="delais-de-transaction-depasses">Délais de transaction dépassés<a class="headerlink" href="#delais-de-transaction-depasses" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Diminuez <code>chunk_size</code> pour réduire le travail par transaction</li>
+<li>Augmentez <code>transaction_timeout</code> pour les gros lots</li>
+<li>Vérifiez la configuration du serveur Neo4j</li>
+</ol>
+<p>Voir <a href="../../user-guide/architecture/">Architecture</a> pour le contexte de conception et
+<a href="../../reference/cli/">Référence CLI</a> pour toutes les options.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

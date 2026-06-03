@@ -1,0 +1,2265 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/fr/backends/gremlin/">
+      
+      
+        <link rel="prev" href="../rdf/">
+      
+      
+        <link rel="next" href="../networkx/">
+      
+      
+        
+          <link rel="alternate" href="../../../backends/gremlin/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Gremlin - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gremlin" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gremlin
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../backends/gremlin/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pour commencer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pour commencer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 minutes avec ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vos premières requêtes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comprendre ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Comprendre ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comment ddigraph charge vos données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de données graphe
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de données graphe
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bases-de-donnees-prises-en-charge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bases de données prises en charge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilisation-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation de base
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilisation de base">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connexion-au-serveur-gremlin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connexion au serveur Gremlin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#charger-des-donnees-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Charger des données DDI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple-complet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple complet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requetes-gremlin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes Gremlin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requêtes Gremlin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traversees-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traversées de base
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traversees-de-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traversées de relations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requetes-de-chemins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes de chemins
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-specifique-aux-bases-de-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration spécifique aux bases de données
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration spécifique aux bases de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#janusgraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JanusGraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazon-neptune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon Neptune
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-cosmos-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure Cosmos DB
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chargement-par-lots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chargement par lots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Référence
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossaire
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avancé
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avancé
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation des performances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptateurs personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphe vs Relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préparation pour l'IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interopérabilité des standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Présentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribuer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journal des modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bases-de-donnees-prises-en-charge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bases de données prises en charge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dépendances
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilisation-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation de base
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Utilisation de base">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connexion-au-serveur-gremlin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connexion au serveur Gremlin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#charger-des-donnees-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Charger des données DDI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemple-complet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple complet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requetes-gremlin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes Gremlin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requêtes Gremlin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traversees-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traversées de base
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traversees-de-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traversées de relations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requetes-de-chemins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes de chemins
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-specifique-aux-bases-de-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration spécifique aux bases de données
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration spécifique aux bases de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#janusgraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JanusGraph
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amazon-neptune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Amazon Neptune
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-cosmos-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure Cosmos DB
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chargement-par-lots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chargement par lots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voir-aussi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voir aussi
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="gremlin">Gremlin<a class="headerlink" href="#gremlin" title="Permanent link">&para;</a></h1>
+<p>ddigraph prend en charge les bases de données graphe compatibles Gremlin via le framework Apache TinkerPop.</p>
+<h2 id="bases-de-donnees-prises-en-charge">Bases de données prises en charge<a class="headerlink" href="#bases-de-donnees-prises-en-charge" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Base de données</th>
+<th>Connexion</th>
+<th>Cas d'utilisation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apache TinkerGraph</strong></td>
+<td>En mémoire</td>
+<td>Tests locaux, développement</td>
+</tr>
+<tr>
+<td><strong>JanusGraph</strong></td>
+<td>WebSocket/HTTP</td>
+<td>Production, distribué</td>
+</tr>
+<tr>
+<td><strong>Amazon Neptune</strong></td>
+<td>WebSocket</td>
+<td>Cloud AWS, service géré</td>
+</tr>
+<tr>
+<td><strong>Azure Cosmos DB</strong></td>
+<td>WebSocket</td>
+<td>Cloud Azure, API Gremlin</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dependances">Dépendances<a class="headerlink" href="#dependances" title="Permanent link">&para;</a></h2>
+<p>GremlinPython est inclus avec ddigraph :</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>ddigraph<span class="w">  </span><span class="c1"># inclut gremlinpython</span>
+</code></pre></div>
+<h2 id="utilisation-de-base">Utilisation de base<a class="headerlink" href="#utilisation-de-base" title="Permanent link">&para;</a></h2>
+<h3 id="connexion-au-serveur-gremlin">Connexion au serveur Gremlin<a class="headerlink" href="#connexion-au-serveur-gremlin" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.process.anonymous_traversal</span><span class="w"> </span><span class="kn">import</span> <span class="n">traversal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.driver.driver_remote_connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DriverRemoteConnection</span>
+
+<span class="c1"># Serveur TinkerPop local</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">DriverRemoteConnection</span><span class="p">(</span><span class="s1">&#39;ws://localhost:8182/gremlin&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">traversal</span><span class="p">()</span><span class="o">.</span><span class="n">withRemote</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+
+<span class="c1"># AWS Neptune</span>
+<span class="c1"># connection = DriverRemoteConnection(</span>
+<span class="c1">#     &#39;wss://your-neptune-endpoint:8182/gremlin&#39;,</span>
+<span class="c1">#     &#39;g&#39;</span>
+<span class="c1"># )</span>
+</code></pre></div>
+<h3 id="charger-des-donnees-ddi">Charger des données DDI<a class="headerlink" href="#charger-des-donnees-ddi" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDIFragmentParser</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">DDIFragmentParser</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;survey.xml&quot;</span><span class="p">):</span>
+    <span class="c1"># Créer un sommet</span>
+    <span class="n">vertex</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">addV</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">label</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;urn&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">urn</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
+    <span class="c1"># Stocker pour la création des arêtes</span>
+    <span class="n">vertices</span><span class="p">[</span><span class="n">fragment</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertex</span>
+
+<span class="c1"># Créer les arêtes (seconde passe)</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">DDIFragmentParser</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;survey.xml&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">rel_type</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">references</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ref</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">vertices</span><span class="p">[</span><span class="n">fragment</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">])</span> \
+                <span class="o">.</span><span class="n">addE</span><span class="p">(</span><span class="n">rel_type</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">vertices</span><span class="p">[</span><span class="n">ref</span><span class="o">.</span><span class="n">id</span><span class="p">])</span> \
+                <span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+
+<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="exemple-complet">Exemple complet<a class="headerlink" href="#exemple-complet" title="Permanent link">&para;</a></h2>
+<p>Consultez <code>demo/load_gremlin.py</code> pour un exemple complet :</p>
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Load DDI into Gremlin-compatible graph database.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.process.anonymous_traversal</span><span class="w"> </span><span class="kn">import</span> <span class="n">traversal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.driver.driver_remote_connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">DriverRemoteConnection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.process.graph_traversal</span><span class="w"> </span><span class="kn">import</span> <span class="n">__</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.ingest.fragment_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDIFragmentParser</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_ddi_to_gremlin</span><span class="p">(</span><span class="n">ddi_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">gremlin_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;ws://localhost:8182/gremlin&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse DDI-L file and load into Gremlin database.&quot;&quot;&quot;</span>
+
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">DriverRemoteConnection</span><span class="p">(</span><span class="n">gremlin_endpoint</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">traversal</span><span class="p">()</span><span class="o">.</span><span class="n">withRemote</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Clear existing data (optional)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">V</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span><span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">DDIFragmentParser</span><span class="p">()</span>
+        <span class="n">fragment_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="c1"># First pass: create all vertices</span>
+        <span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ddi_path</span><span class="p">):</span>
+            <span class="n">props</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+            <span class="n">vertex</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">addV</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span>
+            <span class="n">vertex</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;fragment_id&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">label</span><span class="p">:</span>
+                <span class="n">vertex</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">urn</span><span class="p">:</span>
+                <span class="n">vertex</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;urn&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">urn</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">agency</span><span class="p">:</span>
+                <span class="n">vertex</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;agency&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">agency</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+                <span class="n">vertex</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+
+            <span class="c1"># Add type-specific properties</span>
+            <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">element_type</span> <span class="o">==</span> <span class="s2">&quot;QuestionItem&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;question_text&quot;</span><span class="p">):</span>
+                    <span class="n">vertex</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;question_text&#39;</span><span class="p">,</span> <span class="n">props</span><span class="p">[</span><span class="s2">&quot;question_text&quot;</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">fragment</span><span class="o">.</span><span class="n">element_type</span> <span class="o">==</span> <span class="s2">&quot;Category&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">props</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category_label&quot;</span><span class="p">):</span>
+                    <span class="n">vertex</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;category_label&#39;</span><span class="p">,</span> <span class="n">props</span><span class="p">[</span><span class="s2">&quot;category_label&quot;</span><span class="p">])</span>
+
+            <span class="n">vertex</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="n">fragment_ids</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fragment_ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> vertices&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Second pass: create edges</span>
+        <span class="n">edge_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">DDIFragmentParser</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ddi_path</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">rel_type</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">references</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ref</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">fragment_ids</span><span class="p">:</span>
+                    <span class="n">g</span><span class="o">.</span><span class="n">V</span><span class="p">()</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;fragment_id&#39;</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">)</span> \
+                        <span class="o">.</span><span class="n">addE</span><span class="p">(</span><span class="n">rel_type</span><span class="p">)</span> \
+                        <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">__</span><span class="o">.</span><span class="n">V</span><span class="p">()</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s1">&#39;fragment_id&#39;</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">id</span><span class="p">))</span> \
+                        <span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+                    <span class="n">edge_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created </span><span class="si">{</span><span class="n">edge_count</span><span class="si">}</span><span class="s2"> edges&quot;</span><span class="p">)</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">query_examples</span><span class="p">(</span><span class="n">gremlin_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;ws://localhost:8182/gremlin&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Example Gremlin queries.&quot;&quot;&quot;</span>
+
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">DriverRemoteConnection</span><span class="p">(</span><span class="n">gremlin_endpoint</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">traversal</span><span class="p">()</span><span class="o">.</span><span class="n">withRemote</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Count vertices by type</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">V</span><span class="p">()</span><span class="o">.</span><span class="n">groupCount</span><span class="p">()</span><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="n">__</span><span class="o">.</span><span class="n">label</span><span class="p">())</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Vertex counts by type:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Find all questions</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">V</span><span class="p">()</span><span class="o">.</span><span class="n">hasLabel</span><span class="p">(</span><span class="s1">&#39;QuestionItem&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">valueMap</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">toList</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span><span class="si">}</span><span class="s2"> questions&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Traverse from instrument to questions</span>
+        <span class="n">paths</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">V</span><span class="p">()</span><span class="o">.</span><span class="n">hasLabel</span><span class="p">(</span><span class="s1">&#39;Instrument&#39;</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">__</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="s1">&#39;HAS_CONSTRUCT&#39;</span><span class="p">))</span> \
+            <span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">__</span><span class="o">.</span><span class="n">hasLabel</span><span class="p">(</span><span class="s1">&#39;QuestionConstruct&#39;</span><span class="p">))</span> \
+            <span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="s1">&#39;ASKS_QUESTION&#39;</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">path</span><span class="p">()</span> \
+            <span class="o">.</span><span class="n">toList</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span><span class="si">}</span><span class="s2"> paths from Instrument to Question&quot;</span><span class="p">)</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">load_ddi_to_gremlin</span><span class="p">(</span><span class="s2">&quot;data/Ireland_LabourSurvey.xml&quot;</span><span class="p">)</span>
+    <span class="n">query_examples</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="requetes-gremlin">Requêtes Gremlin<a class="headerlink" href="#requetes-gremlin" title="Permanent link">&para;</a></h2>
+<h3 id="traversees-de-base">Traversées de base<a class="headerlink" href="#traversees-de-base" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Compter les sommets par libellé</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">groupCount</span><span class="o">().</span><span class="na">by</span><span class="o">(</span><span class="n">label</span><span class="o">)</span>
+
+<span class="c1">// Trouver tous les QuestionItems</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">hasLabel</span><span class="o">(</span><span class="s1">&#39;QuestionItem&#39;</span><span class="o">).</span><span class="na">valueMap</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+
+<span class="c1">// Obtenir un fragment spécifique par ID</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">has</span><span class="o">(</span><span class="s1">&#39;fragment_id&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;abc-123&#39;</span><span class="o">).</span><span class="na">valueMap</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</code></pre></div>
+<h3 id="traversees-de-relations">Traversées de relations<a class="headerlink" href="#traversees-de-relations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// De l&#39;Instrument à tous les constructs</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">hasLabel</span><span class="o">(</span><span class="s1">&#39;Instrument&#39;</span><span class="o">).</span><span class="na">out</span><span class="o">(</span><span class="s1">&#39;HAS_CONSTRUCT&#39;</span><span class="o">).</span><span class="na">valueMap</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+
+<span class="c1">// Questions avec leurs listes de codes</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">hasLabel</span><span class="o">(</span><span class="s1">&#39;QuestionItem&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">as</span><span class="o">(</span><span class="s1">&#39;q&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">out</span><span class="o">(</span><span class="s1">&#39;USES_CODELIST&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">as</span><span class="o">(</span><span class="s1">&#39;cl&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s1">&#39;q&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;cl&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">by</span><span class="o">(</span><span class="n">valueMap</span><span class="o">(</span><span class="s1">&#39;label&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;question_text&#39;</span><span class="o">))</span>
+<span class="w">    </span><span class="o">.</span><span class="na">by</span><span class="o">(</span><span class="n">valueMap</span><span class="o">(</span><span class="s1">&#39;label&#39;</span><span class="o">))</span>
+
+<span class="c1">// Catégories dans une liste de codes</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">has</span><span class="o">(</span><span class="s1">&#39;fragment_id&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;codelist-123&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">out</span><span class="o">(</span><span class="s1">&#39;HAS_CATEGORY&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">valueMap</span><span class="o">(</span><span class="s1">&#39;category_label&#39;</span><span class="o">)</span>
+</code></pre></div>
+<h3 id="requetes-de-chemins">Requêtes de chemins<a class="headerlink" href="#requetes-de-chemins" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Chemin complet de l&#39;Instrument aux Questions</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">hasLabel</span><span class="o">(</span><span class="s1">&#39;Instrument&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">repeat</span><span class="o">(</span><span class="n">out</span><span class="o">(</span><span class="s1">&#39;HAS_CONSTRUCT&#39;</span><span class="o">))</span>
+<span class="w">    </span><span class="o">.</span><span class="na">until</span><span class="o">(</span><span class="n">hasLabel</span><span class="o">(</span><span class="s1">&#39;QuestionConstruct&#39;</span><span class="o">))</span>
+<span class="w">    </span><span class="o">.</span><span class="na">out</span><span class="o">(</span><span class="s1">&#39;ASKS_QUESTION&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">path</span><span class="o">()</span>
+<span class="w">    </span><span class="o">.</span><span class="na">by</span><span class="o">(</span><span class="s1">&#39;label&#39;</span><span class="o">)</span>
+
+<span class="c1">// Branchements conditionnels</span>
+<span class="n">g</span><span class="o">.</span><span class="na">V</span><span class="o">().</span><span class="na">hasLabel</span><span class="o">(</span><span class="s1">&#39;IfThenElse&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">project</span><span class="o">(</span><span class="s1">&#39;condition&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;then&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;else&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">by</span><span class="o">(</span><span class="s1">&#39;condition&#39;</span><span class="o">)</span>
+<span class="w">    </span><span class="o">.</span><span class="na">by</span><span class="o">(</span><span class="n">out</span><span class="o">(</span><span class="s1">&#39;THEN&#39;</span><span class="o">).</span><span class="na">values</span><span class="o">(</span><span class="s1">&#39;label&#39;</span><span class="o">))</span>
+<span class="w">    </span><span class="o">.</span><span class="na">by</span><span class="o">(</span><span class="n">out</span><span class="o">(</span><span class="s1">&#39;ELSE&#39;</span><span class="o">).</span><span class="na">values</span><span class="o">(</span><span class="s1">&#39;label&#39;</span><span class="o">))</span>
+</code></pre></div>
+<h2 id="configuration-specifique-aux-bases-de-donnees">Configuration spécifique aux bases de données<a class="headerlink" href="#configuration-specifique-aux-bases-de-donnees" title="Permanent link">&para;</a></h2>
+<h3 id="janusgraph">JanusGraph<a class="headerlink" href="#janusgraph" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.driver.serializer</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphSONSerializersV3d0</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">DriverRemoteConnection</span><span class="p">(</span>
+    <span class="s1">&#39;ws://localhost:8182/gremlin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;g&#39;</span><span class="p">,</span>
+    <span class="n">message_serializer</span><span class="o">=</span><span class="n">GraphSONSerializersV3d0</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="amazon-neptune">Amazon Neptune<a class="headerlink" href="#amazon-neptune" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.driver</span><span class="w"> </span><span class="kn">import</span> <span class="n">client</span>
+
+<span class="c1"># Authentification IAM</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">botocore.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">SigV4Auth</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">botocore.awsrequest</span><span class="w"> </span><span class="kn">import</span> <span class="n">AWSRequest</span>
+
+<span class="c1"># Connexion WebSocket avec SigV4</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">DriverRemoteConnection</span><span class="p">(</span>
+    <span class="s1">&#39;wss://your-cluster.region.neptune.amazonaws.com:8182/gremlin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;g&#39;</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="azure-cosmos-db">Azure Cosmos DB<a class="headerlink" href="#azure-cosmos-db" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">gremlin_python.driver</span><span class="w"> </span><span class="kn">import</span> <span class="n">client</span><span class="p">,</span> <span class="n">serializer</span>
+
+<span class="c1"># Cosmos DB nécessite un sérialiseur spécifique</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">DriverRemoteConnection</span><span class="p">(</span>
+    <span class="s1">&#39;wss://your-account.gremlin.cosmos.azure.com:443/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;g&#39;</span><span class="p">,</span>
+    <span class="n">username</span><span class="o">=</span><span class="s2">&quot;/dbs/your-database/colls/your-graph&quot;</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="s2">&quot;your-primary-key&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="chargement-par-lots">Chargement par lots<a class="headerlink" href="#chargement-par-lots" title="Permanent link">&para;</a></h2>
+<p>Pour les fichiers DDI volumineux, utilisez des écritures par lots :</p>
+<div class="highlight"><pre><span></span><code><span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">vertices_batch</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">DDIFragmentParser</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;large_survey.xml&quot;</span><span class="p">)):</span>
+    <span class="n">vertices_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices_batch</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">BATCH_SIZE</span><span class="p">:</span>
+        <span class="c1"># Soumettre le lot</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vertices_batch</span><span class="p">:</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">addV</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;fragment_id&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+        <span class="n">vertices_batch</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processed </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> vertices&quot;</span><span class="p">)</span>
+
+<span class="c1"># Dernier lot</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">vertices_batch</span><span class="p">:</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">addV</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">element_type</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;fragment_id&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">fragment_id</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">iterate</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="voir-aussi">Voir aussi<a class="headerlink" href="#voir-aussi" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../user-guide/adapter/">Architecture des adaptateurs</a> - Construction d'adaptateurs personnalisés</li>
+<li><a href="../../user-guide/relationships/">Modèle de relations</a> - Types de relations DDI</li>
+<li><a href="https://tinkerpop.apache.org/docs/current/">Documentation Apache TinkerPop</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

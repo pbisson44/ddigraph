@@ -1,0 +1,3069 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/fr/user-guide/relationships/">
+      
+      
+        <link rel="prev" href="../architecture/">
+      
+      
+        <link rel="next" href="../fragments/">
+      
+      
+        
+          <link rel="alternate" href="../../../user-guide/relationships/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Modèle relationnel - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#modele-relationnel-et-champs-de-reference" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Modèle relationnel
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../user-guide/relationships/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pour commencer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pour commencer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 minutes avec ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vos premières requêtes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comprendre ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Comprendre ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comment ddigraph charge vos données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle relationnel
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#relations-ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI Codebook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relations DDI Codebook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relations-au-niveau-du-jeu-de-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations au niveau du jeu de données
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-inter-entites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations inter-entités
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-ddi-c-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI-C 2.6
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relations-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relations DDI-L FragmentInstance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-flux-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de flux de contrôle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-codecategorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations code/catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-mesure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de mesure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-dinstructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations d'instructions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-flux-de-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de flux de paramètres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autres-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autres relations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-dappartenance-aux-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations d'appartenance aux schémas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comportement-par-defaut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comportement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acces-aux-definitions-du-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accès aux définitions du schéma
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-pratiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples pratiques
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples pratiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enquete-irlandaise-sur-lemploi-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enquête irlandaise sur l'emploi (DDI-L FragmentInstance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interrogation-des-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrogation des relations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interrogation des relations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requetes-ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes DDI Codebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requetes-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistiques-sur-les-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statistiques sur les relations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relations-ddi-cdi-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI-CDI 1.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relations DDI-CDI 1.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requetes-cdi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes CDI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de données graphe
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de données graphe
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Référence
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossaire
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avancé
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avancé
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation des performances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptateurs personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphe vs Relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préparation pour l'IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interopérabilité des standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Présentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribuer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journal des modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#relations-ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI Codebook
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relations DDI Codebook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relations-au-niveau-du-jeu-de-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations au niveau du jeu de données
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-inter-entites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations inter-entités
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-ddi-c-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI-C 2.6
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relations-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relations DDI-L FragmentInstance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-flux-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de flux de contrôle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-codecategorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations code/catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-mesure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de mesure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-dinstructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations d'instructions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-de-flux-de-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations de flux de paramètres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autres-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autres relations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relations-dappartenance-aux-schemas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations d'appartenance aux schémas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comportement-par-defaut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comportement par défaut
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acces-aux-definitions-du-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accès aux définitions du schéma
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-pratiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples pratiques
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples pratiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enquete-irlandaise-sur-lemploi-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enquête irlandaise sur l'emploi (DDI-L FragmentInstance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interrogation-des-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrogation des relations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interrogation des relations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requetes-ddi-codebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes DDI Codebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requetes-ddi-l-fragmentinstance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes DDI-L FragmentInstance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistiques-sur-les-relations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Statistiques sur les relations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relations-ddi-cdi-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relations DDI-CDI 1.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Relations DDI-CDI 1.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requetes-cdi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requêtes CDI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="modele-relationnel-et-champs-de-reference">Modèle relationnel et champs de référence<a class="headerlink" href="#modele-relationnel-et-champs-de-reference" title="Permanent link">&para;</a></h1>
+<p>ddigraph crée des relations dans Neo4j en se basant sur la structure XML DDI. Les types de
+relations diffèrent entre les formats DDI Codebook et DDI-L FragmentInstance.</p>
+<h2 id="relations-ddi-codebook">Relations DDI Codebook<a class="headerlink" href="#relations-ddi-codebook" title="Permanent link">&para;</a></h2>
+<p>Le chargeur Codebook dérive les types de relations à partir de <code>DDI_RELATIONSHIPS</code> défini dans
+<code>ddigraph.schema.ddi_graph</code>. Chaque entrée capture :</p>
+<ul>
+<li><strong>Type de relation</strong> : label de la relation Neo4j</li>
+<li><strong>Labels début/fin</strong> : labels des nœuds du graphe</li>
+<li><strong>Champ de référence</strong> : propriété utilisée pour les recherches</li>
+<li><strong>Champ de recherche</strong> : valeur de référence intégrée optionnelle</li>
+</ul>
+<h3 id="relations-au-niveau-du-jeu-de-donnees">Relations au niveau du jeu de données<a class="headerlink" href="#relations-au-niveau-du-jeu-de-donnees" title="Permanent link">&para;</a></h3>
+<p>La plupart des entités sont rattachées à un Dataset via <code>IN_DATASET</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>Label de départ</th>
+<th>Label d'arrivée</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>Divers</td>
+<td>Dataset</td>
+<td>L'entité appartient au jeu de données</td>
+</tr>
+<tr>
+<td><code>DESCRIBES</code></td>
+<td>Study</td>
+<td>Dataset</td>
+<td>L'étude décrit le jeu de données</td>
+</tr>
+<tr>
+<td><code>DESCRIBES</code></td>
+<td>Citation</td>
+<td>Dataset</td>
+<td>La citation décrit le jeu de données</td>
+</tr>
+<tr>
+<td><code>ASSOCIATED_WITH</code></td>
+<td>Organization</td>
+<td>Dataset</td>
+<td>Organisation associée</td>
+</tr>
+<tr>
+<td><code>COVERS</code></td>
+<td>Coverage</td>
+<td>Dataset</td>
+<td>Couverture géographique/temporelle</td>
+</tr>
+<tr>
+<td><code>FUNDS</code></td>
+<td>Funding</td>
+<td>Dataset</td>
+<td>Source de financement</td>
+</tr>
+<tr>
+<td><code>CONTRIBUTES_TO</code></td>
+<td>Contributor</td>
+<td>Dataset</td>
+<td>Rôle de contributeur</td>
+</tr>
+<tr>
+<td><code>INSTRUMENT_FOR</code></td>
+<td>CollectionInstrument</td>
+<td>Dataset</td>
+<td>Instrument de collecte</td>
+</tr>
+<tr>
+<td><code>USES_CONSTRUCT</code></td>
+<td>ControlConstruct</td>
+<td>Dataset</td>
+<td>Utilisation de construit de contrôle</td>
+</tr>
+<tr>
+<td><code>REPRESENTS</code></td>
+<td>RepresentedVariable</td>
+<td>Dataset</td>
+<td>Représentation de variable</td>
+</tr>
+<tr>
+<td><code>HAS_COMPARISON</code></td>
+<td>Comparison</td>
+<td>Dataset</td>
+<td>Information de comparaison</td>
+</tr>
+<tr>
+<td><code>GOVERNED_BY</code></td>
+<td>AccessPolicy</td>
+<td>Dataset</td>
+<td>Politique d'accès</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-inter-entites">Relations inter-entités<a class="headerlink" href="#relations-inter-entites" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>Label de départ</th>
+<th>Label d'arrivée</th>
+<th>Champ de recherche</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IN_SCHEME</code></td>
+<td>Category</td>
+<td>CodeScheme</td>
+<td><code>code_scheme_id</code></td>
+</tr>
+<tr>
+<td><code>USES_CONCEPT</code></td>
+<td>Variable</td>
+<td>Concept</td>
+<td><code>concept</code></td>
+</tr>
+<tr>
+<td><code>IN_FILE</code></td>
+<td>Variable</td>
+<td>DataFile</td>
+<td><code>file_id</code></td>
+</tr>
+<tr>
+<td><code>IN_UNIVERSE</code></td>
+<td>Variable</td>
+<td>Universe</td>
+<td><code>universe_id</code></td>
+</tr>
+<tr>
+<td><code>ASKED_AS</code></td>
+<td>Variable</td>
+<td>Question</td>
+<td><code>question_id</code></td>
+</tr>
+<tr>
+<td><code>USES_CATEGORY</code></td>
+<td>Variable</td>
+<td>Category</td>
+<td><code>category_ids</code></td>
+</tr>
+<tr>
+<td><code>USES_QUESTION_ITEM</code></td>
+<td>Variable</td>
+<td>QuestionItem</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>PART_OF</code></td>
+<td>QuestionItem</td>
+<td>Question</td>
+<td><code>parent_question_id</code></td>
+</tr>
+<tr>
+<td><code>IN_GRID</code></td>
+<td>QuestionItem</td>
+<td>QuestionGrid</td>
+<td><code>parent_grid_id</code></td>
+</tr>
+<tr>
+<td><code>IN_FLOW</code></td>
+<td>QuestionItem</td>
+<td>QuestionFlow</td>
+<td><code>parent_flow_id</code></td>
+</tr>
+<tr>
+<td><code>GROUPS</code></td>
+<td>VarGroup</td>
+<td>Variable</td>
+<td><code>variable_ids</code></td>
+</tr>
+<tr>
+<td><code>GROUPS</code></td>
+<td>CategoryGroup</td>
+<td>Category</td>
+<td><code>category_ids</code></td>
+</tr>
+<tr>
+<td><code>USES_CONSTRUCT</code></td>
+<td>CollectionInstrument</td>
+<td>ControlConstruct</td>
+<td><code>referenced_construct_id</code></td>
+</tr>
+<tr>
+<td><code>USES_CONCEPT</code></td>
+<td>RepresentedVariable</td>
+<td>Concept</td>
+<td><code>concept</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-ddi-c-26">Relations DDI-C 2.6<a class="headerlink" href="#relations-ddi-c-26" title="Permanent link">&para;</a></h3>
+<p>DDI Codebook 2.6 introduit des types d'entités supplémentaires avec de nouvelles relations :</p>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>Label de départ</th>
+<th>Label d'arrivée</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>NCube</td>
+<td>Dataset</td>
+<td>Cube de données N-dimensionnel dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>NCubeGroup</td>
+<td>Dataset</td>
+<td>Groupe de nCubes dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>DocumentDescription</td>
+<td>Dataset</td>
+<td>Description de document dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>SampleFrame</td>
+<td>Dataset</td>
+<td>Cadre d'échantillonnage dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>QualityStatement</td>
+<td>Dataset</td>
+<td>Déclaration de qualité dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>StudyAuthorization</td>
+<td>Dataset</td>
+<td>Autorisation d'étude dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>StudyDevelopment</td>
+<td>Dataset</td>
+<td>Développement d'étude dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>IN_DATASET</code></td>
+<td>ExPostEvaluation</td>
+<td>Dataset</td>
+<td>Évaluation ex-post dans le jeu de données</td>
+</tr>
+<tr>
+<td><code>GROUPS</code></td>
+<td>NCubeGroup</td>
+<td>NCube</td>
+<td>NCubeGroup regroupe les entités NCube</td>
+</tr>
+</tbody>
+</table>
+<h2 id="relations-ddi-l-fragmentinstance">Relations DDI-L FragmentInstance<a class="headerlink" href="#relations-ddi-l-fragmentinstance" title="Permanent link">&para;</a></h2>
+<p>Le chargeur FragmentInstance dérive les relations à partir des éléments <code>*Reference</code> du XML.
+La correspondance est définie dans <code>DDISchema.FRAGMENT_RELATIONSHIP_TYPES</code> :</p>
+<h3 id="relations-de-flux-de-controle">Relations de flux de contrôle<a class="headerlink" href="#relations-de-flux-de-controle" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ControlConstructReference</code></td>
+<td><code>HAS_CONSTRUCT</code></td>
+<td>La séquence/l'instrument contient un construit</td>
+</tr>
+<tr>
+<td><code>ThenConstructReference</code></td>
+<td><code>THEN</code></td>
+<td>Branche vraie de IfThenElse</td>
+</tr>
+<tr>
+<td><code>ElseConstructReference</code></td>
+<td><code>ELSE</code></td>
+<td>Branche fausse de IfThenElse</td>
+</tr>
+<tr>
+<td><code>ElseIf/ThenConstructReference</code></td>
+<td><code>ELSE_IF</code></td>
+<td>Branche sinon-si de IfThenElse</td>
+</tr>
+<tr>
+<td><code>UntilConstructReference</code></td>
+<td><code>UNTIL</code></td>
+<td>Corps de la boucle RepeatUntil</td>
+</tr>
+<tr>
+<td><code>WhileConstructReference</code></td>
+<td><code>WHILE</code></td>
+<td>Corps de la boucle RepeatWhile</td>
+</tr>
+<tr>
+<td><code>LoopVariableReference</code></td>
+<td><code>LOOP_VARIABLE</code></td>
+<td>Variable d'itération de boucle</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-codecategorie">Relations code/catégorie<a class="headerlink" href="#relations-codecategorie" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodeListReference</code></td>
+<td><code>USES_CODELIST</code></td>
+<td>La question utilise une liste de codes</td>
+</tr>
+<tr>
+<td><code>CategoryReference</code></td>
+<td><code>HAS_CATEGORY</code></td>
+<td>La CodeList contient une catégorie</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-de-questions">Relations de questions<a class="headerlink" href="#relations-de-questions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>QuestionReference</code></td>
+<td><code>ASKS_QUESTION</code></td>
+<td>Le construit pose une question</td>
+</tr>
+<tr>
+<td><code>QuestionItemReference</code></td>
+<td><code>ASKS_QUESTION</code></td>
+<td>Référence à un item de question</td>
+</tr>
+<tr>
+<td><code>QuestionGridReference</code></td>
+<td><code>ASKS_QUESTION</code></td>
+<td>Référence à une grille de questions</td>
+</tr>
+<tr>
+<td><code>QuestionBlockReference</code></td>
+<td><code>ASKS_QUESTION</code></td>
+<td>Référence à un bloc de questions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-de-mesure">Relations de mesure<a class="headerlink" href="#relations-de-mesure" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MeasurementReference</code></td>
+<td><code>USES_MEASUREMENT</code></td>
+<td>Le construit utilise une mesure</td>
+</tr>
+<tr>
+<td><code>MeasurementItemReference</code></td>
+<td><code>USES_MEASUREMENT</code></td>
+<td>Référence à un item de mesure</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-dinstructions">Relations d'instructions<a class="headerlink" href="#relations-dinstructions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>InterviewerInstructionReference</code></td>
+<td><code>HAS_INSTRUCTION</code></td>
+<td>Instruction pour l'enquêteur</td>
+</tr>
+<tr>
+<td><code>InstructionReference</code></td>
+<td><code>HAS_INSTRUCTION</code></td>
+<td>Instruction générale</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-de-variables">Relations de variables<a class="headerlink" href="#relations-de-variables" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VariableReference</code></td>
+<td><code>REFERENCES_VARIABLE</code></td>
+<td>Référence de variable</td>
+</tr>
+<tr>
+<td><code>RepresentedVariableReference</code></td>
+<td><code>USES_REPRESENTED_VARIABLE</code></td>
+<td>Variable représentée</td>
+</tr>
+<tr>
+<td><code>AssignedVariableReference</code></td>
+<td><code>ASSIGNS_VARIABLE</code></td>
+<td>Affectation de variable</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-de-flux-de-parametres">Relations de flux de paramètres<a class="headerlink" href="#relations-de-flux-de-parametres" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SourceParameterReference</code></td>
+<td><code>SOURCE_PARAM</code></td>
+<td>Source des données du paramètre</td>
+</tr>
+<tr>
+<td><code>TargetParameterReference</code></td>
+<td><code>TARGET_PARAM</code></td>
+<td>Cible des données du paramètre</td>
+</tr>
+<tr>
+<td><code>InParameterReference</code></td>
+<td><code>IN_PARAM</code></td>
+<td>Paramètre d'entrée</td>
+</tr>
+<tr>
+<td><code>OutParameterReference</code></td>
+<td><code>OUT_PARAM</code></td>
+<td>Paramètre de sortie</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autres-relations">Autres relations<a class="headerlink" href="#autres-relations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BasedOnReference</code></td>
+<td><code>BASED_ON</code></td>
+<td>Source de dérivation</td>
+</tr>
+<tr>
+<td><code>UniverseReference</code></td>
+<td><code>IN_UNIVERSE</code></td>
+<td>Référence de population</td>
+</tr>
+<tr>
+<td><code>ConceptReference</code></td>
+<td><code>USES_CONCEPT</code></td>
+<td>Référence de concept</td>
+</tr>
+<tr>
+<td><code>InstrumentReference</code></td>
+<td><code>USES_INSTRUMENT</code></td>
+<td>Référence d'instrument</td>
+</tr>
+<tr>
+<td><code>ValueDomainReference</code></td>
+<td><code>HAS_VALUE_DOMAIN</code></td>
+<td>Domaine de valeurs</td>
+</tr>
+<tr>
+<td><code>ManagedRepresentationReference</code></td>
+<td><code>HAS_REPRESENTATION</code></td>
+<td>Représentation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relations-dappartenance-aux-schemas">Relations d'appartenance aux schémas<a class="headerlink" href="#relations-dappartenance-aux-schemas" title="Permanent link">&para;</a></h3>
+<p>Ces relations rattachent chaque objet DDI au schéma qui le contient, facilitant les requêtes
+sur l'ensemble des membres d'un schéma.</p>
+<table>
+<thead>
+<tr>
+<th>Élément de référence</th>
+<th>Relation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>QuestionSchemeReference</code></td>
+<td><code>IN_QUESTION_SCHEME</code></td>
+<td>La question appartient à un schéma de questions</td>
+</tr>
+<tr>
+<td><code>ControlConstructSchemeReference</code></td>
+<td><code>IN_CONTROL_CONSTRUCT_SCHEME</code></td>
+<td>Le construit appartient à un schéma de construits</td>
+</tr>
+<tr>
+<td><code>InstrumentSchemeReference</code></td>
+<td><code>IN_INSTRUMENT_SCHEME</code></td>
+<td>L'instrument appartient à un schéma d'instruments</td>
+</tr>
+<tr>
+<td><code>InterviewerInstructionSchemeReference</code></td>
+<td><code>IN_INSTRUCTION_SCHEME</code></td>
+<td>L'instruction appartient à un schéma d'instructions</td>
+</tr>
+<tr>
+<td><code>ProcessingEventSchemeReference</code></td>
+<td><code>IN_PROCESSING_EVENT_SCHEME</code></td>
+<td>L'événement de traitement appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>ProcessingInstructionSchemeReference</code></td>
+<td><code>IN_PROCESSING_INSTRUCTION_SCHEME</code></td>
+<td>L'instruction de traitement appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>DevelopmentActivitySchemeReference</code></td>
+<td><code>IN_DEVELOPMENT_ACTIVITY_SCHEME</code></td>
+<td>L'activité de développement appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>MeasurementSchemeReference</code></td>
+<td><code>IN_MEASUREMENT_SCHEME</code></td>
+<td>L'item de mesure appartient à un schéma de mesures</td>
+</tr>
+<tr>
+<td><code>SamplingInformationSchemeReference</code></td>
+<td><code>IN_SAMPLING_INFORMATION_SCHEME</code></td>
+<td>L'information d'échantillonnage appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>CodeListSchemeReference</code></td>
+<td><code>IN_CODELIST_SCHEME</code></td>
+<td>La liste de codes appartient à un schéma</td>
+</tr>
+<tr>
+<td><code>VariableSchemeReference</code></td>
+<td><code>IN_VARIABLE_SCHEME</code></td>
+<td>La variable appartient à un schéma de variables</td>
+</tr>
+<tr>
+<td><code>ConceptSchemeReference</code></td>
+<td><code>IN_CONCEPT_SCHEME</code></td>
+<td>Le concept appartient à un schéma de concepts</td>
+</tr>
+<tr>
+<td><code>UniverseSchemeReference</code></td>
+<td><code>IN_UNIVERSE_SCHEME</code></td>
+<td>L'univers appartient à un schéma d'univers</td>
+</tr>
+<tr>
+<td><code>ConceptualVariableSchemeReference</code></td>
+<td><code>IN_CONCEPTUAL_VARIABLE_SCHEME</code></td>
+<td>La variable conceptuelle appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>GeographicStructureSchemeReference</code></td>
+<td><code>IN_GEOGRAPHIC_STRUCTURE_SCHEME</code></td>
+<td>La structure géographique appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>GeographicLocationSchemeReference</code></td>
+<td><code>IN_GEOGRAPHIC_LOCATION_SCHEME</code></td>
+<td>L'emplacement géographique appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>UnitTypeSchemeReference</code></td>
+<td><code>IN_UNIT_TYPE_SCHEME</code></td>
+<td>Le type d'unité appartient à son schéma</td>
+</tr>
+<tr>
+<td><code>ClassificationFamilyReference</code></td>
+<td><code>IN_CLASSIFICATION_FAMILY</code></td>
+<td>La classification appartient à une famille</td>
+</tr>
+<tr>
+<td><code>OrganizationReference</code></td>
+<td><code>REFERENCES_ORGANIZATION</code></td>
+<td>Référence à une organisation</td>
+</tr>
+<tr>
+<td><code>IndividualReference</code></td>
+<td><code>REFERENCES_INDIVIDUAL</code></td>
+<td>Référence à une personne nommée</td>
+</tr>
+<tr>
+<td><code>SamplingProcedureReference</code></td>
+<td><code>USES_SAMPLING_PROCEDURE</code></td>
+<td>L'objet utilise une procédure d'échantillonnage</td>
+</tr>
+</tbody>
+</table>
+<h3 id="comportement-par-defaut">Comportement par défaut<a class="headerlink" href="#comportement-par-defaut" title="Permanent link">&para;</a></h3>
+<p>Tout élément <code>*Reference</code> non reconnu est converti en type de relation en :</p>
+<ol>
+<li>Supprimant le suffixe "Reference"</li>
+<li>Convertissant en majuscules</li>
+</ol>
+<p>Par exemple, <code>CustomReference</code> -&gt; <code>CUSTOM</code></p>
+<h2 id="acces-aux-definitions-du-schema">Accès aux définitions du schéma<a class="headerlink" href="#acces-aux-definitions-du-schema" title="Permanent link">&para;</a></h2>
+<p>Les définitions de relations sont accessibles via la classe <code>DDISchema</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">DDISchema</span>
+
+<span class="c1"># Obtenir le type de relation pour un element de reference</span>
+<span class="n">rel_type</span> <span class="o">=</span> <span class="n">DDISchema</span><span class="o">.</span><span class="n">get_fragment_relationship_type</span><span class="p">(</span><span class="s2">&quot;ControlConstructReference&quot;</span><span class="p">)</span>
+<span class="c1"># Retourne : &quot;HAS_CONSTRUCT&quot;</span>
+
+<span class="c1"># Afficher toutes les correspondances de relations de fragments</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">DDISchema</span><span class="o">.</span><span class="n">FRAGMENT_RELATIONSHIP_TYPES</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="exemples-pratiques">Exemples pratiques<a class="headerlink" href="#exemples-pratiques" title="Permanent link">&para;</a></h2>
+<h3 id="enquete-irlandaise-sur-lemploi-ddi-l-fragmentinstance">Enquête irlandaise sur l'emploi (DDI-L FragmentInstance)<a class="headerlink" href="#enquete-irlandaise-sur-lemploi-ddi-l-fragmentinstance" title="Permanent link">&para;</a></h3>
+<p>Le fichier <code>Ireland_LabourSurvey.xml</code> illustre les relations DDI-L typiques :</p>
+<p><strong>Liaison de construits de contrôle :</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;Instrument&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ID&gt;</span>e274cbba-78ea-4a7b-bf06-e6fef1e570e1<span class="nt">&lt;/ID&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ControlConstructReference&gt;</span>
+<span class="w">    </span><span class="nt">&lt;ID&gt;</span>cdbc61f8-5a7d-4c04-bf3a-75eaf9f919ab<span class="nt">&lt;/ID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;TypeOfObject&gt;</span>Sequence<span class="nt">&lt;/TypeOfObject&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/ControlConstructReference&gt;</span>
+<span class="nt">&lt;/Instrument&gt;</span>
+</code></pre></div>
+<p>Crée : <code>(Instrument)-[:HAS_CONSTRUCT]-&gt;(Sequence)</code></p>
+<p><strong>Liaison question/CodeList :</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;QuestionItem&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ID&gt;</span>97cb6944-1704-483a-b32d-3e4965bd25aa<span class="nt">&lt;/ID&gt;</span>
+<span class="w">  </span><span class="nt">&lt;CodeListReference&gt;</span>
+<span class="w">    </span><span class="nt">&lt;ID&gt;</span>20a3c76d-a966-4c32-a908-83f8a2ba341d<span class="nt">&lt;/ID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;TypeOfObject&gt;</span>CodeList<span class="nt">&lt;/TypeOfObject&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/CodeListReference&gt;</span>
+<span class="nt">&lt;/QuestionItem&gt;</span>
+</code></pre></div>
+<p>Crée : <code>(QuestionItem)-[:USES_CODELIST]-&gt;(CodeList)</code></p>
+<p><strong>Branchement conditionnel :</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;IfThenElse&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ID&gt;</span>conditional-123<span class="nt">&lt;/ID&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ThenConstructReference&gt;</span>
+<span class="w">    </span><span class="nt">&lt;ID&gt;</span>sequence-then<span class="nt">&lt;/ID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;TypeOfObject&gt;</span>Sequence<span class="nt">&lt;/TypeOfObject&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/ThenConstructReference&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ElseConstructReference&gt;</span>
+<span class="w">    </span><span class="nt">&lt;ID&gt;</span>sequence-else<span class="nt">&lt;/ID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;TypeOfObject&gt;</span>Sequence<span class="nt">&lt;/TypeOfObject&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/ElseConstructReference&gt;</span>
+<span class="nt">&lt;/IfThenElse&gt;</span>
+</code></pre></div>
+<p>Crée :</p>
+<ul>
+<li><code>(IfThenElse)-[:THEN]-&gt;(Sequence)</code></li>
+<li><code>(IfThenElse)-[:ELSE]-&gt;(Sequence)</code></li>
+</ul>
+<h2 id="interrogation-des-relations">Interrogation des relations<a class="headerlink" href="#interrogation-des-relations" title="Permanent link">&para;</a></h2>
+<h3 id="requetes-ddi-codebook">Requêtes DDI Codebook<a class="headerlink" href="#requetes-ddi-codebook" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="err">--</span><span class="w"> </span><span class="n">Trouver</span><span class="w"> </span><span class="n">toutes</span><span class="w"> </span><span class="n">les</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="n">d</span><span class="s">&#39;un jeu de donnees</span>
+<span class="s">MATCH (d:Dataset {id: &#39;</span><span class="n">demo</span><span class="err">&#39;</span><span class="p">})</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">IN_DATASET</span><span class="o">]-</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">label</span>
+<span class="err">--</span><span class="w"> </span><span class="n">Variables</span><span class="w"> </span><span class="n">avec</span><span class="w"> </span><span class="n">leurs</span><span class="w"> </span><span class="n">concepts</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">USES_CONCEPT</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Concept</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">name</span>
+<span class="err">--</span><span class="w"> </span><span class="n">Questions</span><span class="w"> </span><span class="n">regroupees</span><span class="w"> </span><span class="n">par</span><span class="w"> </span><span class="n">variable</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ASKED_AS</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">Question</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">text</span>
+</code></pre></div>
+<h3 id="requetes-ddi-l-fragmentinstance">Requêtes DDI-L FragmentInstance<a class="headerlink" href="#requetes-ddi-l-fragmentinstance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="err">--</span><span class="w"> </span><span class="n">Tracer</span><span class="w"> </span><span class="n">le</span><span class="w"> </span><span class="n">flux</span><span class="w"> </span><span class="n">du</span><span class="w"> </span><span class="n">questionnaire</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">:</span><span class="n">Instrument</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CONSTRUCT</span><span class="p">*</span><span class="m">1</span><span class="p">..</span><span class="m">5</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">path</span>
+<span class="err">--</span><span class="w"> </span><span class="n">Trouver</span><span class="w"> </span><span class="n">les</span><span class="w"> </span><span class="n">branches</span><span class="w"> </span><span class="n">conditionnelles</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ite</span><span class="p">:</span><span class="n">IfThenElse</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="k">THEN</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">then_branch</span><span class="p">)</span>
+<span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ite</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ELSE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">else_branch</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">ite</span><span class="p">.</span><span class="n">fragment_id</span><span class="p">,</span><span class="w"> </span><span class="n">then_branch</span><span class="p">.</span><span class="n">fragment_id</span><span class="p">,</span><span class="w"> </span><span class="n">else_branch</span><span class="p">.</span><span class="n">fragment_id</span>
+<span class="err">--</span><span class="w"> </span><span class="n">Questions</span><span class="w"> </span><span class="n">avec</span><span class="w"> </span><span class="n">leurs</span><span class="w"> </span><span class="n">listes</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="n">codes</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">qc</span><span class="p">:</span><span class="n">QuestionConstruct</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ASKS_QUESTION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span>
+<span class="w">       </span><span class="o">-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">question_text</span><span class="p">,</span><span class="w"> </span><span class="n">cl</span><span class="p">.</span><span class="n">name</span>
+<span class="err">--</span><span class="w"> </span><span class="n">Toutes</span><span class="w"> </span><span class="n">les</span><span class="w"> </span><span class="n">categories</span><span class="w"> </span><span class="n">d</span><span class="err">&#39;</span><span class="n">une</span><span class="w"> </span><span class="n">liste</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="n">codes</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CATEGORY</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span><span class="n">Category</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">cl</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">collect</span><span class="p">(</span><span class="n">cat</span><span class="p">.</span><span class="n">category_label</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">categories</span>
+</code></pre></div>
+<h2 id="statistiques-sur-les-relations">Statistiques sur les relations<a class="headerlink" href="#statistiques-sur-les-relations" title="Permanent link">&para;</a></h2>
+<p>Après le chargement de <code>Ireland_LabourSurvey.xml</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="err">--</span><span class="w"> </span><span class="n">Compter</span><span class="w"> </span><span class="n">les</span><span class="w"> </span><span class="n">relations</span><span class="w"> </span><span class="n">par</span><span class="w"> </span><span class="n">type</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">()</span><span class="o">-[</span><span class="n">r</span><span class="o">]-&gt;</span><span class="p">()</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">relationship_type</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">(*)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">count</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="k">DESC</span>
+</code></pre></div>
+<p>Sortie typique :</p>
+<table>
+<thead>
+<tr>
+<th>Type de relation</th>
+<th>Nombre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HAS_CONSTRUCT</td>
+<td>450</td>
+</tr>
+<tr>
+<td>USES_CODELIST</td>
+<td>180</td>
+</tr>
+<tr>
+<td>HAS_CATEGORY</td>
+<td>120</td>
+</tr>
+<tr>
+<td>ASKS_QUESTION</td>
+<td>17</td>
+</tr>
+</tbody>
+</table>
+<h2 id="relations-ddi-cdi-10">Relations DDI-CDI 1.0<a class="headerlink" href="#relations-ddi-cdi-10" title="Permanent link">&para;</a></h2>
+<p>Le chargeur CDI extrait les relations à partir des éléments d'association dans les fichiers XML
+DDI-CDI. Ces relations connectent les 210 types d'entités CDI concrets de niveau supérieur
+(associations exclues). Le tableau ci-dessous liste les types de relations capturés avec un
+label dédié ; les autres éléments d'association passent par le chemin d'entité générique.</p>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>Label de départ</th>
+<th>Label d'arrivée</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HAS_CONCEPT</code></td>
+<td>ConceptualVariable</td>
+<td>Concept</td>
+<td>La variable utilise un concept</td>
+</tr>
+<tr>
+<td><code>MEASURES</code></td>
+<td>InstanceVariable</td>
+<td>ConceptualVariable</td>
+<td>L'instance mesure la variable conceptuelle</td>
+</tr>
+<tr>
+<td><code>HAS_CATEGORY</code></td>
+<td>CodeList</td>
+<td>Category</td>
+<td>La liste de codes contient une catégorie</td>
+</tr>
+<tr>
+<td><code>HAS_CODE</code></td>
+<td>CodeList</td>
+<td>Code</td>
+<td>La liste de codes contient un code</td>
+</tr>
+<tr>
+<td><code>DENOTES</code></td>
+<td>Code</td>
+<td>Category</td>
+<td>Le code dénote une catégorie</td>
+</tr>
+<tr>
+<td><code>HAS_CLASSIFICATION_ITEM</code></td>
+<td>StatisticalClassification</td>
+<td>ClassificationItem</td>
+<td>La classification contient un item</td>
+</tr>
+<tr>
+<td><code>HAS_COMPONENT</code></td>
+<td>WideDataStructure</td>
+<td>InstanceVariable</td>
+<td>La structure possède une variable composante</td>
+</tr>
+<tr>
+<td><code>IS_STRUCTURED_BY</code></td>
+<td>WideDataSet</td>
+<td>WideDataStructure</td>
+<td>Le jeu de données est structuré par la structure</td>
+</tr>
+<tr>
+<td><code>HAS_LOGICAL_RECORD</code></td>
+<td>WideDataSet</td>
+<td>LogicalRecord</td>
+<td>Le jeu de données possède un enregistrement logique</td>
+</tr>
+<tr>
+<td><code>CORRESPONDS_TO</code></td>
+<td>RepresentedVariable</td>
+<td>ConceptualVariable</td>
+<td>La variable représentée correspond à la variable conceptuelle</td>
+</tr>
+<tr>
+<td><code>PERFORMS</code></td>
+<td>Agent</td>
+<td>Activity</td>
+<td>L'agent effectue l'activité</td>
+</tr>
+<tr>
+<td><code>MAPS_TO</code></td>
+<td>CorrespondenceTable</td>
+<td>ClassificationItem</td>
+<td>La table de correspondance est reliée à un item de classification</td>
+</tr>
+<tr>
+<td><code>IS_BASED_ON</code></td>
+<td>RepresentedVariable</td>
+<td>ConceptualVariable</td>
+<td>La variable représentée est dérivée d'une variable conceptuelle</td>
+</tr>
+<tr>
+<td><code>IS_BASED_ON</code></td>
+<td>InstanceVariable</td>
+<td>RepresentedVariable</td>
+<td>La variable d'instance est dérivée d'une variable représentée</td>
+</tr>
+<tr>
+<td><code>TAKES_CONCEPT_FROM</code></td>
+<td>ConceptualVariable</td>
+<td>Concept</td>
+<td>La variable conceptuelle tire son concept de</td>
+</tr>
+<tr>
+<td><code>HAS_POPULATION</code></td>
+<td>Universe</td>
+<td>Population</td>
+<td>L'univers inclut cette population</td>
+</tr>
+<tr>
+<td><code>IS_DEFINED_BY</code></td>
+<td>DataStructureComponent</td>
+<td>InstanceVariable</td>
+<td>La composante de structure est définie par une variable</td>
+</tr>
+<tr>
+<td><code>HAS_SENTINEL_VALUE</code></td>
+<td>ValueDomain</td>
+<td>Category</td>
+<td>Le domaine de valeurs possède une valeur sentinelle ou manquante</td>
+</tr>
+<tr>
+<td><code>USES</code></td>
+<td>Activity</td>
+<td>Activity</td>
+<td>Une activité utilise ou dépend d'une autre activité</td>
+</tr>
+<tr>
+<td><code>HAS_DATA_STORE</code></td>
+<td>DataSet</td>
+<td>DataStore</td>
+<td>Le jeu de données contient un entrepôt de données</td>
+</tr>
+</tbody>
+</table>
+<h3 id="requetes-cdi">Requêtes CDI<a class="headerlink" href="#requetes-cdi" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="err">--</span><span class="w"> </span><span class="n">Trouver</span><span class="w"> </span><span class="n">toutes</span><span class="w"> </span><span class="n">les</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="n">mesurant</span><span class="w"> </span><span class="n">un</span><span class="w"> </span><span class="n">concept</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">iv</span><span class="p">:</span><span class="n">InstanceVariable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MEASURES</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cv</span><span class="p">:</span><span class="n">ConceptualVariable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CONCEPT</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Concept</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">iv</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">cv</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">name</span>
+
+<span class="err">--</span><span class="w"> </span><span class="n">Explorer</span><span class="w"> </span><span class="n">la</span><span class="w"> </span><span class="n">structure</span><span class="w"> </span><span class="n">d</span><span class="err">&#39;</span><span class="n">un</span><span class="w"> </span><span class="n">jeu</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="n">donnees</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ds</span><span class="p">:</span><span class="n">WideDataSet</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">IS_STRUCTURED_BY</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">str</span><span class="p">:</span><span class="n">WideDataStructure</span><span class="p">)</span>
+<span class="w">       </span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_COMPONENT</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">iv</span><span class="p">:</span><span class="n">InstanceVariable</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">ds</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">collect</span><span class="p">(</span><span class="n">iv</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">variables</span>
+
+<span class="err">--</span><span class="w"> </span><span class="n">Hierarchie</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="n">classification</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">sc</span><span class="p">:</span><span class="n">StatisticalClassification</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CLASSIFICATION_ITEM</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">ci</span><span class="p">:</span><span class="n">ClassificationItem</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">ci</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+<p>Consultez <a href="../architecture/">Architecture</a> pour comprendre comment les relations transitent à
+travers le pipeline d'ingestion.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

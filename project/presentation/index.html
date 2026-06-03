@@ -1,0 +1,2835 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/project/presentation/">
+      
+      
+        <link rel="prev" href="../../advanced/interoperability/">
+      
+      
+        <link rel="next" href="../faq/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../../fr/project/presentation/" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Presentation - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#executive-summary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Presentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../fr/project/presentation/" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 Minutes to ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your First Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Understanding ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Understanding ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How It Loads Your Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relationship Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph Backends
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Graph Backends
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Advanced
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Adapters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graph vs Relational
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Readiness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standards Interoperability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-from-archive-to-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Goal: From Archive to Asset
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Goal: From Archive to Asset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-we-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem We Solve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-we-deliver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What We Deliver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Benefits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Benefits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-instant-metadata-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Instant Metadata Discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-survey-instrument-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Survey Instrument Visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-impact-analysis-and-quality-assurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Impact Analysis and Quality Assurance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-automated-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Automated Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interoperability-with-international-standards-sdmx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interoperability with International Standards (SDMX)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interoperability with International Standards (SDMX)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-integration-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Integration Challenge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-graph-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Graph Solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-World Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alignment-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alignment Reports
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-readiness-unlocking-machine-learning-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI-Readiness: Unlocking Machine Learning Capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI-Readiness: Unlocking Machine Learning Capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-graph-structure-matters-for-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Graph Structure Matters for AI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-1-intelligent-survey-chatbots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 1: Intelligent Survey Chatbots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-2-retrieval-augmented-generation-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 2: Retrieval-Augmented Generation (RAG)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-3-quality-validation-with-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 3: Quality Validation with AI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-4-semantic-search-and-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 4: Semantic Search and Recommendations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-ai-ready-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The AI-Ready Advantage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risk-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Mitigation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Risk Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#technical-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organizational-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organizational Risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-graph-vs-traditional-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison: Graph vs. Traditional Approaches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparison: Graph vs. Traditional Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vs-relational-databases-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs. Relational Databases (SQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-xml-parsing-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs. XML Parsing Scripts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-manual-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs. Manual Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions-and-discussion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions and Discussion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Questions and Discussion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-technical-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Technical Managers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-non-technical-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Non-Technical Managers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion-metadata-as-strategic-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion: Metadata as Strategic Asset
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-goal-from-archive-to-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Goal: From Archive to Asset
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Goal: From Archive to Asset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-we-solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem We Solve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-we-deliver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What We Deliver
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Benefits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Benefits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-instant-metadata-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Instant Metadata Discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-survey-instrument-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Survey Instrument Visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-impact-analysis-and-quality-assurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Impact Analysis and Quality Assurance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-automated-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Automated Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interoperability-with-international-standards-sdmx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interoperability with International Standards (SDMX)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interoperability with International Standards (SDMX)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-integration-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Integration Challenge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-graph-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Graph Solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-world-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-World Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alignment-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alignment Reports
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-readiness-unlocking-machine-learning-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI-Readiness: Unlocking Machine Learning Capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI-Readiness: Unlocking Machine Learning Capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-graph-structure-matters-for-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Graph Structure Matters for AI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-1-intelligent-survey-chatbots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 1: Intelligent Survey Chatbots
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-2-retrieval-augmented-generation-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 2: Retrieval-Augmented Generation (RAG)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-3-quality-validation-with-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 3: Quality Validation with AI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capability-4-semantic-search-and-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability 4: Semantic Search and Recommendations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-ai-ready-advantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The AI-Ready Advantage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risk-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Mitigation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Risk Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#technical-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organizational-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organizational Risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-graph-vs-traditional-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison: Graph vs. Traditional Approaches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparison: Graph vs. Traditional Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vs-relational-databases-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs. Relational Databases (SQL)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-xml-parsing-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs. XML Parsing Scripts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-manual-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs. Manual Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions-and-discussion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions and Discussion
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Questions and Discussion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-technical-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Technical Managers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-non-technical-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Non-Technical Managers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion-metadata-as-strategic-asset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion: Metadata as Strategic Asset
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h1>
+<p><strong>ddigraph</strong> is a Python package. It turns DDI (Data Documentation
+Initiative) metadata into a <strong>queryable knowledge graph</strong> in Neo4j. The
+input is static XML. This lets organizations:</p>
+<ul>
+<li><strong>Understand</strong> complex survey instruments through visual exploration</li>
+<li><strong>Integrate</strong> seamlessly with other international standards like SDMX</li>
+<li><strong>Leverage</strong> AI and machine learning for metadata discovery</li>
+<li><strong>Scale</strong> metadata operations beyond manual documentation</li>
+</ul>
+<hr />
+<h2 id="the-goal-from-archive-to-asset">The Goal: From Archive to Asset<a class="headerlink" href="#the-goal-from-archive-to-asset" title="Permanent link">&para;</a></h2>
+<h3 id="the-problem-we-solve">The Problem We Solve<a class="headerlink" href="#the-problem-we-solve" title="Permanent link">&para;</a></h3>
+<p>Survey metadata today lives in XML files that are:</p>
+<ul>
+<li>✗ <strong>Hard to navigate</strong>: Deeply nested hierarchies require specialized tools</li>
+<li>✗ <strong>Difficult to integrate</strong>: No standardized way to connect to other systems</li>
+<li>✗ <strong>Inaccessible to AI</strong>: Current formats can't leverage modern ML capabilities</li>
+<li>✗ <strong>Slow to analyze</strong>: A question like "which variables use this code list?" takes manual work</li>
+</ul>
+<h3 id="what-we-deliver">What We Deliver<a class="headerlink" href="#what-we-deliver" title="Permanent link">&para;</a></h3>
+<p>ddigraph converts this:</p>
+<div class="highlight"><pre><span></span><code><span class="cm">&lt;!-- 148KB of nested XML --&gt;</span>
+<span class="nt">&lt;Fragment&gt;</span>
+<span class="w">  </span><span class="nt">&lt;QuestionItem&gt;</span>
+<span class="w">    </span><span class="nt">&lt;QuestionReference&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ID&gt;</span>q-001<span class="nt">&lt;/ID&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/QuestionReference&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/QuestionItem&gt;</span>
+<span class="nt">&lt;/Fragment&gt;</span>
+</code></pre></div>
+<p>Into this:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Simple, visual query</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">cl</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;Age Groups&#39;</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">question_text</span>
+</code></pre></div>
+<hr />
+<h2 id="key-benefits">Key Benefits<a class="headerlink" href="#key-benefits" title="Permanent link">&para;</a></h2>
+<h3 id="1-instant-metadata-discovery">1. Instant Metadata Discovery<a class="headerlink" href="#1-instant-metadata-discovery" title="Permanent link">&para;</a></h3>
+<p><strong>Before</strong>: Analysts read XML by hand to find which questions use a code list.</p>
+<ul>
+<li>Time: 2-4 hours per query</li>
+<li>Error-prone: Easy to miss references in nested structures</li>
+<li>Limited: Can only answer questions you explicitly plan for</li>
+</ul>
+<p><strong>After</strong>: Graph queries return answers in real-time.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Find all questions using &quot;Employment Status&quot; codes</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Employment Status&#39;</span><span class="p">})</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">question_text</span><span class="p">,</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+<ul>
+<li>Time: &lt; 1 second</li>
+<li>Comprehensive: Returns all relationships automatically</li>
+<li>Flexible: Can explore unexpected connections</li>
+</ul>
+<p><strong>Business Impact</strong>: Faster questionnaire reviews, reduced data collection errors, improved survey quality.</p>
+<h3 id="2-survey-instrument-visualization">2. Survey Instrument Visualization<a class="headerlink" href="#2-survey-instrument-visualization" title="Permanent link">&para;</a></h3>
+<p><strong>Before</strong>: Survey flow is documented in lengthy Word documents or spreadsheets.</p>
+<p><strong>After</strong>: Interactive graph visualization shows the complete structure at a glance.</p>
+<div class="highlight"><pre><span></span><code>[Entry Point] → [Sequence: Demographics]
+    ├→ [Question: Age]
+    ├→ [If Age ≥ 18]
+    │   └→ [Sequence: Employment]
+    │       ├→ [Question: Employment Status]
+    │       └→ [Question: Hours Worked]
+    └→ [If Age &lt; 18]
+        └→ [Sequence: Education]
+</code></pre></div>
+<p><strong>Business Impact</strong>: Stakeholders can review survey logic visually, catching design flaws before field deployment.</p>
+<h3 id="3-impact-analysis-and-quality-assurance">3. Impact Analysis and Quality Assurance<a class="headerlink" href="#3-impact-analysis-and-quality-assurance" title="Permanent link">&para;</a></h3>
+<p><strong>Before</strong>: To change a code list, you check dozens of XML files by hand to
+see what depends on it.</p>
+<p><strong>After</strong>: Graph queries instantly show all affected elements.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// What will be affected if we change this code list?</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Industry Codes&#39;</span><span class="p">})</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-</span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">ASKS_QUESTION</span><span class="o">]-</span><span class="p">(</span><span class="n">qc</span><span class="p">:</span><span class="n">QuestionConstruct</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">qc</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_CONSTRUCT</span><span class="p">*</span><span class="o">]-</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span><span class="n">Sequence</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">seq</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">affected_sections</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">count</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">question_count</span>
+</code></pre></div>
+<p><strong>Business Impact</strong>: Reduced risk of breaking changes, faster survey updates, improved data quality.</p>
+<h3 id="4-automated-documentation">4. Automated Documentation<a class="headerlink" href="#4-automated-documentation" title="Permanent link">&para;</a></h3>
+<p><strong>Before</strong>: Survey documentation is manually written and quickly becomes outdated.</p>
+<p><strong>After</strong>: Documentation is generated from the graph, always in sync with the actual structure.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Generate natural language documentation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">document_survey</span><span class="p">(</span><span class="n">instrument_id</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        MATCH (i:Instrument {id: $id})-[:HAS_CONSTRUCT]-&gt;(seq:Sequence)</span>
+<span class="s2">        MATCH (seq)-[:HAS_CONSTRUCT]-&gt;(c)</span>
+<span class="s2">        RETURN seq.name, labels(c)[0], count(*) as count</span>
+<span class="s2">        ORDER BY seq.name</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">instrument_id</span><span class="p">)</span>
+
+    <span class="c1"># Feed to LLM for natural language generation</span>
+    <span class="k">return</span> <span class="n">generate_documentation</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Output</strong>: "The Labour Force Survey consists of 5 sections: Demographics (8 questions), Employment (12 questions)..."</p>
+<p><strong>Business Impact</strong>: Always-current documentation, reduced manual effort, consistent formatting.</p>
+<hr />
+<h2 id="interoperability-with-international-standards-sdmx">Interoperability with International Standards (SDMX)<a class="headerlink" href="#interoperability-with-international-standards-sdmx" title="Permanent link">&para;</a></h2>
+<h3 id="the-integration-challenge">The Integration Challenge<a class="headerlink" href="#the-integration-challenge" title="Permanent link">&para;</a></h3>
+<p>Organizations must report data to international bodies (Eurostat, OECD, UN).
+They use the SDMX (Statistical Data and Metadata eXchange) format. Mapping
+DDI survey metadata to SDMX is usually:</p>
+<h3 id="the-graph-solution">The Graph Solution<a class="headerlink" href="#the-graph-solution" title="Permanent link">&para;</a></h3>
+<p>ddigraph makes DDI-SDMX integration <strong>explicit and queryable</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Automatic mapping via shared identifiers</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">user_id</span><span class="w"> </span><span class="n">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">user_id</span><span class="p">})</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="n">m</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">match_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;user_id&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">confidence</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m">1</span><span class="p">.</span><span class="m">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">mapped_on</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">datetime</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>What This Means</strong>:</p>
+<ol>
+<li><strong>DDI Variables</strong> (from your survey) link directly to <strong>SDMX Dimensions</strong> (international reporting structure)</li>
+<li>The mapping is <strong>documented in the graph</strong> with metadata about confidence and method</li>
+<li>Both directions are queryable:</li>
+<li>"What SDMX components does this variable map to?"</li>
+<li>"What DDI variables feed this SDMX dimension?"</li>
+</ol>
+<h3 id="real-world-example">Real-World Example<a class="headerlink" href="#real-world-example" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario</strong>: Your Labour Force Survey needs to report to Eurostat using their SDMX template.</p>
+<p><strong>Traditional Approach</strong>:</p>
+<ol>
+<li>Export DDI variables to Excel</li>
+<li>Manually match to Eurostat dimension codes</li>
+<li>Maintain Excel mapping file</li>
+<li>Hope nothing changes</li>
+</ol>
+<p><strong>ddigraph Approach</strong>:</p>
+<ol>
+<li>Load DDI metadata: <code>ddigraph load survey.xml</code></li>
+<li>Load SDMX structure into same graph</li>
+<li>Run automated mapping query</li>
+<li>Review and validate mappings visually</li>
+</ol>
+<p><strong>Business Impact</strong>:</p>
+<ul>
+<li><strong>faster</strong> international reporting setup</li>
+<li><strong>Zero maintenance</strong> as mappings update automatically</li>
+<li><strong>Full auditability</strong> of which variables map where and why</li>
+<li><strong>Reduced errors</strong> from manual transcription</li>
+</ul>
+<h3 id="alignment-reports">Alignment Reports<a class="headerlink" href="#alignment-reports" title="Permanent link">&para;</a></h3>
+<p>Generate comprehensive alignment reports:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Show mapping coverage</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="k">WITH</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mapped</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="n">mapped</span><span class="p">,</span><span class="w"> </span>
+<span class="w">       </span><span class="n">round</span><span class="p">(</span><span class="m">100</span><span class="p">.</span><span class="m">0</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="n">mapped</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="n">total</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">coverage_pct</span>
+</code></pre></div>
+<p><strong>Output</strong>: "Coverage: 87% of variables mapped (1,400 of 1,609)"</p>
+<hr />
+<h2 id="ai-readiness-unlocking-machine-learning-capabilities">AI-Readiness: Unlocking Machine Learning Capabilities<a class="headerlink" href="#ai-readiness-unlocking-machine-learning-capabilities" title="Permanent link">&para;</a></h2>
+<h3 id="why-graph-structure-matters-for-ai">Why Graph Structure Matters for AI<a class="headerlink" href="#why-graph-structure-matters-for-ai" title="Permanent link">&para;</a></h3>
+<p>Traditional XML files are <strong>not AI-ready</strong>:</p>
+<ul>
+<li>LLMs can't "see" relationships buried in nested tags</li>
+<li>Retrieval-Augmented Generation (RAG) systems need queryable context</li>
+<li>Embeddings don't capture structural connections</li>
+</ul>
+<p><strong>Graph databases make metadata AI-accessible</strong>:</p>
+<ul>
+<li>Relationships are explicit and traversable</li>
+<li>Context is preserved in graph structure</li>
+<li>Pattern matching is native, not reconstructed</li>
+</ul>
+<h3 id="capability-1-intelligent-survey-chatbots">Capability 1: Intelligent Survey Chatbots<a class="headerlink" href="#capability-1-intelligent-survey-chatbots" title="Permanent link">&para;</a></h3>
+<p><strong>Use Case</strong>: Stakeholders ask questions about survey design in natural language.</p>
+<div class="highlight"><pre><span></span><code>User:<span class="w"> </span><span class="s2">&quot;What questions come after the employment section?&quot;</span>
+Bot:<span class="w"> </span><span class="o">[</span>Queries<span class="w"> </span>graph<span class="w"> </span><span class="k">for</span><span class="w"> </span>sequences<span class="w"> </span>following<span class="w"> </span>employment<span class="w"> </span>constructs<span class="o">]</span>
+<span class="w">     </span><span class="s2">&quot;After the employment questions, respondents answer 5 questions </span>
+<span class="s2">      about job satisfaction, then branch based on employment status...&quot;</span>
+</code></pre></div>
+<p><strong>How It Works</strong>:</p>
+<ol>
+<li>User question → LLM converts to graph query</li>
+<li>Graph returns structured results</li>
+<li>LLM converts results to natural language</li>
+</ol>
+<p><strong>Business Impact</strong>: Non-technical stakeholders can explore survey structure without training.</p>
+<h3 id="capability-2-retrieval-augmented-generation-rag">Capability 2: Retrieval-Augmented Generation (RAG)<a class="headerlink" href="#capability-2-retrieval-augmented-generation-rag" title="Permanent link">&para;</a></h3>
+<p><strong>Use Case</strong>: Generate survey documentation or answer policy questions grounded in actual metadata.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># RAG pipeline with graph context</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">answer_question</span><span class="p">(</span><span class="n">user_query</span><span class="p">):</span>
+    <span class="c1"># 1. Convert query to graph pattern</span>
+    <span class="n">graph_results</span> <span class="o">=</span> <span class="n">neo4j</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        MATCH (q:QuestionItem)</span>
+<span class="s2">        WHERE q.question_text CONTAINS $keywords</span>
+<span class="s2">        MATCH path = (q)&lt;-[:ASKS_QUESTION]-(:QuestionConstruct)</span>
+<span class="s2">                        &lt;-[:HAS_CONSTRUCT]-(seq:Sequence)</span>
+<span class="s2">        RETURN q.question_text, seq.name, path</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">keywords</span><span class="o">=</span><span class="n">extract_keywords</span><span class="p">(</span><span class="n">user_query</span><span class="p">))</span>
+
+    <span class="c1"># 2. Feed graph context to LLM</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">format_graph_results</span><span class="p">(</span><span class="n">graph_results</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">user_query</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+</code></pre></div>
+<p><strong>Example</strong>:</p>
+<ul>
+<li>Query: "How does the survey measure unemployment?"</li>
+<li>Graph retrieves: Questions about employment status, hours worked, job search</li>
+<li>LLM generates: "The survey measures unemployment through three key questions in the Employment section..."</li>
+</ul>
+<p><strong>Business Impact</strong>: Automated response to stakeholder inquiries, consistent with actual survey design.</p>
+<h3 id="capability-3-quality-validation-with-ai">Capability 3: Quality Validation with AI<a class="headerlink" href="#capability-3-quality-validation-with-ai" title="Permanent link">&para;</a></h3>
+<p><strong>Use Case</strong>: Automatically detect survey design issues.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Find questions without response options (potential error)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-&gt;</span><span class="p">()</span>
+<span class="w">  </span><span class="n">AND</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">response_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;code&#39;</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">question_text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">potentially_missing_codelist</span>
+
+<span class="c1">// Find unreachable constructs (dead code in survey)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">Sequence</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">c</span><span class="p">:</span><span class="n">QuestionConstruct</span><span class="p">)</span>
+<span class="w">  </span><span class="n">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="p">()</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CONSTRUCT</span><span class="p">|</span><span class="k">THEN</span><span class="p">|</span><span class="n">ELSE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="w">  </span><span class="n">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">c</span><span class="p">:</span><span class="n">EntryPoint</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">labels</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">orphaned_construct</span>
+</code></pre></div>
+<p><strong>AI Enhancement</strong>: Train ML models to predict common issues based on graph patterns.</p>
+<p><strong>Business Impact</strong>: Catch survey design errors before field deployment, reducing costly revisions.</p>
+<h3 id="capability-4-semantic-search-and-recommendations">Capability 4: Semantic Search and Recommendations<a class="headerlink" href="#capability-4-semantic-search-and-recommendations" title="Permanent link">&para;</a></h3>
+<p><strong>Use Case</strong>: Find similar questions across different surveys for harmonization.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Generate embeddings for all questions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SentenceTransformer</span><span class="p">(</span><span class="s1">&#39;all-MiniLM-L6-v2&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">driver</span><span class="o">.</span><span class="n">session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">questions</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        MATCH (q:QuestionItem)</span>
+<span class="s2">        RETURN q.fragment_id AS id, q.question_text AS text</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">questions</span><span class="p">:</span>
+        <span class="n">embedding</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            MATCH (q:QuestionItem {fragment_id: $id})</span>
+<span class="s2">            SET q.embedding = $embedding</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">q</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</code></pre></div>
+<p><strong>Query similar questions</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Find questions semantically similar to &quot;What is your age?&quot;</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">target</span><span class="p">:</span><span class="n">QuestionItem</span><span class="w"> </span><span class="p">{</span><span class="n">fragment_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;q-age&#39;</span><span class="p">})</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">similar</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">similar</span><span class="w"> </span><span class="p">&lt;&gt;</span><span class="w"> </span><span class="n">target</span>
+<span class="k">WITH</span><span class="w"> </span><span class="n">similar</span><span class="p">,</span><span class="w"> </span>
+<span class="w">     </span><span class="n">gds</span><span class="p">.</span><span class="n">similarity</span><span class="p">.</span><span class="n">cosine</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">embedding</span><span class="p">,</span><span class="w"> </span><span class="n">similar</span><span class="p">.</span><span class="n">embedding</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">similarity</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">similarity</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">.</span><span class="m">8</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">similar</span><span class="p">.</span><span class="n">question_text</span><span class="p">,</span><span class="w"> </span><span class="n">similarity</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">similarity</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="m">5</span>
+</code></pre></div>
+<p><strong>Business Impact</strong>: Faster survey harmonization, better reuse of existing questions, improved comparability across time.</p>
+<h3 id="the-ai-ready-advantage">The AI-Ready Advantage<a class="headerlink" href="#the-ai-ready-advantage" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>XML Archive</th>
+<th>Graph + AI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Question answering</td>
+<td>Manual lookup</td>
+<td>Automated chatbot</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>Static Word docs</td>
+<td>Generated on-demand</td>
+</tr>
+<tr>
+<td>Quality checks</td>
+<td>Manual review</td>
+<td>AI-powered validation</td>
+</tr>
+<tr>
+<td>Harmonization</td>
+<td>Spreadsheet comparison</td>
+<td>Semantic search</td>
+</tr>
+<tr>
+<td>Discovery</td>
+<td>Limited to known queries</td>
+<td>Exploratory analysis</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bottom Line</strong>: ddigraph + AI = Metadata that works for you, not the other way around.</p>
+<h2 id="risk-mitigation">Risk Mitigation<a class="headerlink" href="#risk-mitigation" title="Permanent link">&para;</a></h2>
+<h3 id="technical-risks">Technical Risks<a class="headerlink" href="#technical-risks" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Learning curve</td>
+<td>Pre-built queries, visual tools, documentation</td>
+</tr>
+<tr>
+<td>Infrastructure complexity</td>
+<td>Use managed Neo4j Aura, Docker for development</td>
+</tr>
+<tr>
+<td>Data migration</td>
+<td>Incremental rollout, keep XML as source of truth</td>
+</tr>
+<tr>
+<td>Tool integration</td>
+<td>Adapter pattern supports export to CSV/JSON/pandas</td>
+</tr>
+</tbody>
+</table>
+<h3 id="organizational-risks">Organizational Risks<a class="headerlink" href="#organizational-risks" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resistance to change</td>
+<td>Start with PoC, demonstrate quick wins</td>
+</tr>
+<tr>
+<td>Skill gaps</td>
+<td>Training plan, external support available</td>
+</tr>
+<tr>
+<td>Budget constraints</td>
+<td>Open-source core, optional cloud scaling</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="comparison-graph-vs-traditional-approaches">Comparison: Graph vs. Traditional Approaches<a class="headerlink" href="#comparison-graph-vs-traditional-approaches" title="Permanent link">&para;</a></h2>
+<h3 id="vs-relational-databases-sql">vs. Relational Databases (SQL)<a class="headerlink" href="#vs-relational-databases-sql" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Relational DB</th>
+<th>Graph DB (ddigraph)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Query complexity</td>
+<td>Complex JOINs</td>
+<td>Natural pattern matching</td>
+</tr>
+<tr>
+<td>Variable-depth queries</td>
+<td>Recursive CTEs (slow)</td>
+<td>Native traversal (fast)</td>
+</tr>
+<tr>
+<td>Schema flexibility</td>
+<td>ALTER TABLE migrations</td>
+<td>Add relationships dynamically</td>
+</tr>
+<tr>
+<td>Relationship modeling</td>
+<td>Foreign keys + junction tables</td>
+<td>Direct relationships</td>
+</tr>
+<tr>
+<td>Visualization</td>
+<td>Not native</td>
+<td>Built-in graph browser</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verdict</strong>: Graph databases are purpose-built for connected data like DDI metadata.</p>
+<h3 id="vs-xml-parsing-scripts">vs. XML Parsing Scripts<a class="headerlink" href="#vs-xml-parsing-scripts" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Custom Scripts</th>
+<th>ddigraph</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maintenance</td>
+<td>Scripts break with schema changes</td>
+<td>Declarative schema, adapts automatically</td>
+</tr>
+<tr>
+<td>Reusability</td>
+<td>One-off scripts</td>
+<td>Query library for all uses</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Re-parse file each time</td>
+<td>Query graph in milliseconds</td>
+</tr>
+<tr>
+<td>Collaboration</td>
+<td>Code reviews</td>
+<td>Visual exploration</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verdict</strong>: ddigraph eliminates technical debt from brittle parsing scripts.</p>
+<h3 id="vs-manual-documentation">vs. Manual Documentation<a class="headerlink" href="#vs-manual-documentation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Word/Excel Docs</th>
+<th>ddigraph</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accuracy</td>
+<td>Outdated immediately</td>
+<td>Always reflects current structure</td>
+</tr>
+<tr>
+<td>Discovery</td>
+<td>Limited to documented paths</td>
+<td>Explore any relationship</td>
+</tr>
+<tr>
+<td>Updates</td>
+<td>Manual editing</td>
+<td>Automatic from data</td>
+</tr>
+<tr>
+<td>Integration</td>
+<td>Copy-paste</td>
+<td>API/query access</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verdict</strong>: Graph data is self-documenting and always current.</p>
+<hr />
+<h2 id="questions-and-discussion">Questions and Discussion<a class="headerlink" href="#questions-and-discussion" title="Permanent link">&para;</a></h2>
+<h3 id="for-technical-managers">For Technical Managers<a class="headerlink" href="#for-technical-managers" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Q</strong>: How does this fit with our existing data infrastructure?</li>
+<li>
+<p><strong>A</strong>: ddigraph exports to CSV, JSON, and pandas, so it works with any
+    tool. The graph adds to your stack; it does not replace it.</p>
+</li>
+<li>
+<p><strong>Q</strong>: What if Neo4j becomes a bottleneck?</p>
+</li>
+<li><strong>A</strong>: Neo4j scales to billions of nodes. Current metadata volumes are tiny by comparison.</li>
+</ul>
+<h3 id="for-non-technical-managers">For Non-Technical Managers<a class="headerlink" href="#for-non-technical-managers" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Q</strong>: Do staff need to learn programming?</li>
+<li><strong>A</strong>: No. You get a visual graph browser and ready-made queries for
+    common tasks. Power users can learn Cypher, which is simpler than SQL.</li>
+</ul>
+<hr />
+<h2 id="conclusion-metadata-as-strategic-asset">Conclusion: Metadata as Strategic Asset<a class="headerlink" href="#conclusion-metadata-as-strategic-asset" title="Permanent link">&para;</a></h2>
+<p>Survey metadata has long been a <strong>cost center</strong>. It is needed, but it takes
+manual work to keep up to date and to query.</p>
+<p><strong>ddigraph transforms metadata into a strategic asset</strong> by making it:</p>
+<ul>
+<li>✓ <strong>Queryable</strong> in real-time</li>
+<li>✓ <strong>Integrated</strong> with international standards</li>
+<li>✓ <strong>AI-ready</strong> for modern capabilities</li>
+<li>✓ <strong>Scalable</strong> across the organization</li>
+</ul>
+<p><strong>The opportunity</strong>: Treat metadata as infrastructure. Teams that do gain an
+edge in data quality, compliance, and day-to-day work.</p>
+<p><strong>The choice</strong>: Continue with manual processes, or leverage modern graph technology to work smarter.</p>
+<hr />
+<p><strong>Thank you. Questions?</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2013 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/fr/project/dsl-design/">
+      
+      
+        <link rel="prev" href="../contributing/">
+      
+      
+        <link rel="next" href="../changelog/">
+      
+      
+        
+          <link rel="alternate" href="../../../project/dsl-design/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Codebook DSL design - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dsl-de-composition-codebook-conception" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Codebook DSL design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../project/dsl-design/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pour commencer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pour commencer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 minutes avec ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vos premières requêtes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comprendre ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Comprendre ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comment ddigraph charge vos données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de données graphe
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de données graphe
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Référence
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossaire
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avancé
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avancé
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation des performances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptateurs personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphe vs Relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préparation pour l'IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/interoperability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interopérabilité des standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Présentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribuer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pourquoi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portee-honnete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portée honnête
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primitives-de-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primitives de sélection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registre-de-gestionnaires-plats-python-type-pas-un-dsl-textuel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registre de gestionnaires plats — Python typé, pas un DSL textuel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestionnaires-recursifs-restent-en-python-reutilisent-les-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestionnaires récursifs (restent en Python, réutilisent les primitives)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence-de-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Séquence de migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vérification
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journal des modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pourquoi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portee-honnete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portée honnête
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primitives-de-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primitives de sélection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registre-de-gestionnaires-plats-python-type-pas-un-dsl-textuel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registre de gestionnaires plats — Python typé, pas un DSL textuel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestionnaires-recursifs-restent-en-python-reutilisent-les-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestionnaires récursifs (restent en Python, réutilisent les primitives)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence-de-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Séquence de migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vérification
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="dsl-de-composition-codebook-conception">DSL de composition Codebook — conception<a class="headerlink" href="#dsl-de-composition-codebook-conception" title="Permanent link">&para;</a></h1>
+<p>Cette page est la référence de conception pour la refonte de la
+composition Codebook :
+regrouper les gestionnaires DDI-Codebook écrits à la main dans
+<code>src/ddigraph/ingest/loader.py</code> derrière un extracteur déclaratif,
+piloté par un fichier de surcharges. Lisez-la avant la mise en place
+du runtime ; les choix de syntaxe présentés ici sont la partie qui
+mérite une relecture.</p>
+<h2 id="pourquoi">Pourquoi<a class="headerlink" href="#pourquoi" title="Permanent link">&para;</a></h2>
+<p><code>loader.py</code> fait environ 4 300 lignes. Environ 40 de ses ~44 méthodes
+<code>ingest_*</code> sont quasi identiques : résoudre un identifiant, le
+dédupliquer, extraire quelques champs d'éléments enfants, construire
+un enregistrement, l'ajouter. Cette répétition représente l'essentiel
+du fichier. Des refontes antérieures ont déjà déplacé chaque <em>nom</em>
+de nœud et de relation vers le générateur dérivé du XSD plus
+<code>schema_overrides.toml</code> ; cette refonte fait de même pour la <em>recette
+d'extraction</em>, afin que les XSD (plus une petite surcharge
+déclarative) deviennent l'unique source de vérité sur ce que chaque
+élément du codebook apporte au graphe.</p>
+<h2 id="portee-honnete">Portée honnête<a class="headerlink" href="#portee-honnete" title="Permanent link">&para;</a></h2>
+<p>Tous les gestionnaires ne peuvent pas — et ne devraient pas —
+devenir déclaratifs.</p>
+<ul>
+<li><strong>~33 gestionnaires plats</strong> (<code>ingest_organization</code>, <code>ingest_series</code>,
+  <code>ingest_group</code>, <code>ingest_methodology</code>, <code>ingest_software</code>,
+  <code>ingest_funding</code>, <code>ingest_coverage</code>, …) ne font que id + dédup +
+  extraction de champs superficiels + ajout. Ceux-ci se réduisent
+  entièrement au DSL. C'est là que se trouve le gain en nombre de
+  lignes.</li>
+<li><strong>~7 gestionnaires récursifs</strong> — <code>ingest_variable</code> (115 lignes),
+  <code>ingest_contributor_role</code> (94), <code>ingest_question_item</code> (65),
+  <code>ingest_question</code> (55), <code>ingest_study</code> (48), plus
+  <code>ingest_var_group</code> et <code>ingest_category_group</code> — créent des
+  enregistrements <em>enfants</em> à partir d'éléments imbriqués (une <code>var</code>
+  engendre des enregistrements <code>Question</code>, <code>Universe</code>, <code>Category</code> et
+  <code>Concept</code>, chacun avec son propre ensemble de déduplication et la
+  sémantique « lever une erreur sur variable en double »). Forcer
+  cette récursion dans du TOML produirait un langage de configuration
+  plus complexe que le Python qu'il remplace, ce qui irait à
+  l'encontre de l'objectif de simplicité. <strong>Ceux-ci restent en Python</strong>, mais réécrits
+  pour appeler les mêmes primitives de sélection partagées qu'utilise
+  le runtime du DSL, afin que la logique d'extraction soit définie une
+  seule fois.</li>
+</ul>
+<p>Effet net : <code>loader.py</code> passe d'environ 4 300 à environ 1 400–1 700
+lignes (pas l'estimation initiale de ~900). La masse restante est
+constituée des sept gestionnaires récursifs exprimés en Python court,
+composé de primitives, plus la colle de répartition. Le chiffre de
+~900 supposait que les gestionnaires récursifs pouvaient être
+entièrement déclaratifs ; cette conception échange consciemment cela
+contre la lisibilité.</p>
+<h2 id="primitives-de-selection">Primitives de sélection<a class="headerlink" href="#primitives-de-selection" title="Permanent link">&para;</a></h2>
+<p>Un seul module, <code>src/ddigraph/ingest/_compose.py</code>, expose des
+fonctions pures qui prennent un élément <code>lxml</code> et renvoient un
+scalaire / une liste / un sous-élément. Elles remplacent les
+fonctions auxiliaires ad hoc dispersées dans <code>loader.py</code>
+(<code>_first_text</code>, <code>_first_text_any</code>, <code>_common_metadata</code>,
+<code>_textual_metadata</code>, <code>_reference_values_by_suffix</code>, …). Chacune est
+testée individuellement par des tests unitaires sur des fixtures
+synthétiques.</p>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>Signature</th>
+<th>Remplace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td><code>text(elem, path) -&gt; str \| None</code></td>
+<td><code>_first_text(elem, path)</code></td>
+</tr>
+<tr>
+<td><code>text_any</code></td>
+<td><code>text_any(elem, *paths) -&gt; str \| None</code></td>
+<td><code>_first_text_any</code></td>
+</tr>
+<tr>
+<td><code>nested_text</code></td>
+<td><code>nested_text(elem, *path) -&gt; str \| None</code></td>
+<td><code>get_nested_text</code> (utils.parsing)</td>
+</tr>
+<tr>
+<td><code>attr</code></td>
+<td><code>attr(elem, child, name) -&gt; str \| None</code></td>
+<td>motifs <code>location.get("fileid")</code></td>
+</tr>
+<tr>
+<td><code>count</code></td>
+<td><code>count(elem, child_tag) -&gt; int</code></td>
+<td><code>len(findall())</code> manuel</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td><code>metadata(elem) -&gt; dict[str, str \| None]</code></td>
+<td><code>_common_metadata</code> (agency/version/urn)</td>
+</tr>
+<tr>
+<td><code>textual</code></td>
+<td><code>textual(elem) -&gt; dict[str, str \| None]</code></td>
+<td><code>_textual_metadata</code> (name/label/description/rationale/language)</td>
+</tr>
+<tr>
+<td><code>refs_by_suffix</code></td>
+<td><code>refs_by_suffix(elem, suffix) -&gt; list[str]</code></td>
+<td><code>_reference_values_by_suffix</code></td>
+</tr>
+<tr>
+<td><code>lookup</code></td>
+<td><code>lookup(elem, table, child_tag) -&gt; str \| None</code></td>
+<td><code>RESPONSE_DOMAIN_TYPES.get(...)</code></td>
+</tr>
+<tr>
+<td><code>truncate</code></td>
+<td><code>truncate(value, n) -&gt; str \| None</code></td>
+<td><code>text[:n]</code></td>
+</tr>
+<tr>
+<td><code>coerce</code></td>
+<td><code>coerce(value, xsd_type) -&gt; object</code></td>
+<td>analyse de dates/entiers dispersée</td>
+</tr>
+</tbody>
+</table>
+<p><code>coerce</code> est indexé par le type simple XSD que le générateur
+enregistre déjà pour chaque propriété (le générateur l'émet dans
+<code>src/ddigraph/schema/_generated/codebook.py</code>). Il réside dans un
+module voisin <code>src/ddigraph/ingest/_coerce.py</code> afin d'être testable
+indépendamment.</p>
+<p>Toutes les primitives sont privées (modules <code>_compose</code>, <code>_coerce</code>) —
+elles n'élargissent pas la surface publique, donc
+<code>tests/test_public_api.py</code> reste vert.</p>
+<h2 id="registre-de-gestionnaires-plats-python-type-pas-un-dsl-textuel">Registre de gestionnaires plats — Python typé, pas un DSL textuel<a class="headerlink" href="#registre-de-gestionnaires-plats-python-type-pas-un-dsl-textuel" title="Permanent link">&para;</a></h2>
+<p><strong>Révision de conception (consignée pendant l'implémentation).</strong> La
+première version de ce document spécifiait une grammaire
+d'expressions textuelles dans <code>schema_overrides.toml</code>
+(<code>name = "text('name')"</code>). L'examen des gestionnaires plats réels
+(<code>ingest_file</code>, <code>ingest_series</code>, <code>ingest_group</code>,
+<code>ingest_data_collection_event</code>, …) a montré que la grammaire devrait
+gérer des chaînes <code>or</code> (<code>text('.//fileURI') or attr('URI')</code>), des
+alias de champs (<code>label = name</code>), le passage de paramètres
+<code>metadata(label=...)</code>, et l'idiome <em>textual avec remplacement de
+label</em> (<code>t = textual(elem); if t['label'] is None: t['label'] =
+&lt;expr&gt;</code>). Un mini-langage textuel qui gère tout cela cesse d'être
+« minuscule » et devient un interpréteur — ce qui contredit
+l'objectif de simplicité et est précisément le genre de machinerie
+sur mesure que ce travail vise à supprimer.</p>
+<p>À la place, chaque gestionnaire plat est une entrée
+<code>CompositionSpec</code> dans un <strong>registre Python typé</strong> situé dans
+<code>src/ddigraph/ingest/_composition_specs.py</code>. C'est tout aussi
+déclaratif (un seul endroit, piloté par les données, aucun flux de
+contrôle par gestionnaire), mais c'est vérifié par mypy, ne nécessite
+aucun analyseur syntaxique, et compose directement les primitives
+<code>_compose</code> sous forme d'appelables. Le TOML de surcharge reste le
+foyer des métadonnées de <em>nœud/relation</em> (gérées par les refontes
+de génération de schéma antérieures) ; la recette d'extraction,
+ayant la forme de code, vit dans le code.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.ingest</span><span class="w"> </span><span class="kn">import</span> <span class="n">_compose</span> <span class="k">as</span> <span class="n">c</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ddigraph.ingest._composition_specs</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositionSpec</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="n">SPECS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;filedscr&quot;</span><span class="p">:</span> <span class="n">CompositionSpec</span><span class="p">(</span>
+        <span class="n">collection</span><span class="o">=</span><span class="s2">&quot;data_files&quot;</span><span class="p">,</span>
+        <span class="n">record</span><span class="o">=</span><span class="s2">&quot;DataFileRecord&quot;</span><span class="p">,</span>        <span class="c1"># resolved by name against loader</span>
+        <span class="n">id_field</span><span class="o">=</span><span class="s2">&quot;file_id&quot;</span><span class="p">,</span>
+        <span class="c1"># No slug -&gt; if the element has no id, skip it (matches the</span>
+        <span class="c1"># current ``if not file_id ... return``). A slug enables the</span>
+        <span class="c1"># ``&lt;dataset&gt;:&lt;slug&gt;_&lt;counter&gt;`` synthesised fallback instead.</span>
+        <span class="n">id_slug</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dedup</span><span class="o">=</span><span class="s2">&quot;seen_files&quot;</span><span class="p">,</span>
+        <span class="n">fields</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;.//fileName&quot;</span><span class="p">)),</span>
+            <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;uri&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;.//fileURI&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">c</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;URI&quot;</span><span class="p">)),</span>
+            <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>          <span class="c1"># reuse another field&#39;s value</span>
+        <span class="p">),</span>
+        <span class="n">splat_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                       <span class="c1"># **_common_metadata(elem)</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>Field</code> est l'un des suivants : un appelable <code>select=</code>
+<code>(elem) -&gt; value</code>, une référence <code>alias=</code> vers un autre champ déjà
+calculé dans la même spécification, ou une littérale <code>const=</code>. Les
+booléens <code>splat_metadata</code> / <code>splat_textual</code> couvrent les idiomes
+<code>**_common_metadata</code> / <code>**_textual_metadata</code> ;
+<code>textual_label_fallback=&lt;Field&gt;</code> couvre l'idiome de remplacement en
+un seul emplacement déclaratif. Voilà toute la surface — aucune
+condition, aucune boucle, aucune récursion. Tout ce qui dépasse cela
+est un gestionnaire récursif et reste en Python (section suivante).</p>
+<p>Le marcheur, <code>BatchBuilder._run_composition(tag, elem)</code> dans
+<code>loader.py</code>, fait ~40 lignes : résoudre l'id (repli par slug ou
+saut), réclamer la déduplication, évaluer les champs dans l'ordre
+(pour qu'<code>alias</code> puisse voir les résultats précédents), étaler les
+métadonnées/textual, construire l'enregistrement par son nom,
+l'ajouter. Les ~33 corps de méthodes des gestionnaires plats se
+réduisent à un unique appel <code>self._run_composition("&lt;tag&gt;", elem)</code>
+(ou sont entièrement supprimés une fois que la table de répartition
+route les balises plates directement vers le marcheur lors du
+regroupement de la répartition).</p>
+<p>Cela maintient le registre relisible, le runtime minuscule, et chaque
+ligne vérifiée par mypy — et le test d'instantané prouve que la
+sortie est identique octet par octet à celle des gestionnaires écrits
+à la main.</p>
+<h2 id="gestionnaires-recursifs-restent-en-python-reutilisent-les-primitives">Gestionnaires récursifs (restent en Python, réutilisent les primitives)<a class="headerlink" href="#gestionnaires-recursifs-restent-en-python-reutilisent-les-primitives" title="Permanent link">&para;</a></h2>
+<p><code>ingest_variable</code> après la migration est représentatif — il passe de
+115 lignes à ~40 en déléguant toute extraction à une primitive et
+chaque sous-enregistrement à une petite fonction auxiliaire typée,
+tout en gardant le flux de contrôle explicite (et le contrat « lever
+une erreur sur ID de variable en double ») en Python, là où un
+lecteur peut le voir :</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">ingest_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elem</span><span class="p">:</span> <span class="n">etree</span><span class="o">.</span><span class="n">_Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">variable_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_id</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="s2">&quot;var&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_claim_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seen_variable_ids</span><span class="p">,</span> <span class="n">variable_id</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duplicate variable ID </span><span class="si">{</span><span class="n">variable_id</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_spawn_question</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;qstn&quot;</span><span class="p">),</span> <span class="n">parent_id</span><span class="o">=</span><span class="n">variable_id</span><span class="p">)</span>
+    <span class="n">universe_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spawn_universe</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;universe&quot;</span><span class="p">),</span> <span class="n">parent_id</span><span class="o">=</span><span class="n">variable_id</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_spawn_categories</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;catgry&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_spawn_concept</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;concept&quot;</span><span class="p">))</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_append_and_count</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
+        <span class="n">VariableRecord</span><span class="p">(</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+            <span class="n">dataset_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">,</span>
+            <span class="n">variable_id</span><span class="o">=</span><span class="n">variable_id</span><span class="p">,</span>
+            <span class="n">file_id</span><span class="o">=</span><span class="n">compose</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;fileid&quot;</span><span class="p">),</span>
+            <span class="n">universe_id</span><span class="o">=</span><span class="n">universe_id</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">compose</span><span class="o">.</span><span class="n">textual</span><span class="p">(</span><span class="n">elem</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">compose</span><span class="o">.</span><span class="n">metadata</span><span class="p">(</span><span class="n">elem</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;variables&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Les fonctions auxiliaires <code>_spawn_*</code> sont le seul nouveau Python ;
+chacune fait ~10 lignes et utilise elle-même les primitives.
+<code>_claim_id</code> reçoit un paramètre optionnel <code>strict=True</code> pour
+préserver l'exception de variable en double.</p>
+<h2 id="sequence-de-migration">Séquence de migration<a class="headerlink" href="#sequence-de-migration" title="Permanent link">&para;</a></h2>
+<p>Chaque commit maintient au vert la barrière de qualité par commit
+(ruff format/check, mypy, <code>generate_schema_definitions --check</code>,
+<code>xsd_coverage --structural --structural-threshold 100</code>, pytest complet
+incluant le nouveau test d'instantané) et garde le test d'instantané
+identique octet par octet.</p>
+<ol>
+<li><strong><code>_compose.py</code> + tests unitaires</strong> — primitives uniquement,
+   aucun changement de loader. Instantané inchangé. (<code>_coerce.py</code>
+   reporté jusqu'à ce que le générateur émette les types simples XSD
+   par propriété.)</li>
+<li><strong>Registre <code>_composition_specs.py</code> + marcheur <code>_run_composition</code></strong> —
+   ajouter les entrées <code>CompositionSpec</code> pour les gestionnaires plats
+   (par lots, en validant d'abord le marcheur sur un sous-ensemble
+   représentatif) et le marcheur <code>_run_composition(tag, elem)</code>.
+   Remplacer le corps de ces gestionnaires par un unique appel au
+   marcheur. L'instantané doit rester identique octet par octet à
+   chaque commit.</li>
+<li><strong>Réécritures des gestionnaires récursifs</strong> — un commit par
+   gestionnaire (<code>ingest_variable</code>, <code>ingest_study</code>,
+   <code>ingest_question_item</code>, <code>ingest_question</code>,
+   <code>ingest_contributor_role</code>, <code>ingest_var_group</code>,
+   <code>ingest_category_group</code>), chacun réécrivant le corps sous forme
+   primitive + <code>_spawn_*</code>. Instantané identique octet par octet par
+   commit.</li>
+<li><strong>Regroupement de la répartition</strong> — la table <code>_build_handlers</code>
+   à <code>loader.py:1836</code> devient <code>tag -&gt; _run_composition</code> pour les
+   balises plates ; seules les sept balises récursives conservent des
+   entrées de méthode explicites.</li>
+<li><strong>CHANGELOG</strong> sous <code>## [0.4.0]</code>.</li>
+</ol>
+<h2 id="verification">Vérification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<p>Le harnais d'instantané dans
+<code>tests/test_codebook_loader_snapshot.py</code> (déjà commité) capture
+chaque lot que le loader produit pour
+<code>tests/fixtures/codebook_sample.xml</code>. C'est la barrière d'égalité
+octet par octet pour chaque commit du registre et du regroupement
+de la répartition. Les changements
+de schéma intentionnels régénèrent l'instantané via <code>REGEN=1 pytest
+tests/test_codebook_loader_snapshot.py</code>, le diff JSON étant relu dans
+le même commit. <code>test_snapshot_covers_the_bespoke_handlers</code> garde la
+fixture pertinente (elle doit continuer à produire des variables, des
+études, des questions, des question_items, des organisations, des
+data_files).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

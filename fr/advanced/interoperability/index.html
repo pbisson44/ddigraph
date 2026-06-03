@@ -1,0 +1,2454 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases">
+      
+      
+      
+        <link rel="canonical" href="https://pbisson44.github.io/ddigraph/fr/advanced/interoperability/">
+      
+      
+        <link rel="prev" href="../ai-readiness/">
+      
+      
+        <link rel="next" href="../../project/presentation/">
+      
+      
+        
+          <link rel="alternate" href="../../../advanced/interoperability/" hreflang="en">
+        
+          <link rel="alternate" href="./" hreflang="fr">
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Interopérabilité des standards - ddigraph</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#interoperabilite-des-standards" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../../" title="ddigraph" class="md-header__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ddigraph
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interopérabilité des standards
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Sélectionner la langue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../advanced/interoperability/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="fr" class="md-select__link">
+              Français
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="ddigraph" class="md-nav__button md-logo" aria-label="ddigraph" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ddigraph
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pbisson44/ddigraph" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pbisson44/ddigraph
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pour commencer
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pour commencer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/ten-minutes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 minutes avec ddigraph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vos premières requêtes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comprendre ddigraph
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Comprendre ddigraph
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comment ddigraph charge vos données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/fragments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDI-L FragmentInstance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bases de données graphe
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Bases de données graphe
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/neo4j/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neo4j
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/rdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RDF / SPARQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/gremlin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gremlin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backends/networkx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NetworkX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Référence
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossaire
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avancé
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Avancé
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation des performances
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptateurs personnalisés
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graph-vs-relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphe vs Relationnel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-readiness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Préparation pour l'IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interopérabilité des standards
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interopérabilité des standards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pourquoi-les-graphes-pour-linteroperabilite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi les graphes pour l'interopérabilité ?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pourquoi les graphes pour l&#39;interopérabilité ?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avantages-du-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avantages du graphe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motif-dintegration-ddi-sdmx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motif d'intégration DDI-SDMX
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Motif d&#39;intégration DDI-SDMX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correspondance-par-identifiant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correspondance par identifiant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-du-graphe-pour-lintegration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma du graphe pour l'intégration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creation-des-correspondances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Création des correspondances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alignement-des-domaines-de-valeurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alignement des domaines de valeurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interrogation-des-donnees-integrees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrogation des données intégrées
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interrogation des données intégrées">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trouver-toutes-les-variables-mises-en-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trouver toutes les variables mises en correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracer-la-lignee-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tracer la lignée complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trouver-les-variables-non-mises-en-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trouver les variables non mises en correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rapport-dalignement-des-listes-de-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rapport d'alignement des listes de codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avantages-de-lapproche-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avantages de l'approche graphe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Avantages de l&#39;approche graphe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cardinalite-flexible-des-correspondances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Cardinalité flexible des correspondances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-metadonnees-de-correspondance-riches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Métadonnées de correspondance riches
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enrichissement-incremental" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Enrichissement incrémental
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-navigation-bidirectionnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Navigation bidirectionnelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-analyse-dimpact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Analyse d'impact
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-avec-ddigraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implémentation avec ddigraph
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implémentation avec ddigraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etape-1-charger-les-donnees-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 1 : Charger les données DDI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etape-2-charger-la-structure-sdmx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 2 : Charger la structure SDMX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etape-3-executer-les-requetes-de-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 3 : Exécuter les requêtes de correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etape-4-valider-et-rapporter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 4 : Valider et rapporter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Présentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribuer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/dsl-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codebook DSL design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journal des modifications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pourquoi-les-graphes-pour-linteroperabilite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi les graphes pour l'interopérabilité ?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pourquoi les graphes pour l&#39;interopérabilité ?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#avantages-du-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avantages du graphe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motif-dintegration-ddi-sdmx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motif d'intégration DDI-SDMX
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Motif d&#39;intégration DDI-SDMX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correspondance-par-identifiant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correspondance par identifiant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-du-graphe-pour-lintegration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schéma du graphe pour l'intégration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creation-des-correspondances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Création des correspondances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alignement-des-domaines-de-valeurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alignement des domaines de valeurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interrogation-des-donnees-integrees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interrogation des données intégrées
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interrogation des données intégrées">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trouver-toutes-les-variables-mises-en-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trouver toutes les variables mises en correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tracer-la-lignee-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tracer la lignée complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trouver-les-variables-non-mises-en-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trouver les variables non mises en correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rapport-dalignement-des-listes-de-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rapport d'alignement des listes de codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avantages-de-lapproche-graphe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avantages de l'approche graphe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Avantages de l&#39;approche graphe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cardinalite-flexible-des-correspondances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Cardinalité flexible des correspondances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-metadonnees-de-correspondance-riches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Métadonnées de correspondance riches
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enrichissement-incremental" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Enrichissement incrémental
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-navigation-bidirectionnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Navigation bidirectionnelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-analyse-dimpact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Analyse d'impact
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-avec-ddigraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implémentation avec ddigraph
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implémentation avec ddigraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etape-1-charger-les-donnees-ddi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 1 : Charger les données DDI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etape-2-charger-la-structure-sdmx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 2 : Charger la structure SDMX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etape-3-executer-les-requetes-de-correspondance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 3 : Exécuter les requêtes de correspondance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etape-4-valider-et-rapporter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 4 : Valider et rapporter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="interoperabilite-des-standards">Interopérabilité des standards<a class="headerlink" href="#interoperabilite-des-standards" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">À qui s'adresse cette page ?</p>
+<p>Cette page est destinée aux équipes qui utilisent <strong>à la fois les métadonnées DDI et les
+structures de données SDMX</strong> et souhaitent les relier dans le même graphe. Si vous ne
+travaillez pas avec SDMX, vous pouvez passer cette page.</p>
+<p><strong>SDMX</strong> (Statistical Data and Metadata eXchange) est une norme internationale pour
+partager des statistiques entre organisations comme les banques centrales, les agences
+gouvernementales et Eurostat. Elle décrit les <em>structures de données</em> — quelles colonnes
+existent dans un jeu de données, quelles valeurs sont autorisées et comment elles se
+rapportent les unes aux autres.</p>
+<p><strong>DDI</strong> décrit les <em>métadonnées</em> d'enquête — quelles questions ont été posées, quelles
+variables ont été collectées et ce que signifient les réponses. Ces deux standards décrivent
+les mêmes données sous des angles différents, et un graphe facilite leur liaison.</p>
+</div>
+<hr />
+<h2 id="pourquoi-les-graphes-pour-linteroperabilite">Pourquoi les graphes pour l'interopérabilité ?<a class="headerlink" href="#pourquoi-les-graphes-pour-linteroperabilite" title="Permanent link">&para;</a></h2>
+<p>Les approches traditionnelles de la mise en correspondance des standards reposent sur des
+scripts de transformation, des feuilles de style XSLT ou des schémas relationnels rigides.
+Ces approches peinent avec :</p>
+<ul>
+<li><strong>Évolution du schéma</strong> : L'ajout de nouvelles correspondances nécessite des modifications
+  de code</li>
+<li><strong>Relations plusieurs-à-plusieurs</strong> : Un seul concept DDI peut correspondre à plusieurs
+  composants SDMX</li>
+<li><strong>Correspondances contextuelles</strong> : Le même élément peut être mis en correspondance
+  différemment selon le contexte</li>
+<li><strong>Traçabilité</strong> : Difficile d'auditer pourquoi une correspondance a été établie</li>
+</ul>
+<p>Les bases de données graphe répondent à ces défis grâce à leur schéma flexible et leur
+modélisation explicite des relations.</p>
+<h3 id="avantages-du-graphe">Avantages du graphe<a class="headerlink" href="#avantages-du-graphe" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Défi</th>
+<th>Approche relationnelle</th>
+<th>Approche graphe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Modifications du schéma</td>
+<td>ALTER TABLE, migrations</td>
+<td>Ajout dynamique de nouveaux types de nœuds/relations</td>
+</tr>
+<tr>
+<td>Plusieurs-à-plusieurs</td>
+<td>Tables de jonction</td>
+<td>Relations directes avec propriétés</td>
+</tr>
+<tr>
+<td>Contexte</td>
+<td>JOINs complexes</td>
+<td>Traversée de chemins spécifiques</td>
+</tr>
+<tr>
+<td>Traçabilité</td>
+<td>Tables d'audit</td>
+<td>Les propriétés des relations capturent la provenance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="motif-dintegration-ddi-sdmx">Motif d'intégration DDI-SDMX<a class="headerlink" href="#motif-dintegration-ddi-sdmx" title="Permanent link">&para;</a></h2>
+<p>La tâche principale est de relier les variables DDI aux composants de structure de données SDMX.</p>
+<p>Dans SDMX, chaque variable dans un jeu de données joue l'un des deux rôles suivants :</p>
+<ul>
+<li><strong>Dimension</strong> — une colonne qui <em>identifie</em> un point de données (ex. : pays, année, groupe
+  d'âge). Les dimensions indiquent <em>à quoi</em> une valeur fait référence.</li>
+<li><strong>Mesure</strong> — le nombre réel rapporté (ex. : taux de chômage, nombre de personnes).</li>
+</ul>
+<p>Une variable DDI correspond au rôle qu'elle joue dans la structure SDMX.</p>
+<p>Chaque variable a aussi un <strong>domaine de valeurs</strong> — l'ensemble des valeurs autorisées (ex. :
+une liste de codes de pays, ou une plage numérique). Dans SDMX, cela est représenté par une
+<strong>liste de codes</strong> (pour les valeurs catégorielles) ou un <strong>type de données</strong> (pour les
+nombres/textes).</p>
+<h3 id="correspondance-par-identifiant">Correspondance par identifiant<a class="headerlink" href="#correspondance-par-identifiant" title="Permanent link">&para;</a></h3>
+<p>La façon la plus simple de relier DDI et SDMX est la <strong>correspondance par identifiant</strong> —
+quand une variable DDI et un composant SDMX partagent le même identifiant, on peut les
+relier automatiquement. Cela fonctionne pour la plupart des jeux de données structurés où
+les identifiants ont été attribués de façon cohérente.</p>
+<div class="highlight"><pre><span></span><code>DDI Variable ──────────────────────&gt; SDMX Component
+     │                                      │
+     ├── ID attribute ◄──── matches ────► ID attribute
+     ├── User ID      ◄──── matches ────► User ID
+     │                                      │
+     └── Value Domain ─────────────────&gt; Dimension Codelist
+                       ─────────────────&gt; Measure Data Type
+</code></pre></div>
+<p>Dans Neo4j, ce lien devient une relation explicite :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Variable as Dimension</span>
+<span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_VALUE_DOMAIN</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">vd</span><span class="p">:</span><span class="n">ValueDomain</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALIGNED_WITH</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">Codelist</span><span class="p">)</span>
+
+<span class="c1">// Variable as Measure</span>
+<span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_MEASURE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">:</span><span class="n">Measure</span><span class="p">)</span>
+<span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_VALUE_DOMAIN</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">vd</span><span class="p">:</span><span class="n">ValueDomain</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALIGNED_WITH</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span><span class="n">DataType</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="schema-du-graphe-pour-lintegration">Schéma du graphe pour l'intégration<a class="headerlink" href="#schema-du-graphe-pour-lintegration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// DDI nodes (from ddigraph)</span>
+<span class="p">(:</span><span class="n">Variable</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="n">user_id</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">ValueDomain</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">Category</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="n">code_value</span><span class="p">})</span>
+
+<span class="c1">// SDMX nodes</span>
+<span class="p">(:</span><span class="n">DataStructureDefinition</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">agency</span><span class="p">,</span><span class="w"> </span><span class="n">version</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">Dimension</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">concept_identity</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">Measure</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">concept_identity</span><span class="p">})</span>
+<span class="p">(:</span><span class="n">Codelist</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">agency</span><span class="p">,</span><span class="w"> </span><span class="n">version</span><span class="p">})</span><span class="w">  </span><span class="c1">// SDMX codelist</span>
+<span class="p">(:</span><span class="n">Code</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">})</span>
+
+<span class="c1">// Integration relationships</span>
+<span class="p">(:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="w"> </span><span class="p">{</span><span class="n">match_type</span><span class="p">,</span><span class="w"> </span><span class="n">confidence</span><span class="p">}</span><span class="o">]-&gt;</span><span class="p">(:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="p">(:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_MEASURE</span><span class="w"> </span><span class="p">{</span><span class="n">match_type</span><span class="p">,</span><span class="w"> </span><span class="n">confidence</span><span class="p">}</span><span class="o">]-&gt;</span><span class="p">(:</span><span class="n">Measure</span><span class="p">)</span>
+<span class="p">(:</span><span class="n">CodeList</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALIGNED_WITH</span><span class="w"> </span><span class="p">{</span><span class="n">mapping_date</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="p">}</span><span class="o">]-&gt;</span><span class="p">(:</span><span class="n">Codelist</span><span class="p">)</span>
+<span class="p">(:</span><span class="n">Category</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CORRESPONDS_TO</span><span class="o">]-&gt;</span><span class="p">(:</span><span class="n">Code</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="creation-des-correspondances">Création des correspondances<a class="headerlink" href="#creation-des-correspondances" title="Permanent link">&para;</a></h3>
+<p>Exécutez ces requêtes Cypher pour créer les liens. La première requête correspond par
+<code>user_id</code> (la correspondance la plus fiable) ; la seconde utilise le champ <code>id</code> brut
+comme solution de repli :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Match DDI variables to SDMX dimensions by user_id</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">user_id</span><span class="w"> </span><span class="n">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">user_id</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">concept_identity</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">user_id</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="n">m</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">match_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;user_id&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">matched_on</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">datetime</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">confidence</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m">1</span><span class="p">.</span><span class="m">0</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">match_type</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// Match by ID attribute</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">id</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="n">m</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">match_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;id&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">matched_on</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">datetime</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">confidence</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="m">0</span><span class="p">.</span><span class="m">9</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">match_type</span>
+</code></pre></div>
+<h3 id="alignement-des-domaines-de-valeurs">Alignement des domaines de valeurs<a class="headerlink" href="#alignement-des-domaines-de-valeurs" title="Permanent link">&para;</a></h3>
+<p>Une fois les variables mises en correspondance avec les dimensions, leurs domaines de valeurs
+doivent être alignés avec les listes de codes SDMX :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Find DDI CodeLists that should align with SDMX Codelists</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_VALUE_DOMAIN</span><span class="o">]-&gt;</span><span class="p">(:</span><span class="n">ValueDomain</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">USES_CODELIST</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">ddi_cl</span><span class="p">:</span><span class="n">CodeList</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_LOCAL_REPRESENTATION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">sdmx_cl</span><span class="p">:</span><span class="n">Codelist</span><span class="p">)</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">ddi_cl</span><span class="p">)</span><span class="o">-[</span><span class="n">a</span><span class="p">:</span><span class="n">ALIGNED_WITH</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">sdmx_cl</span><span class="p">)</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">alignment_date</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">datetime</span><span class="p">()</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">ddi_cl</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">sdmx_cl</span><span class="p">.</span><span class="n">id</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// Map individual categories to codes</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ddi_cl</span><span class="p">:</span><span class="n">CodeList</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALIGNED_WITH</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">sdmx_cl</span><span class="p">:</span><span class="n">Codelist</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ddi_cl</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CATEGORY</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span><span class="n">Category</span><span class="p">)</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">sdmx_cl</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CODE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">code</span><span class="p">:</span><span class="n">Code</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">code_value</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">code</span><span class="p">.</span><span class="n">value</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">cat</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CORRESPONDS_TO</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">cat</span><span class="p">.</span><span class="n">label</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+<h2 id="interrogation-des-donnees-integrees">Interrogation des données intégrées<a class="headerlink" href="#interrogation-des-donnees-integrees" title="Permanent link">&para;</a></h2>
+<h3 id="trouver-toutes-les-variables-mises-en-correspondance">Trouver toutes les variables mises en correspondance<a class="headerlink" href="#trouver-toutes-les-variables-mises-en-correspondance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="n">m</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="p">|</span><span class="n">MAPS_TO_MEASURE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span>
+<span class="w">       </span><span class="n">type</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mapping_type</span><span class="p">,</span>
+<span class="w">       </span><span class="n">labels</span><span class="p">(</span><span class="n">component</span><span class="p">)</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">component_type</span><span class="p">,</span>
+<span class="w">       </span><span class="n">component</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">component_id</span><span class="p">,</span>
+<span class="w">       </span><span class="n">m</span><span class="p">.</span><span class="n">confidence</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">confidence</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">confidence</span><span class="w"> </span><span class="k">DESC</span>
+</code></pre></div>
+<h3 id="tracer-la-lignee-complete">Tracer la lignée complète<a class="headerlink" href="#tracer-la-lignee-complete" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// From DDI question to SDMX dimension</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">q</span><span class="p">:</span><span class="n">QuestionItem</span><span class="p">)</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">ASKS_QUESTION</span><span class="o">]-</span><span class="p">(:</span><span class="n">QuestionConstruct</span><span class="p">)</span>
+<span class="w">             </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_CONSTRUCT</span><span class="p">*</span><span class="o">]-</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span><span class="n">Sequence</span><span class="p">),</span>
+<span class="w">      </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">question_id</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">fragment_id</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">q</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">question</span><span class="p">,</span>
+<span class="w">       </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span>
+<span class="w">       </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sdmx_dimension</span><span class="p">,</span>
+<span class="w">       </span><span class="n">length</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">depth</span>
+</code></pre></div>
+<h3 id="trouver-les-variables-non-mises-en-correspondance">Trouver les variables non mises en correspondance<a class="headerlink" href="#trouver-les-variables-non-mises-en-correspondance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="p">|</span><span class="n">MAPS_TO_MEASURE</span><span class="o">]-&gt;</span><span class="p">()</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">user_id</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+<h3 id="rapport-dalignement-des-listes-de-codes">Rapport d'alignement des listes de codes<a class="headerlink" href="#rapport-dalignement-des-listes-de-codes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ddi_cl</span><span class="p">:</span><span class="n">CodeList</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">ALIGNED_WITH</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">sdmx_cl</span><span class="p">:</span><span class="n">Codelist</span><span class="p">)</span>
+<span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">ddi_cl</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">HAS_CATEGORY</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span><span class="n">Category</span><span class="p">)</span>
+<span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cat</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">CORRESPONDS_TO</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">code</span><span class="p">:</span><span class="n">Code</span><span class="p">)</span>
+<span class="k">WITH</span><span class="w"> </span><span class="n">ddi_cl</span><span class="p">,</span><span class="w"> </span><span class="n">sdmx_cl</span><span class="p">,</span>
+<span class="w">     </span><span class="n">count</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">cat</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ddi_categories</span><span class="p">,</span>
+<span class="w">     </span><span class="n">count</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mapped_codes</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">ddi_cl</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ddi_codelist</span><span class="p">,</span>
+<span class="w">       </span><span class="n">sdmx_cl</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">sdmx_codelist</span><span class="p">,</span>
+<span class="w">       </span><span class="n">ddi_categories</span><span class="p">,</span>
+<span class="w">       </span><span class="n">mapped_codes</span><span class="p">,</span>
+<span class="w">       </span><span class="n">round</span><span class="p">(</span><span class="m">100</span><span class="p">.</span><span class="m">0</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="n">mapped_codes</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="n">ddi_categories</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pct_mapped</span>
+</code></pre></div>
+<h2 id="avantages-de-lapproche-graphe">Avantages de l'approche graphe<a class="headerlink" href="#avantages-de-lapproche-graphe" title="Permanent link">&para;</a></h2>
+<h3 id="1-cardinalite-flexible-des-correspondances">1. Cardinalité flexible des correspondances<a class="headerlink" href="#1-cardinalite-flexible-des-correspondances" title="Permanent link">&para;</a></h3>
+<p>Une seule variable DDI peut correspondre à plusieurs composants SDMX (ou inversement) sans
+modification du schéma :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Variable maps to both dimension and attribute</span>
+<span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_ATTRIBUTE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="n">Attribute</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="2-metadonnees-de-correspondance-riches">2. Métadonnées de correspondance riches<a class="headerlink" href="#2-metadonnees-de-correspondance-riches" title="Permanent link">&para;</a></h3>
+<p>Les relations portent des propriétés qui documentent la correspondance :</p>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">match_type</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;user_id&#39;</span><span class="p">,</span><span class="w">      </span><span class="c1">// How the match was made</span>
+<span class="w">  </span><span class="n">confidence</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="p">.</span><span class="m">95</span><span class="p">,</span><span class="w">           </span><span class="c1">// Confidence score</span>
+<span class="w">  </span><span class="n">matched_on</span><span class="p">:</span><span class="w"> </span><span class="n">datetime</span><span class="p">(),</span><span class="w">     </span><span class="c1">// When</span>
+<span class="w">  </span><span class="n">matched_by</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;auto&#39;</span><span class="p">,</span><span class="w">         </span><span class="c1">// Who/what</span>
+<span class="w">  </span><span class="n">notes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Verified by SME&#39;</span><span class="w">    </span><span class="c1">// Documentation</span>
+<span class="p">}</span><span class="o">]</span>
+</code></pre></div>
+<h3 id="3-enrichissement-incremental">3. Enrichissement incrémental<a class="headerlink" href="#3-enrichissement-incremental" title="Permanent link">&para;</a></h3>
+<p>Ajoutez de nouveaux types de correspondance sans modifier les données existantes :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Later: add semantic similarity mappings</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">gds</span><span class="p">.</span><span class="n">similarity</span><span class="p">.</span><span class="n">cosine</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">embedding</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">embedding</span><span class="p">)</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">.</span><span class="m">8</span>
+<span class="k">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="n">m</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">match_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;semantic&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">confidence</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gds</span><span class="p">.</span><span class="n">similarity</span><span class="p">.</span><span class="n">cosine</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">embedding</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">embedding</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="4-navigation-bidirectionnelle">4. Navigation bidirectionnelle<a class="headerlink" href="#4-navigation-bidirectionnelle" title="Permanent link">&para;</a></h3>
+<p>Interrogez depuis la perspective de chaque standard :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// DDI-first: What SDMX components does this variable map to?</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;AGE&#39;</span><span class="p">})</span><span class="o">-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="p">|</span><span class="n">MAPS_TO_MEASURE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">c</span>
+
+<span class="c1">// SDMX-first: What DDI variables feed this dimension?</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;AGE&#39;</span><span class="p">})</span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-</span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">v</span>
+</code></pre></div>
+<h3 id="5-analyse-dimpact">5. Analyse d'impact<a class="headerlink" href="#5-analyse-dimpact" title="Permanent link">&para;</a></h3>
+<p>Comprendre les effets en aval des modifications :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// If we change this CodeList, what SDMX structures are affected?</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">cl</span><span class="p">:</span><span class="n">CodeList</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;CL_SEX&#39;</span><span class="p">})</span><span class="o">-[</span><span class="p">:</span><span class="n">ALIGNED_WITH</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">sdmx_cl</span><span class="p">:</span><span class="n">Codelist</span><span class="p">)</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_LOCAL_REPRESENTATION</span><span class="o">]-</span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="p">)</span>
+<span class="w">      </span><span class="o">&lt;-[</span><span class="p">:</span><span class="n">HAS_DIMENSION</span><span class="o">]-</span><span class="p">(</span><span class="n">dsd</span><span class="p">:</span><span class="n">DataStructureDefinition</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">dsd</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">affected_structure</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">via_dimension</span>
+</code></pre></div>
+<h2 id="implementation-avec-ddigraph">Implémentation avec ddigraph<a class="headerlink" href="#implementation-avec-ddigraph" title="Permanent link">&para;</a></h2>
+<h3 id="etape-1-charger-les-donnees-ddi">Étape 1 : Charger les données DDI<a class="headerlink" href="#etape-1-charger-les-donnees-ddi" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>ddigraph<span class="w"> </span>load<span class="w"> </span>survey.xml<span class="w"> </span>--format<span class="w"> </span>lifecycle
+</code></pre></div>
+<h3 id="etape-2-charger-la-structure-sdmx">Étape 2 : Charger la structure SDMX<a class="headerlink" href="#etape-2-charger-la-structure-sdmx" title="Permanent link">&para;</a></h3>
+<p>Créer les nœuds SDMX (exemple en Cypher) :</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Load DSD</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">dsd</span><span class="p">:</span><span class="n">DataStructureDefinition</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;DSD_LFS&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">agency</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;EUROSTAT&#39;</span><span class="p">,</span>
+<span class="w">  </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;1.0&#39;</span>
+<span class="p">})</span>
+
+<span class="c1">// Load Dimensions</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;FREQ&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">position</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">concept_identity</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;FREQ&#39;</span><span class="p">})</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">:</span><span class="n">Dimension</span><span class="w"> </span><span class="p">{</span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;GEO&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">position</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">concept_identity</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;GEO&#39;</span><span class="p">})</span>
+<span class="c1">// ... etc</span>
+</code></pre></div>
+<h3 id="etape-3-executer-les-requetes-de-correspondance">Étape 3 : Exécuter les requêtes de correspondance<a class="headerlink" href="#etape-3-executer-les-requetes-de-correspondance" title="Permanent link">&para;</a></h3>
+<p>Lancez les requêtes de poignée de main pour créer les relations d'intégration.</p>
+<h3 id="etape-4-valider-et-rapporter">Étape 4 : Valider et rapporter<a class="headerlink" href="#etape-4-valider-et-rapporter" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Summary statistics</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">:</span><span class="n">Variable</span><span class="p">)</span>
+<span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="n">m</span><span class="p">:</span><span class="n">MAPS_TO_DIMENSION</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="k">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">-[</span><span class="n">m2</span><span class="p">:</span><span class="n">MAPS_TO_MEASURE</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">measure</span><span class="p">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_variables</span><span class="p">,</span>
+<span class="w">       </span><span class="n">count</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mapped_to_dimension</span><span class="p">,</span>
+<span class="w">       </span><span class="n">count</span><span class="p">(</span><span class="n">measure</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mapped_to_measure</span><span class="p">,</span>
+<span class="w">       </span><span class="n">count</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="err">-</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="err">-</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">measure</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">unmapped</span>
+</code></pre></div>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>Les bases de données graphe transforment l'interopérabilité des standards, d'un processus
+fragile et lourd en code, en un modèle de données flexible et interrogeable. La représentation
+explicite des correspondances sous forme de relations permet :</p>
+<ul>
+<li>Une logique d'intégration auto-documentée</li>
+<li>Une extension facile vers de nouveaux types de correspondance</li>
+<li>Des requêtes puissantes de lignée et d'impact</li>
+<li>Un raffinement incrémental des correspondances au fil du temps</li>
+</ul>
+<p>Pour l'intégration DDI-SDMX en particulier, le modèle en graphe représente naturellement la
+"poignée de main" entre les identifiants de variables et les identifiants de composants, tout
+en préservant le contexte complet nécessaire pour comprendre et maintenir les correspondances.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Philippe Bisson - MIT License
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.tracking", "navigation.expand", "navigation.top", "navigation.indexes", "toc.follow", "content.code.copy", "content.tabs.link", "search.suggest", "search.highlight", "header.autohide"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
