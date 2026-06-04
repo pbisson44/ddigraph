@@ -51,6 +51,15 @@ def test_resolve_credentials_source_recognises_canonical_and_legacy() -> None:
     assert "defaults" in resolve_credentials_source({})
 
 
+def test_neo4j_username_alias_is_recognised(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Aura credential files ship ``NEO4J_USERNAME``; it must populate ``neo4j_user``."""
+    monkeypatch.setenv("NEO4J_USERNAME", "aura-neo4j")
+
+    settings = Settings()
+
+    assert settings.neo4j_user == "aura-neo4j"
+
+
 def test_resolve_credentials_source_no_longer_returns_neo4ddi_branch() -> None:
     """Setting only NEO4DDI_* hits the ``defaults`` branch since the alias is gone."""
     assert (

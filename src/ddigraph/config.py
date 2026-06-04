@@ -29,7 +29,9 @@ class Settings(BaseSettings):
     )
     neo4j_user: str = Field(
         default="neo4j",
-        validation_alias=AliasChoices("NEO4J_USER", "DDIGRAPH_NEO4J_USER"),
+        validation_alias=AliasChoices(
+            "NEO4J_USER", "NEO4J_USERNAME", "DDIGRAPH_NEO4J_USER"
+        ),
     )
     neo4j_password: SecretStr = Field(
         default=SecretStr("password"),

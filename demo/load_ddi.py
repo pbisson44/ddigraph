@@ -6,9 +6,9 @@ Usage:
     python load_ddi.py path/to/file.xml    # Load a specific file
 
 Requires a .env file in this folder with Neo4j credentials:
-    NEO4DDI_NEO4J_URI=bolt://localhost:7687
-    NEO4DDI_NEO4J_USER=neo4j
-    NEO4DDI_NEO4J_PASSWORD=your-password
+    DDIGRAPH_NEO4J_URI=bolt://localhost:7687
+    DDIGRAPH_NEO4J_USER=neo4j
+    DDIGRAPH_NEO4J_PASSWORD=your-password
 """
 
 from __future__ import annotations

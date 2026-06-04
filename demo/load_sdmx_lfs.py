@@ -16,9 +16,9 @@ Usage:
 Prerequisites:
     1. Run sdmx_from_physical_instance.py first  (generates LFS_DSD.xml)
     2. Neo4j running with credentials in a .env file or environment variables:
-         NEO4DDI_NEO4J_URI=bolt://localhost:7687
-         NEO4DDI_NEO4J_USER=neo4j
-         NEO4DDI_NEO4J_PASSWORD=your-password
+         DDIGRAPH_NEO4J_URI=bolt://localhost:7687
+         DDIGRAPH_NEO4J_USER=neo4j
+         DDIGRAPH_NEO4J_PASSWORD=your-password
 """
 
 from __future__ import annotations
