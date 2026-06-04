@@ -215,3 +215,7 @@ __marimo__/
 !schemas/manifest.json
 !tests/fixtures/*.json
 *.xlsx
+*.ttl
+*.rdf
+*nt
+*jsonld
