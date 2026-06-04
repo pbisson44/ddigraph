@@ -214,8 +214,4 @@ __marimo__/
 !.markdownlint.json
 !schemas/manifest.json
 !tests/fixtures/*.json
-*.xlsx
-*.ttl
-*.rdf
-*nt
-*jsonld
+
