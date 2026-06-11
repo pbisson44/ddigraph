@@ -223,10 +223,13 @@ async def load_to_graphson(ddi_path: Path) -> dict[str, list[dict[str, Any]]]:
         if batch_count % 10 == 0:
             print(f"  Processed {batch_count} batches...")
 
+    # Relationships are tracked separately so they don't appear as a node type.
+    rel_count = totals.pop("relationships", 0)
     print("\nLoaded:")
     for key, count in sorted(totals.items()):
         if count > 0:
             print(f"  {key}: {count}")
+    print(f"  Relationships (edges): {rel_count}")
 
     return writer.to_graphson()
 
@@ -249,10 +252,13 @@ async def load_to_gremlin_server(ddi_path: Path, server_url: str) -> GremlinRemo
         if batch_count % 10 == 0:
             print(f"  Processed {batch_count} batches...")
 
+    # Relationships are tracked separately so they don't appear as a node type.
+    rel_count = totals.pop("relationships", 0)
     print("\nLoaded:")
     for key, count in sorted(totals.items()):
         if count > 0:
             print(f"  {key}: {count}")
+    print(f"  Relationships (edges): {rel_count}")
 
     return writer
 

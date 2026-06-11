@@ -68,8 +68,8 @@ class FileExportWriter:
                     "to_id": to_id,
                 }
             )
+        # Track relationships separately so they don't pollute node-type counts.
         batch_counts["relationships"] = len(batch.relationships)
-        self.counts["relationships"] += len(batch.relationships)
 
         return batch_counts
 

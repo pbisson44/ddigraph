@@ -508,11 +508,13 @@ async def main() -> None:
             print(f"\n  Loading {path.name}  [{fmt}] …")
             loader = DDIFragmentLoader(driver, settings=settings)
             result = await loader.load(path)
+            # "relationships"/"batches" are processing meta-stats, not node types.
+            meta_keys = {"relationships", "batches"}
             for k, v in result.items():
                 ddi_totals[k] = ddi_totals.get(k, 0) + v
-                if v > 0:
+                if v > 0 and k not in meta_keys:
                     print(f"    {k}: {v}")
-
+            print(f"    Relationships (edges): {result.get('relationships', 0)}")
         async with driver.session(database=settings.neo4j_database) as session:
             rec = await (await session.run("MATCH (n) RETURN count(n) AS n")).single()
             print(f"\n  Total nodes in database: {rec['n'] if rec else 0}")

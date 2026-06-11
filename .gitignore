@@ -215,3 +215,11 @@ __marimo__/
 !schemas/manifest.json
 !tests/fixtures/*.json
 
+# Demo script outputs (generated artifacts; root-level only so tracked
+# demo/*.ttl and schemas/**/*.ttl LFS files are unaffected)
+/ddi_graph.ttl
+/ddi_graph.nt
+/ddi_graph.rdf
+/ddi_graph.jsonld
+/ddi_data.xlsx
+/ddi_export/

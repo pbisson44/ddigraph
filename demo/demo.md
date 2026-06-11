@@ -153,15 +153,25 @@ Loading...
 Results:
   Category: 1065
   CodeList: 196
+  ComputationItem: 1
   IfThenElse: 357
   Instrument: 1
   QuestionConstruct: 376
+  QuestionGrid: 3
   QuestionItem: 373
   Sequence: 388
-  StatementItem: 6
+  StatementItem: 2
 
-Total nodes in database: 2762
+Total parsed nodes: 2762
 ```
+
+> **Note — version-aware identity.** DDI identity is agency+id+**version** (the URN). The sample contains
+> two distinct `Category` fragments that share an id (`23a02ae0-…`) but differ in version — version 3 "C6"
+> and version 4 "C7" — and two different code lists each reference a specific version. Fragment nodes are
+> therefore keyed on a **version-aware `fragment_id` (the URN, e.g. `urn:ddi:ie.cso:23a02ae0-…:3`)**, with
+> the bare DDI id preserved as `ddi_id`. Both versions are kept as separate nodes and each reference
+> resolves to the correct version, so every backend agrees at **2762 nodes / Category 1065** with no
+> dangling edges. (Genuine duplicates — same id *and* version — are still collapsed, with a warning.)
 
 ## Sample Output (NetworkX)
 
@@ -172,10 +182,10 @@ Total nodes in database: 2762
 
 Basic Stats:
   Nodes: 2762
-  Edges: 2892
+  Edges: 2904
 
 Nodes by Label:
-  Category: 1064
+  Category: 1065
   Sequence: 388
   QuestionConstruct: 376
   QuestionItem: 373
@@ -185,7 +195,7 @@ Nodes by Label:
 Relationships by Type:
   HAS_CATEGORY: 1096
   HAS_CONSTRUCT: 767
-  ASKS_QUESTION: 376
+  REFERENCES_QUESTION: 376
   THEN: 357
   USES_CODELIST: 296
 
@@ -206,9 +216,9 @@ Connected Components: 2
 DataFrames Created:
   QuestionItem: 373 rows, 8 columns
   CodeList: 196 rows, 7 columns
-  Category: 1064 rows, 6 columns
+  Category: 1065 rows, 6 columns
   Sequence: 388 rows, 6 columns
-  _relationships: 2892 rows, 3 columns
+  _relationships: 2904 rows, 3 columns
 
 --- QuestionItem Analysis ---
 Total questions: 373
@@ -232,11 +242,11 @@ Question text length:
 ============================================================
  
 Basic Stats:
-  Total triples: 8652
+  Total triples: 19071
   Unique resources: 2762
  
 Resources by Type:
-  ddi:Category: 1064
+  ddi:Category: 1065
   ddi:Sequence: 388
   ddi:QuestionItem: 373
   ddi:IfThenElse: 357
@@ -245,7 +255,7 @@ Resources by Type:
 Top Relationships:
   ddi:HAS_CATEGORY: 1096
   ddi:HAS_CONSTRUCT: 767
-  ddi:ASKS_QUESTION: 376
+  ddi:REFERENCES_QUESTION: 376
   ddi:USES_CODELIST: 296
  
 ============================================================
@@ -268,10 +278,10 @@ Found 296 question-codelist pairs
  
 Basic Stats:
   Vertices: 2762
-  Edges: 2892
+  Edges: 2904
  
 Vertices by Label:
-  Category: 1064
+  Category: 1065
   Sequence: 388
   QuestionItem: 373
   IfThenElse: 357
@@ -280,7 +290,7 @@ Vertices by Label:
 Edges by Type:
   HAS_CATEGORY: 1096
   HAS_CONSTRUCT: 767
-  ASKS_QUESTION: 376
+  REFERENCES_QUESTION: 376
   THEN: 357
  
 ============================================================

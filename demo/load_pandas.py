@@ -89,10 +89,14 @@ async def load_to_pandas(ddi_path: Path) -> dict[str, pd.DataFrame]:
         for key, value in counts.items():
             totals[key] = totals.get(key, 0) + value
 
+    # Relationships are tracked separately so they don't appear as a node type.
+    rel_count = totals.pop("relationships", 0)
+
     print("\nLoaded:")
     for key, count in sorted(totals.items()):
         if count > 0:
             print(f"  {key}: {count}")
+    print(f"  Relationships (edges): {rel_count}")
 
     return writer.to_dataframes()
 

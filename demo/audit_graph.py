@@ -218,7 +218,9 @@ def main() -> None:
     parser.add_argument("--uri", help="Neo4j URI (default: from .env)")
     parser.add_argument("--user", help="Neo4j user (default: from .env)")
     parser.add_argument("--password", help="Neo4j password (default: from .env)")
-    parser.add_argument("--database", default="neo4j", help="Database name")
+    parser.add_argument(
+        "--database", default=None, help="Database name (default: from .env, else neo4j)"
+    )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     args = parser.parse_args()
 
@@ -245,7 +247,7 @@ def main() -> None:
         uri = args.uri
         user = args.user
         password = args.password
-        database = args.database
+        database = args.database or "neo4j"
 
     driver = GraphDatabase.driver(uri, auth=(user, password))
 
