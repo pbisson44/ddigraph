@@ -1149,7 +1149,7 @@ class AsyncFragmentGraphWriter:
         """
         for label in ("Instrument", "StudyUnit"):
             await self._execute(f"MATCH (n:{label}) SET n:EntryPoint", {}, database)
-    
+
     async def purge_fragments(self, database: str) -> None:
         """Delete all fragment nodes and relationships."""
         # Get all fragment node labels

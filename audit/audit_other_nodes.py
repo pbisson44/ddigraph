@@ -36,8 +36,7 @@ def _known_labels() -> set[str] | None:
     except ImportError:
         return None
     labels = {
-        node.label
-        for node in DDISchema.get_all_nodes(include_fragments=True, include_cdi=True)
+        node.label for node in DDISchema.get_all_nodes(include_fragments=True, include_cdi=True)
     }
     # EntryPoint is a marker label added after load, not a fragment type.
     labels.add("EntryPoint")
@@ -193,7 +192,7 @@ def print_audit(audit: dict[str, Any]) -> None:
     print(f"  Unlabelled nodes: {t['unlabelled']}")
     print(
         "\n  Note: a Neo4j Browser/Bloom legend only colours the most common labels "
-        "and groups\n  the rest as \"Other\". The per-label counts above show what "
+        'and groups\n  the rest as "Other". The per-label counts above show what '
         "that bucket actually contains."
     )
 
