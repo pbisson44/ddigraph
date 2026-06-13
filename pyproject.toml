@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ddigraph"
-version = "0.4.1"
+version = "0.4.2"
 description = "DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases (Neo4j, RDF, Gremlin, NetworkX)"
 authors = [{name = "ddigraph maintainers", email = "ddigraph@noreply.github.com"}]
 readme = "README.md"
@@ -228,6 +228,7 @@ ignore = [
   "mkdocs.yml",
   "poetry.lock",
   "uv.lock",
+  "audit/**",
   "demo/**",
   "docs/**",
   "hooks/**",

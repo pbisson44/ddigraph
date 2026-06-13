@@ -52,6 +52,28 @@ logger = get_logger(__name__)
 # ============================================================================
 
 
+def make_node_key(
+    agency: str | None,
+    id: str,
+    version: str | None,
+    urn: str | None = None,
+) -> str:
+    """Return a version-aware identity key for a fragment or reference.
+
+    DDI identity is agency + id + version (the URN), so two fragments that share
+    an id but differ in version are distinct objects and must become distinct
+    nodes. The verbatim ``urn`` is used when present; otherwise it is composed
+    from agency/id/version in the canonical ``urn:ddi:<agency>:<id>:<version>``
+    form so that a fragment and the references pointing at it derive the same
+    key. Falls back to the bare id when no version is available.
+    """
+    if urn:
+        return urn
+    if version:
+        return f"urn:ddi:{agency or ''}:{id}:{version}"
+    return id
+
+
 @dataclass
 class FragmentReference:
     """A reference to another DDI-L fragment."""
@@ -65,6 +87,11 @@ class FragmentReference:
     def qualified_id(self) -> str:
         """Return agency-qualified ID if agency is present."""
         return f"{self.agency}:{self.id}" if self.agency else self.id
+
+    @property
+    def node_key(self) -> str:
+        """Version-aware identity of the referenced fragment."""
+        return make_node_key(self.agency, self.id, self.version)
 
 
 @dataclass
@@ -98,6 +125,11 @@ class Fragment:
         """Return agency-qualified ID if agency is present."""
         return f"{self.agency}:{self.id}" if self.agency else self.id
 
+    @property
+    def node_key(self) -> str:
+        """Version-aware identity of this fragment (the graph node key)."""
+        return make_node_key(self.agency, self.id, self.version, self.urn)
+
     def to_dict(self) -> dict[str, Any]:
         """Flatten fragment properties into a Cypher-ready parameter mapping.
 
@@ -107,7 +139,10 @@ class Fragment:
             :attr:`properties` and ``None`` values are omitted.
         """
         props = {
-            "fragment_id": self.id,
+            # ``fragment_id`` is the version-aware node key so two versions of
+            # the same DDI id stay distinct; the bare DDI id is kept as ``ddi_id``.
+            "fragment_id": self.node_key,
+            "ddi_id": self.id,
             "agency": self.agency,
             "version": self.version,
             "urn": self.urn,
@@ -432,7 +467,13 @@ class DDIFragmentParser:
         self.metrics = metrics or NullMetrics()
         self.recover = recover
         self.top_level_ref: FragmentReference | None = None
-        self._fragment_ids: set[str] = set()
+        # Version-aware node keys (URN-based) of every fragment seen.
+        self._node_keys: set[str] = set()
+        # Bare DDI id -> ordered node keys, for resolving references that omit a
+        # version or point at a version that is not present (fallback matching).
+        self._keys_by_id: dict[str, list[str]] = defaultdict(list)
+        # Count of true duplicates (same id *and* version) that were skipped.
+        self._duplicate_fragment_count = 0
         self._totals: dict[str, int] = defaultdict(int)
 
     def parse_batches(self) -> Iterator[FragmentBatch]:
@@ -476,10 +517,26 @@ class DDIFragmentParser:
 
                     elif tag == "Fragment":
                         fragment = self._parse_fragment(elem)
-                        if fragment:
+                        if fragment and fragment.node_key in self._node_keys:
+                            # Same id *and* version -> a genuine duplicate (not two
+                            # distinct versions). Keep the first and skip this one so
+                            # the uniqueness constraint is not violated; surface it.
+                            self._duplicate_fragment_count += 1
+                            logger.warning(
+                                "Duplicate fragment (same id and version); "
+                                "keeping first occurrence and skipping later one",
+                                extra={
+                                    "fragment_id": fragment.node_key,
+                                    "ddi_id": fragment.id,
+                                    "element_type": fragment.element_type,
+                                    "version": fragment.version,
+                                },
+                            )
+                        elif fragment:
                             batch.add_fragment(fragment)
                             all_fragments.append(fragment)
-                            self._fragment_ids.add(fragment.id)
+                            self._node_keys.add(fragment.node_key)
+                            self._keys_by_id[fragment.id].append(fragment.node_key)
                             self._totals[fragment.element_type] += 1
                             fragment_count += 1
 
@@ -505,15 +562,16 @@ class DDIFragmentParser:
         # Phase 2: Now that all fragment IDs are known, resolve relationships
         logger.debug(
             "Resolving relationships",
-            extra={"fragment_count": len(all_fragments), "known_ids": len(self._fragment_ids)},
+            extra={"fragment_count": len(all_fragments), "known_ids": len(self._node_keys)},
         )
 
         rel_batch = FragmentBatch()
         for fragment in all_fragments:
             for rel_type, ref in fragment.references:
+                target = self._resolve_reference(ref)
                 # Only create relationships to fragments that exist
-                if ref.id in self._fragment_ids:
-                    rel_batch.add_relationship(fragment.id, rel_type, ref.id)
+                if target is not None:
+                    rel_batch.add_relationship(fragment.node_key, rel_type, target)
 
                     # Yield relationship batches to avoid memory buildup
                     if len(rel_batch.relationships) >= self.chunk_size:
@@ -536,6 +594,25 @@ class DDIFragmentParser:
                 "elapsed_seconds": round(elapsed, 3),
             },
         )
+
+    def _resolve_reference(self, ref: FragmentReference) -> str | None:
+        """Resolve a reference to the node key of an existing fragment.
+
+        Prefers an exact version-aware match (same id and version). When the
+        reference omits a version or points at a version that is not present,
+        falls back to the most recently seen fragment with the same id so the
+        edge still resolves rather than being dropped. Returns ``None`` when no
+        fragment with the referenced id exists.
+        """
+        key = ref.node_key
+        if key in self._node_keys:
+            return key
+        candidates = self._keys_by_id.get(ref.id)
+        if candidates:
+            # Fallback: reference version is missing or unknown -> link to the
+            # latest fragment seen for this id.
+            return candidates[-1]
+        return None
 
     def _parse_reference(self, elem: etree._Element) -> FragmentReference | None:
         """Parse a *Reference element into a FragmentReference."""
@@ -916,7 +993,7 @@ class DDIFragmentParser:
         return {
             "fragment_count": sum(self._totals.values()),
             "types": dict(self._totals),
-            "entry_point": self.top_level_ref.id if self.top_level_ref else None,
+            "entry_point": self.top_level_ref.node_key if self.top_level_ref else None,
         }
 
 
@@ -1062,6 +1139,17 @@ class AsyncFragmentGraphWriter:
         cypher = "MATCH (n {fragment_id: $entry_id}) SET n:EntryPoint"
         await self._execute(cypher, {"entry_id": entry_id}, database)
 
+    async def mark_entry_points(self, database: str) -> None:
+        """Label every survey root (Instrument/StudyUnit) as an EntryPoint.
+
+        A FragmentInstance declares a single TopLevelReference, but a file -- or
+        an accumulated multi-file graph -- can contain many survey roots. Marking
+        each Instrument and StudyUnit makes them all discoverable as traversal
+        entry points regardless of how many files were loaded.
+        """
+        for label in ("Instrument", "StudyUnit"):
+            await self._execute(f"MATCH (n:{label}) SET n:EntryPoint", {}, database)
+
     async def purge_fragments(self, database: str) -> None:
         """Delete all fragment nodes and relationships."""
         # Get all fragment node labels
@@ -1176,12 +1264,16 @@ class DDIFragmentLoader:
 
             self.metrics.increment("fragment.batches")
 
-        # Mark entry point
-        if parser.top_level_ref and not self.settings.dry_run:
-            await writer.mark_entry_point(
-                parser.top_level_ref.id,
-                self.settings.neo4j_database,
-            )
+        # Mark entry points: the file's declared top level (which may be a Group
+        # or other container) plus every survey root (Instrument/StudyUnit), so all
+        # roots are discoverable even when several files are loaded into one graph.
+        if not self.settings.dry_run:
+            if parser.top_level_ref:
+                await writer.mark_entry_point(
+                    parser.top_level_ref.node_key,
+                    self.settings.neo4j_database,
+                )
+            await writer.mark_entry_points(self.settings.neo4j_database)
 
         elapsed = perf_counter() - start_time
         totals["batches"] = batch_count

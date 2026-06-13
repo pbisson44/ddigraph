@@ -78,12 +78,16 @@ async def main() -> None:
                 dataset_name=ddi_path.stem.replace("_", " ").title(),
             )
 
-        # Print results
+        # Print results. The loader's totals mix node-type counts with
+        # processing meta-stats ("relationships", "batches"); keep the latter
+        # out of the node listing so they aren't reported as node labels.
+        meta_keys = {"relationships", "batches"}
         print("\nResults:")
         for key, count in sorted(result.items()):
-            if count > 0:
+            if count > 0 and key not in meta_keys:
                 print(f"  {key}: {count}")
-
+        print(f"  Relationships (edges): {result.get('relationships', 0)}")
+        print(f"  Batches processed: {result.get('batches', 0)}")
         # Verify total nodes
         async with driver.session(database=settings.neo4j_database) as session:
             record = await session.run("MATCH (n) RETURN count(n) AS count")

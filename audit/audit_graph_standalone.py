@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
+from pathlib import Path
 from typing import Any
 
 from neo4j import GraphDatabase
@@ -29,7 +31,7 @@ def audit_graph(uri: str, user: str, password: str, database: str = "neo4j") -> 
             node_counts = {
                 r["label"]: r["count"]
                 for r in session.run("""MATCH (n) UNWIND labels(n) AS label RETURN
-                                     label, count(*) AS count ORDER BY count DESC.""")
+                                     label, count(*) AS count ORDER BY count DESC""")
             }
 
             # Relationship counts by type
@@ -37,23 +39,25 @@ def audit_graph(uri: str, user: str, password: str, database: str = "neo4j") -> 
                 r["type"]: r["count"]
                 for r in session.run(
                     """MATCH ()-[r]->() RETURN type(r) AS type, count(*) AS count ORDER
-                    BY count DESC."""
+                    BY count DESC"""
                 )
             }
 
             # Full relationship mapping: (Start)-[TYPE]->(End)
             rel_mapping = [
                 {
-                    "pattern": f"({r['start']})-[{r['rel']}]->({r['end']})",
-                    "start": r["start"],
-                    "relationship": r["rel"],
-                    "end": r["end"],
+                    "pattern": f"({r['start_label']})-[{r['rel_type']}]->({r['end_label']})",
+                    "start": r["start_label"],
+                    "relationship": r["rel_type"],
+                    "end": r["end_label"],
                     "count": r["count"],
                 }
                 for r in session.run(
-                    """MATCH (a)-[r]->(b) WITH labels(a)[0] AS start, type(r) AS rel,
-                    labels(b)[0] AS end, count(*) AS count RETURN start, rel, end, count
-                    ORDER BY count DESC."""
+                    """MATCH (a)-[r]->(b)
+                    WITH labels(a)[0] AS start_label, type(r) AS rel_type,
+                    labels(b)[0] AS end_label, count(*) AS count
+                    RETURN start_label, rel_type, end_label, count
+                    ORDER BY count DESC"""
                 )
             ]
 
@@ -63,7 +67,7 @@ def audit_graph(uri: str, user: str, password: str, database: str = "neo4j") -> 
                 for r in session.run(
                     """MATCH (n) WHERE n:EntryPoint OR n:Instrument OR n:StudyUnit
                     RETURN labels(n) AS labels, n.fragment_id AS id, n.name AS name,
-                    n.title AS title."""
+                    n.title AS title"""
                 )
             ]
 
@@ -72,7 +76,7 @@ def audit_graph(uri: str, user: str, password: str, database: str = "neo4j") -> 
                 {"label": r["label"], "id": r["id"], "name": r["name"]}
                 for r in session.run(
                     """MATCH (n) WHERE NOT (n)--() RETURN labels(n)[0] AS label,
-                    n.fragment_id AS id, n.name AS name LIMIT 100."""
+                    n.fragment_id AS id, n.name AS name LIMIT 100"""
                 )
             ]
 
@@ -97,7 +101,7 @@ def audit_graph(uri: str, user: str, password: str, database: str = "neo4j") -> 
                 r["type"]: r["count"]
                 for r in session.run(
                     """MATCH (v:Variable) RETURN coalesce(v.representation_type,
-                    'unknown') AS type, count(*) AS count ORDER BY count DESC."""
+                    'unknown') AS type, count(*) AS count ORDER BY count DESC"""
                 )
             }
 
@@ -109,7 +113,7 @@ def audit_graph(uri: str, user: str, password: str, database: str = "neo4j") -> 
                     (s)-[:HAS_DATA_COLLECTION]->(dc:DataCollection) OPTIONAL MATCH
                     (s)-[:USES_RESOURCE_PACKAGE]->(rp:ResourcePackage) RETURN
                     s.fragment_id AS id, s.title AS title, count(DISTINCT dc) AS
-                    data_collections, count(DISTINCT rp) AS resource_packages."""
+                    data_collections, count(DISTINCT rp) AS resource_packages"""
                 )
             ]
 
@@ -219,14 +223,42 @@ Examples:
   python audit_graph_standalone.py --uri ... --json > audit.json
         """,
     )
-    parser.add_argument("--uri", required=True, help="Neo4j URI")
-    parser.add_argument("--user", required=True, help="Neo4j username")
-    parser.add_argument("--password", required=True, help="Neo4j password")
-    parser.add_argument("--database", default="neo4j", help="Database name")
+    parser.add_argument("--uri", help="Neo4j URI (default: from .env)")
+    parser.add_argument("--user", help="Neo4j username (default: from .env)")
+    parser.add_argument("--password", help="Neo4j password (default: from .env)")
+    parser.add_argument(
+        "--database", default=None, help="Database name (default: from .env, else neo4j)"
+    )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     args = parser.parse_args()
 
-    audit = audit_graph(args.uri, args.user, args.password, args.database)
+    uri: str
+    user: str
+    password: str
+    database: str
+
+    # Fall back to a .env file (via ddigraph, if installed) for any missing credential,
+    # so the script can run without all flags while remaining usable standalone.
+    if not all([args.uri, args.user, args.password]):
+        try:
+            from ddigraph.config import Settings
+
+            env_file = Path(__file__).parent / ".env"
+            settings = Settings(_env_file=env_file) if env_file.exists() else Settings()
+            uri = args.uri or settings.neo4j_uri
+            user = args.user or settings.neo4j_user
+            password = args.password or settings.neo4j_password.get_secret_value()
+            database = args.database or settings.neo4j_database
+        except ImportError:
+            print("Error: provide --uri, --user, --password or install ddigraph for .env support")
+            sys.exit(1)
+    else:
+        uri = args.uri
+        user = args.user
+        password = args.password
+        database = args.database or "neo4j"
+
+    audit = audit_graph(uri, user, password, database)
 
     if args.json:
         print(json.dumps(audit, indent=2))

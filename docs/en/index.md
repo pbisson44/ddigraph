@@ -138,7 +138,7 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
 
 ## Documentation
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD007 MD033 -->
 <div class="grid cards" markdown>
 
 - **Getting Started**
@@ -148,9 +148,9 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Install ddigraph, run your first load, and explore the graph in under
     ten minutes.
 
-  - [Installation](getting-started/installation.md)
-  - [Quick Start](getting-started/quickstart.md)
-  - [10 Minutes to ddigraph](getting-started/ten-minutes.md)
+    - [Installation](getting-started/installation.md)
+    - [Quick Start](getting-started/quickstart.md)
+    - [10 Minutes to ddigraph](getting-started/ten-minutes.md)
 
 - **User Guide**
 
@@ -159,10 +159,10 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Understand the architecture, learn how DDI elements map to graph
     structures, and extend ddigraph with custom adapters.
 
-  - [Architecture](user-guide/architecture.md)
-  - [DDI-L FragmentInstance](user-guide/fragments.md)
-  - [Relationship Model](user-guide/relationships.md)
-  - [Adapter Pattern](user-guide/adapter.md)
+    - [Architecture](user-guide/architecture.md)
+    - [DDI-L FragmentInstance](user-guide/fragments.md)
+    - [Relationship Model](user-guide/relationships.md)
+    - [Adapter Pattern](user-guide/adapter.md)
 
 - **Graph Backends**
 
@@ -171,10 +171,10 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Detailed guides for each supported backend, including connection
     setup, schema bootstrapping, and query examples.
 
-  - [Neo4j](backends/neo4j.md)
-  - [RDF / SPARQL](backends/rdf.md)
-  - [Gremlin](backends/gremlin.md)
-  - [NetworkX](backends/networkx.md)
+    - [Neo4j](backends/neo4j.md)
+    - [RDF / SPARQL](backends/rdf.md)
+    - [Gremlin](backends/gremlin.md)
+    - [NetworkX](backends/networkx.md)
 
 - **Reference**
 
@@ -182,8 +182,8 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
 
     Complete CLI command reference and configuration option catalog.
 
-  - [CLI Reference](reference/cli.md)
-  - [Configuration](reference/configuration.md)
+    - [CLI Reference](reference/cli.md)
+    - [Configuration](reference/configuration.md)
 
 - **Advanced**
 
@@ -192,10 +192,10 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Tune performance, integrate with AI/LLM pipelines, and understand how
     ddigraph fits into the broader DDI ecosystem.
 
-  - [Performance Tuning](advanced/tuning.md)
-  - [AI Readiness](advanced/ai-readiness.md)
-  - [Standards Interoperability](advanced/interoperability.md)
-  - [Graph vs Relational](advanced/graph-vs-relational.md)
+    - [Performance Tuning](advanced/tuning.md)
+    - [AI Readiness](advanced/ai-readiness.md)
+    - [Standards Interoperability](advanced/interoperability.md)
+    - [Graph vs Relational](advanced/graph-vs-relational.md)
 
 - **Project**
 
@@ -204,12 +204,12 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Contribute to ddigraph, review the changelog, or find answers to
     common questions.
 
-  - [Contributing](project/contributing.md)
-  - [Changelog](project/changelog.md)
-  - [FAQ](project/faq.md)
+    - [Contributing](project/contributing.md)
+    - [Changelog](project/changelog.md)
+    - [FAQ](project/faq.md)
 
 </div>
-<!-- markdownlint-enable MD033 -->
+<!-- markdownlint-enable MD007 MD033 -->
 
 ---
 

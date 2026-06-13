@@ -198,7 +198,10 @@ def test_tls_settings_ignored_without_cli_flags(monkeypatch: pytest.MonkeyPatch)
         ]
     )
 
-    settings = cli._settings_from_args(args)
+    # Building settings with a legacy NEO4DDI_* var emits a deprecation warning;
+    # assert it fires (and keep it out of the test-run warnings summary).
+    with pytest.warns(DeprecationWarning, match="NEO4DDI"):
+        settings = cli._settings_from_args(args)
     driver = cli._create_driver(settings)
 
     assert isinstance(driver, DummyDriver)
@@ -638,19 +641,21 @@ def test_main_applies_overrides(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(cli, "ensure_schema", fake_ensure)
     monkeypatch.setattr(cli, "configure_logging", fake_configure_logging)
 
-    cli.main(
-        [
-            "ensure-schema",
-            "--neo4j-uri",
-            "bolt://db:9999",
-            "--neo4j-user",
-            "custom",
-            "--neo4j-password",
-            "secret",
-            "--neo4j-database",
-            "example",
-        ]
-    )
+    # `ensure-schema` is a deprecated alias for `bootstrap`; assert the warning.
+    with pytest.warns(DeprecationWarning, match="ensure-schema"):
+        cli.main(
+            [
+                "ensure-schema",
+                "--neo4j-uri",
+                "bolt://db:9999",
+                "--neo4j-user",
+                "custom",
+                "--neo4j-password",
+                "secret",
+                "--neo4j-database",
+                "example",
+            ]
+        )
 
     log_settings = cast(Settings, calls["log_settings"])
     driver_settings = cast(Settings, calls["driver_settings"])

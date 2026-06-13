@@ -95,10 +95,12 @@ class RDFFragmentWriter:
                 # Add type (rdf:type)
                 self.graph.add((subject, RDF.type, DDI[element_type]))
 
-                # Add label if present
+                # Add a human-readable label: prefer `label`, fall back to `name`
+                # (most fragments — QuestionItem, QuestionConstruct, etc. — only carry `name`).
                 props = fragment.to_dict()
-                if props.get("label"):
-                    self.graph.add((subject, RDFS.label, Literal(props["label"])))
+                display_label = props.get("label") or props.get("name")
+                if display_label:
+                    self.graph.add((subject, RDFS.label, Literal(display_label)))
 
                 # Add all properties as predicates
                 for key, value in props.items():
@@ -136,10 +138,13 @@ async def load_to_rdf(ddi_path: Path) -> Any:
         for key, value in counts.items():
             totals[key] = totals.get(key, 0) + value
 
+    # Relationships are tracked separately so they don't appear as a node type.
+    rel_count = totals.pop("relationships", 0)
     print("\nLoaded:")
     for key, count in sorted(totals.items()):
         if count > 0:
             print(f"  {key}: {count}")
+    print(f"  Relationships (edges): {rel_count}")
 
     return writer.graph
 
@@ -158,19 +163,21 @@ def analyze_rdf_graph(g: Any) -> None:
     print(f"  Unique resources: {len(subjects)}")
 
     # Count by rdf:type
+    # Alias the count as ?cnt, not ?count: on rdflib's ResultRow (a tuple subclass)
+    # `row.count` resolves to the built-in tuple.count method, not the SPARQL variable.
     type_query = """
-        SELECT ?type (COUNT(?s) as ?count)
+        SELECT ?type (COUNT(?s) as ?cnt)
         WHERE {
             ?s rdf:type ?type .
         }
         GROUP BY ?type
-        ORDER BY DESC(?count)
+        ORDER BY DESC(?cnt)
     """
 
     print("\nResources by Type:")
     for row in cast(Iterable[ResultRow], g.query(type_query)):
         type_name = str(row.type).replace(str(DDI), "ddi:")
-        print(f"  {type_name}: {row.count}")
+        print(f"  {type_name}: {row.cnt}")
 
     # Count predicates
     predicates = set(g.predicates())
@@ -178,7 +185,7 @@ def analyze_rdf_graph(g: Any) -> None:
 
     # Count relationship types (excluding rdf:type, rdfs:label, and properties)
     rel_query = """
-        SELECT ?predicate (COUNT(*) as ?count)
+        SELECT ?predicate (COUNT(*) as ?cnt)
         WHERE {
             ?s ?predicate ?o .
             FILTER(STRSTARTS(STR(?predicate), STR(ddi:)))
@@ -186,14 +193,14 @@ def analyze_rdf_graph(g: Any) -> None:
             FILTER(isURI(?o))
         }
         GROUP BY ?predicate
-        ORDER BY DESC(?count)
+        ORDER BY DESC(?cnt)
         LIMIT 10
     """
 
     print("\nTop Relationships:")
     for row in cast(Iterable[ResultRow], g.query(rel_query)):
         pred_name = str(row.predicate).replace(str(DDI), "ddi:")
-        print(f"  {pred_name}: {row.count}")
+        print(f"  {pred_name}: {row.cnt}")
 
 
 def demonstrate_sparql_queries(g: Any) -> None:
@@ -260,7 +267,7 @@ def demonstrate_sparql_queries(g: Any) -> None:
     # Query 4: Path queries - questions 2 hops from Instrument
     print("\n--- Query 4: Control Flow Depth ---")
     query4 = """
-        SELECT (COUNT(DISTINCT ?question) as ?count)
+        SELECT (COUNT(DISTINCT ?question) as ?cnt)
         WHERE {
             ?instrument rdf:type ddi:Instrument .
             ?instrument ?p1 ?middle .
@@ -269,7 +276,7 @@ def demonstrate_sparql_queries(g: Any) -> None:
         }
     """
     for row in cast(Iterable[ResultRow], g.query(query4)):
-        print(f"  Questions 2 hops from Instrument: {row.count}")
+        print(f"  Questions 2 hops from Instrument: {row.cnt}")
 
     # Query 5: Sequences with most constructs
     print("\n--- Query 5: Largest Sequences ---")
@@ -360,7 +367,7 @@ Properties:
  
 Relationships:
   Fragment references -> ddi:<relationship_type>
-  Examples: ddi:USES_CODELIST, ddi:HAS_CONSTRUCT, ddi:ASKS_QUESTION
+  Examples: ddi:USES_CODELIST, ddi:HAS_CONSTRUCT, ddi:REFERENCES_QUESTION
  
 Example triple:
   ddidata:q1 rdf:type ddi:QuestionItem .
