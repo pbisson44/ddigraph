@@ -170,9 +170,9 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Installez ddigraph, effectuez votre premier chargement et explorez le
     graphe en moins de dix minutes.
 
-  - [Installation](getting-started/installation.md)
-  - [Démarrage rapide](getting-started/quickstart.md)
-  - [10 minutes avec ddigraph](getting-started/ten-minutes.md)
+    - [Installation](getting-started/installation.md)
+    - [Démarrage rapide](getting-started/quickstart.md)
+    - [10 minutes avec ddigraph](getting-started/ten-minutes.md)
 
 - **Guide d'utilisation**
 
@@ -182,10 +182,10 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     transposés en structures de graphe, et étendez ddigraph avec des
     adaptateurs personnalisés.
 
-  - [Architecture](user-guide/architecture.md)
-  - [DDI-L FragmentInstance](user-guide/fragments.md)
-  - [Modèle relationnel](user-guide/relationships.md)
-  - [Patron adaptateur](user-guide/adapter.md)
+    - [Architecture](user-guide/architecture.md)
+    - [DDI-L FragmentInstance](user-guide/fragments.md)
+    - [Modèle relationnel](user-guide/relationships.md)
+    - [Patron adaptateur](user-guide/adapter.md)
 
 - **Bases de données graphe**
 
@@ -194,10 +194,10 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Guides détaillés pour chaque backend pris en charge : configuration de la
     connexion, amorçage du schéma et exemples de requêtes.
 
-  - [Neo4j](backends/neo4j.md)
-  - [RDF / SPARQL](backends/rdf.md)
-  - [Gremlin](backends/gremlin.md)
-  - [NetworkX](backends/networkx.md)
+    - [Neo4j](backends/neo4j.md)
+    - [RDF / SPARQL](backends/rdf.md)
+    - [Gremlin](backends/gremlin.md)
+    - [NetworkX](backends/networkx.md)
 
 - **Référence**
 
@@ -206,8 +206,8 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Référence complète des commandes CLI et catalogue de toutes les options
     de configuration.
 
-  - [Référence CLI](reference/cli.md)
-  - [Configuration](reference/configuration.md)
+    - [Référence CLI](reference/cli.md)
+    - [Configuration](reference/configuration.md)
 
 - **Avancé**
 
@@ -216,10 +216,10 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Optimisez les performances, intégrez ddigraph aux pipelines IA/LLM et
     comprenez sa place dans l'écosystème DDI.
 
-  - [Optimisation des performances](advanced/tuning.md)
-  - [Préparation pour l'IA](advanced/ai-readiness.md)
-  - [Interopérabilité des standards](advanced/interoperability.md)
-  - [Graphe vs Relationnel](advanced/graph-vs-relational.md)
+    - [Optimisation des performances](advanced/tuning.md)
+    - [Préparation pour l'IA](advanced/ai-readiness.md)
+    - [Interopérabilité des standards](advanced/interoperability.md)
+    - [Graphe vs Relationnel](advanced/graph-vs-relational.md)
 
 - **Projet**
 
@@ -228,9 +228,9 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     Contribuez à ddigraph, consultez le journal des modifications ou trouvez
     des réponses aux questions fréquentes.
 
-  - [Contribuer](project/contributing.md)
-  - [Journal des modifications](project/changelog.md)
-  - [FAQ](project/faq.md)
+    - [Contribuer](project/contributing.md)
+    - [Journal des modifications](project/changelog.md)
+    - [FAQ](project/faq.md)
 
 </div>
 <!-- markdownlint-enable MD033 -->
