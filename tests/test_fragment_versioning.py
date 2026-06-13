@@ -71,6 +71,47 @@ _TWO_VERSIONS = """<?xml version="1.0" encoding="UTF-8"?>
 </FragmentInstance>
 """
 
+# A reference that omits its version (and one pointing at an id with no fragment
+# at all). The version-less reference must fall back to the latest fragment seen
+# for that id; the dangling reference must resolve to nothing (dropped edge).
+_FALLBACK = """<?xml version="1.0" encoding="UTF-8"?>
+<FragmentInstance xmlns="ddi:instance:3_3"
+                  xmlns:r="ddi:reusable:3_3"
+                  xmlns:l="ddi:logicalproduct:3_3">
+    <Fragment>
+        <l:CodeList id="cl-f" agency="test.org" version="1.0">
+            <r:Agency>test.org</r:Agency>
+            <r:ID>cl-f</r:ID>
+            <r:Version>1.0</r:Version>
+            <r:Label><r:Content>List F</r:Content></r:Label>
+            <l:Code>
+                <r:CategoryReference>
+                    <r:Agency>test.org</r:Agency>
+                    <r:ID>cat-y</r:ID>
+                    <r:TypeOfObject>Category</r:TypeOfObject>
+                </r:CategoryReference>
+            </l:Code>
+            <l:Code>
+                <r:CategoryReference>
+                    <r:Agency>test.org</r:Agency>
+                    <r:ID>cat-missing</r:ID>
+                    <r:Version>9</r:Version>
+                    <r:TypeOfObject>Category</r:TypeOfObject>
+                </r:CategoryReference>
+            </l:Code>
+        </l:CodeList>
+    </Fragment>
+    <Fragment>
+        <l:Category id="cat-y" agency="test.org" version="5">
+            <r:Agency>test.org</r:Agency>
+            <r:ID>cat-y</r:ID>
+            <r:Version>5</r:Version>
+            <r:Label><r:Content>Y</r:Content></r:Label>
+        </l:Category>
+    </Fragment>
+</FragmentInstance>
+"""
+
 # Same id *and* version twice -> a genuine duplicate that should be collapsed.
 _TRUE_DUPLICATE = """<?xml version="1.0" encoding="UTF-8"?>
 <FragmentInstance xmlns="ddi:instance:3_3"
@@ -141,6 +182,23 @@ def test_true_duplicate_same_id_and_version_is_collapsed(tmp_path: Path) -> None
 
     assert len([n for n in nodes if n.get("ddi_id") == "cat-x"]) == 1
     assert parser._duplicate_fragment_count == 1
+
+
+def test_versionless_reference_falls_back_to_latest_known_id(tmp_path: Path) -> None:
+    _nodes, relationships, _parser = _parse(tmp_path, _FALLBACK)
+
+    has_category = {(r[0], r[2]) for r in relationships if r[1] == "HAS_CATEGORY"}
+    # The version-less CategoryReference still resolves -- to the only (latest)
+    # fragment seen for that id -- rather than being dropped.
+    assert has_category == {("urn:ddi:test.org:cl-f:1.0", "urn:ddi:test.org:cat-y:5")}
+
+
+def test_reference_to_unknown_id_resolves_to_nothing(tmp_path: Path) -> None:
+    _nodes, relationships, _parser = _parse(tmp_path, _FALLBACK)
+
+    # ``cat-missing`` has no fragment in the file, so no edge is created for it.
+    targets = {r[2] for r in relationships}
+    assert not any("cat-missing" in t for t in targets)
 
 
 def test_make_node_key_prefers_urn_then_composes_then_falls_back() -> None:
