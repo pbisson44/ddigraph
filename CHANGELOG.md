@@ -7,6 +7,71 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ---
 
+## 0.4.2 — 2026-06-13
+
+Operational hardening for multi-file graphs and the packaged
+distribution, plus a graph-audit tool and broader loader test
+coverage.
+
+### Added
+
+- **Survey-root entry-point labelling**
+  (``AsyncFragmentGraphWriter.mark_entry_points``): every ``Instrument``
+  and ``StudyUnit`` is now labelled ``:EntryPoint``, not just the file's
+  declared ``TopLevelReference``. A single FragmentInstance declares one
+  top level, but a file -- or an accumulated multi-file graph -- can hold
+  many survey roots; all of them are now discoverable as traversal entry
+  points regardless of how many files were loaded.
+- **``audit/audit_other_nodes.py``** -- a standalone audit script that
+  explains the generic "Other" nodes in a loaded graph and flags any
+  genuine problems.
+- **Expanded loader tests**: fragment entry-point marking,
+  ``_resolve_reference`` fallback paths, a loader integration test, and
+  coverage for declared-top-level vs. survey-root labelling.
+
+### Changed
+
+- **``audit/`` excluded from the published sdist** so the packaged
+  distribution stays lean; audit tooling now lives under ``audit/``.
+- mkdocs-material "grid cards" rendering fix on the docs home page.
+
+### Fixed
+
+- Silenced the ``DeprecationWarning``s that ddigraph's own deprecation
+  shims emitted during the test run.
+- markdownlint ``MD007`` (unordered-list indentation) addressed via
+  inline directives.
+
+## 0.4.1 — 2026-06-06
+
+Correctness release. Makes DDI-L fragment identity version-aware and
+smooths Neo4j Aura configuration, alongside CI/publish hardening.
+
+### Added
+
+- **``NEO4J_USERNAME`` recognised** as a config alias (added to the
+  ``neo4j_user`` ``AliasChoices``) so Neo4j Aura ``.env`` files -- which
+  ship ``NEO4J_USERNAME`` -- work without edits.
+- **Automated PyPI publishing** wired into the release workflow.
+
+### Changed
+
+- **Version-aware DDI-L fragment identity (URN-based node key).**
+  ``Fragment.node_key`` / ``FragmentReference.node_key`` now key nodes on
+  the full DDI URN (``urn:ddi:<agency>:<id>:<version>``) instead of the
+  bare id, so two versions of the same DDI id become distinct nodes.
+  ``Fragment.to_dict()`` writes the version-aware key as ``fragment_id``
+  and keeps the bare DDI id as ``ddi_id``; a fragment and the references
+  pointing at it derive the same key. Falls back to the bare id when no
+  version is present.
+- Workflow permission hardening from code-scanning alerts (explicit
+  ``permissions:`` blocks on the GitHub Actions workflows).
+- Bumped ``codecov/codecov-action`` from 6 to 7.
+
+### Fixed
+
+- Demo script fixes (``demo/load_ddi.py``, ``demo/load_sdmx_lfs.py``).
+
 ## 0.4.0 — 2026-05-16
 
 Final milestone of the 0.4.0 simplification work. The bespoke
