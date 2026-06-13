@@ -1139,6 +1139,17 @@ class AsyncFragmentGraphWriter:
         cypher = "MATCH (n {fragment_id: $entry_id}) SET n:EntryPoint"
         await self._execute(cypher, {"entry_id": entry_id}, database)
 
+    async def mark_entry_points(self, database: str) -> None:
+        """Label every survey root (Instrument/StudyUnit) as an EntryPoint.
+
+        A FragmentInstance declares a single TopLevelReference, but a file -- or
+        an accumulated multi-file graph -- can contain many survey roots. Marking
+        each Instrument and StudyUnit makes them all discoverable as traversal
+        entry points regardless of how many files were loaded.
+        """
+        for label in ("Instrument", "StudyUnit"):
+            await self._execute(f"MATCH (n:{label}) SET n:EntryPoint", {}, database)
+    
     async def purge_fragments(self, database: str) -> None:
         """Delete all fragment nodes and relationships."""
         # Get all fragment node labels
@@ -1253,12 +1264,16 @@ class DDIFragmentLoader:
 
             self.metrics.increment("fragment.batches")
 
-        # Mark entry point
-        if parser.top_level_ref and not self.settings.dry_run:
-            await writer.mark_entry_point(
-                parser.top_level_ref.node_key,
-                self.settings.neo4j_database,
-            )
+        # Mark entry points: the file's declared top level (which may be a Group
+        # or other container) plus every survey root (Instrument/StudyUnit), so all
+        # roots are discoverable even when several files are loaded into one graph.
+        if not self.settings.dry_run:
+            if parser.top_level_ref:
+                await writer.mark_entry_point(
+                    parser.top_level_ref.node_key,
+                    self.settings.neo4j_database,
+                )
+            await writer.mark_entry_points(self.settings.neo4j_database)
 
         elapsed = perf_counter() - start_time
         totals["batches"] = batch_count
