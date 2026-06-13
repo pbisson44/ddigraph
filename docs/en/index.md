@@ -138,7 +138,7 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
 
 ## Documentation
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD007 MD033 -->
 <div class="grid cards" markdown>
 
 - **Getting Started**
@@ -209,7 +209,7 @@ ddigraph load path/to/survey.xml --dataset-id my-survey
     - [FAQ](project/faq.md)
 
 </div>
-<!-- markdownlint-enable MD033 -->
+<!-- markdownlint-enable MD007 MD033 -->
 
 ---
 
