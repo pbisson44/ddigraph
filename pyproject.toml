@@ -228,6 +228,7 @@ ignore = [
   "mkdocs.yml",
   "poetry.lock",
   "uv.lock",
+  "audit/**",
   "demo/**",
   "docs/**",
   "hooks/**",
