@@ -180,7 +180,7 @@ jobs:
           hatch build
 
       - name: Publish package via OIDC Trusted Publishing
-        uses: pypa/gh-action-pypi-publish@v1.14.0
+        uses: pypa/gh-action-pypi-publish@v1.14.1
 
       - name: Tag release on main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
