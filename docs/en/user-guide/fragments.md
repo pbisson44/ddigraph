@@ -66,6 +66,7 @@ from neo4j import AsyncGraphDatabase
 from ddigraph import DDIFragmentLoader, detect_ddi_format
 from ddigraph.config import Settings
 
+
 async def load_fragments():
     settings = Settings()
     driver = AsyncGraphDatabase.driver(

@@ -77,6 +77,7 @@ pip install -e ".[dev,docs]"
 
 ```python
 import ddigraph
+
 print(ddigraph.__version__)
 ```
 

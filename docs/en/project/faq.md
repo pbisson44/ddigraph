@@ -180,6 +180,7 @@ Your adapter can return `None` (sync) or `Awaitable[None]` (async):
 ```python
 from ddigraph.schema.adapter import GraphWriteAdapter
 
+
 # Synchronous adapter
 class SyncAdapter:
     def write_batch(self, graph, **kwargs) -> None:
@@ -202,6 +203,7 @@ Implement the `GraphWriteAdapter` protocol with two methods: `write_batch` and `
 ```python
 from ddigraph.schema.adapter import GraphWriteAdapter
 from ddigraph.schema.ddi_graph import DDIIngestGraph
+
 
 class MyBackendAdapter:
     async def write_batch(

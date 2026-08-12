@@ -111,6 +111,7 @@ import asyncio
 from neo4j import AsyncGraphDatabase
 from ddigraph import DDILoader, DDIFragmentLoader, detect_ddi_format, Settings
 
+
 async def main():
     settings = Settings()
     driver = AsyncGraphDatabase.driver(
@@ -137,6 +138,7 @@ async def main():
 
     print(result)
     await driver.close()
+
 
 asyncio.run(main())
 ```
@@ -224,6 +226,7 @@ from pathlib import Path
 import networkx as nx
 from ddigraph.ingest.fragment_loader import DDIFragmentParser
 
+
 async def load_to_networkx(path: str) -> nx.MultiDiGraph:
     G = nx.MultiDiGraph()
     parser = DDIFragmentParser(Path(path))
@@ -241,6 +244,7 @@ async def load_to_networkx(path: str) -> nx.MultiDiGraph:
             G.add_edge(from_id, to_id, key=rel_type, type=rel_type)
 
     return G
+
 
 G = asyncio.run(load_to_networkx("questionnaire.xml"))
 print(f"Nodes: {G.number_of_nodes()}, Edges: {G.number_of_edges()}")
