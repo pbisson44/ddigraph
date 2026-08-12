@@ -7,6 +7,10 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ---
 
+## 0.4.3 — 2026-08-12
+
+- ruff format and check
+
 ## 0.4.2 — 2026-06-13
 
 Operational hardening for multi-file graphs and the packaged
