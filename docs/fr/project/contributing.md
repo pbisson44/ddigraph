@@ -86,6 +86,7 @@ Les nouveaux backends implémentent le protocole `GraphWriteAdapter` :
 ```python
 from ddigraph.schema import GraphWriteAdapter
 
+
 class MyBackendAdapter(GraphWriteAdapter):
     async def write_batch(self, graph, **kwargs):
         """Écrire un lot de noeuds et de relations."""

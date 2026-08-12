@@ -69,6 +69,7 @@ from ddigraph import DDILoader, DDIFragmentLoader, detect_ddi_format
 from ddigraph.config import Settings
 from ddigraph.graph.bootstrap import ensure_schema
 
+
 async def main():
     settings = Settings()
     driver = AsyncGraphDatabase.driver(
@@ -90,6 +91,7 @@ async def main():
 
     print(result)
     await driver.close()
+
 
 asyncio.run(main())
 ```
@@ -230,10 +232,7 @@ await adapter.purge_dataset("my-dataset")
 # Test connection
 from neo4j import GraphDatabase
 
-driver = GraphDatabase.driver(
-    "bolt://localhost:7687",
-    auth=("neo4j", "password")
-)
+driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "password"))
 driver.verify_connectivity()
 ```
 

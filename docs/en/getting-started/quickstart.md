@@ -82,9 +82,7 @@ fully featured option and the easiest to get started with.
     parser = DDIFragmentParser()
 
     for fragment in parser.parse("survey.xml"):
-        G.add_node(fragment.fragment_id,
-                   label=fragment.element_type,
-                   **fragment.to_dict())
+        G.add_node(fragment.fragment_id, label=fragment.element_type, **fragment.to_dict())
         for rel_type, ref in fragment.references:
             G.add_edge(fragment.fragment_id, ref.id, key=rel_type)
 
@@ -101,15 +99,14 @@ fully featured option and the easiest to get started with.
     from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
     from ddigraph import DDIFragmentParser
 
-    connection = DriverRemoteConnection('ws://localhost:8182/gremlin', 'g')
+    connection = DriverRemoteConnection("ws://localhost:8182/gremlin", "g")
     g = traversal().withRemote(connection)
 
     parser = DDIFragmentParser()
     for fragment in parser.parse("survey.xml"):
-        g.addV(fragment.element_type) \
-            .property('id', fragment.fragment_id) \
-            .property('label', fragment.label or '') \
-            .iterate()
+        g.addV(fragment.element_type).property("id", fragment.fragment_id).property(
+            "label", fragment.label or ""
+        ).iterate()
 
     connection.close()
     ```
@@ -183,6 +180,7 @@ from ddigraph import DDILoader, DDIFragmentLoader, detect_ddi_format
 from ddigraph.config import Settings
 from ddigraph.graph.bootstrap import ensure_schema
 
+
 async def load_ddi(path: str, dataset_id: str = "default"):
     settings = Settings()
     driver = AsyncGraphDatabase.driver(
@@ -201,6 +199,7 @@ async def load_ddi(path: str, dataset_id: str = "default"):
             result = await loader.load(path)
         elif fmt == "cdi":
             from ddigraph.ingest.cdi_loader import CDILoader
+
             loader = CDILoader(driver, settings=settings)
             result = await loader.load(path)
         else:
@@ -210,6 +209,7 @@ async def load_ddi(path: str, dataset_id: str = "default"):
         return result
     finally:
         await driver.close()
+
 
 result = asyncio.run(load_ddi("survey.xml", "my-survey"))
 print(f"Loaded: {result}")

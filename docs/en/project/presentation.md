@@ -119,13 +119,16 @@ RETURN DISTINCT seq.name AS affected_sections,
 ```python
 # Generate natural language documentation
 def document_survey(instrument_id):
-    results = session.run("""
+    results = session.run(
+        """
         MATCH (i:Instrument {id: $id})-[:HAS_CONSTRUCT]->(seq:Sequence)
         MATCH (seq)-[:HAS_CONSTRUCT]->(c)
         RETURN seq.name, labels(c)[0], count(*) as count
         ORDER BY seq.name
-    """, id=instrument_id)
-    
+    """,
+        id=instrument_id,
+    )
+
     # Feed to LLM for natural language generation
     return generate_documentation(results)
 ```
@@ -252,18 +255,21 @@ Bot: [Queries graph for sequences following employment constructs]
 # RAG pipeline with graph context
 def answer_question(user_query):
     # 1. Convert query to graph pattern
-    graph_results = neo4j.run("""
+    graph_results = neo4j.run(
+        """
         MATCH (q:QuestionItem)
         WHERE q.question_text CONTAINS $keywords
         MATCH path = (q)<-[:ASKS_QUESTION]-(:QuestionConstruct)
                         <-[:HAS_CONSTRUCT]-(seq:Sequence)
         RETURN q.question_text, seq.name, path
-    """, keywords=extract_keywords(user_query))
-    
+    """,
+        keywords=extract_keywords(user_query),
+    )
+
     # 2. Feed graph context to LLM
     context = format_graph_results(graph_results)
     response = llm.generate(user_query, context=context)
-    
+
     return response
 ```
 
@@ -305,20 +311,25 @@ RETURN labels(c)[0] AS type, c.name AS orphaned_construct
 ```python
 # Generate embeddings for all questions
 from sentence_transformers import SentenceTransformer
-model = SentenceTransformer('all-MiniLM-L6-v2')
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 with driver.session() as session:
     questions = session.run("""
         MATCH (q:QuestionItem)
         RETURN q.fragment_id AS id, q.question_text AS text
     """)
-    
+
     for q in questions:
         embedding = model.encode(q["text"])
-        session.run("""
+        session.run(
+            """
             MATCH (q:QuestionItem {fragment_id: $id})
             SET q.embedding = $embedding
-        """, id=q["id"], embedding=embedding.tolist())
+        """,
+            id=q["id"],
+            embedding=embedding.tolist(),
+        )
 ```
 
 **Query similar questions**:
