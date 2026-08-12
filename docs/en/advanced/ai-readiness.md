@@ -80,7 +80,7 @@ Graph structure helps you build embeddings for:
 from neo4j import GraphDatabase
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 with driver.session() as session:
     questions = session.run("""
@@ -89,10 +89,14 @@ with driver.session() as session:
     """)
     for q in questions:
         embedding = model.encode(q["text"])
-        session.run("""
+        session.run(
+            """
             MATCH (q:QuestionItem {fragment_id: $id})
             SET q.embedding = $embedding
-        """, id=q["id"], embedding=embedding.tolist())
+        """,
+            id=q["id"],
+            embedding=embedding.tolist(),
+        )
 ```
 
 ### 5. Agentic Workflows
@@ -169,12 +173,15 @@ Generate documentation from graph structure:
 def describe_instrument(instrument_id: str) -> str:
     """Generate natural language description of survey instrument."""
     with driver.session() as session:
-        structure = session.run("""
+        structure = session.run(
+            """
             MATCH (i:Instrument {fragment_id: $id})-[:HAS_CONSTRUCT]->(seq:Sequence)
             MATCH (seq)-[:HAS_CONSTRUCT]->(c)
             RETURN seq.name AS section, labels(c)[0] AS type, count(*) AS count
             ORDER BY section
-        """, id=instrument_id)
+        """,
+            id=instrument_id,
+        )
         # Feed to LLM for natural language generation
         return llm.generate(structure.data())
 ```

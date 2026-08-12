@@ -195,11 +195,13 @@ import asyncio
 from ddigraph import DDILoader
 from ddigraph.config import Settings
 
+
 async def charger():
     settings = Settings()
     # ... configurer le pilote et le chargeur
     result = await loader.load(path, dataset_id="demo")
     return result
+
 
 result = asyncio.run(charger())
 ```
@@ -211,11 +213,10 @@ Implémentez le protocole `GraphWriteAdapter` :
 ```python
 from ddigraph.schema import GraphWriteAdapter
 
+
 class MonAdaptateur(GraphWriteAdapter):
-    async def write_batch(self, graph, **kwargs):
-        ...
-    async def purge_dataset(self, dataset_id, **kwargs):
-        ...
+    async def write_batch(self, graph, **kwargs): ...
+    async def purge_dataset(self, dataset_id, **kwargs): ...
 ```
 
 Consultez [Patron adaptateur](../user-guide/adapter.md) pour le guide complet.

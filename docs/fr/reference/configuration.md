@@ -141,9 +141,9 @@ from ddigraph.settings import Settings
 settings = Settings()
 
 # Accéder aux valeurs
-print(settings.neo4j_uri)        # bolt://localhost:7687
-print(settings.chunk_size)       # 200
-print(settings.dry_run)          # False
+print(settings.neo4j_uri)  # bolt://localhost:7687
+print(settings.chunk_size)  # 200
+print(settings.dry_run)  # False
 ```
 
 Les champs de la classe `Settings` correspondent directement aux variables d'environnement :

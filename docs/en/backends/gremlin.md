@@ -28,7 +28,7 @@ from gremlin_python.process.anonymous_traversal import traversal
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 
 # Local TinkerPop server
-connection = DriverRemoteConnection('ws://localhost:8182/gremlin', 'g')
+connection = DriverRemoteConnection("ws://localhost:8182/gremlin", "g")
 g = traversal().withRemote(connection)
 
 # AWS Neptune
@@ -47,11 +47,13 @@ parser = DDIFragmentParser()
 
 for fragment in parser.parse("survey.xml"):
     # Create vertex
-    vertex = g.addV(fragment.element_type) \
-        .property('id', fragment.fragment_id) \
-        .property('label', fragment.label or '') \
-        .property('urn', fragment.urn or '') \
+    vertex = (
+        g.addV(fragment.element_type)
+        .property("id", fragment.fragment_id)
+        .property("label", fragment.label or "")
+        .property("urn", fragment.urn or "")
         .next()
+    )
 
     # Store for edge creation
     vertices[fragment.fragment_id] = vertex
@@ -61,10 +63,7 @@ parser = DDIFragmentParser()
 for fragment in parser.parse("survey.xml"):
     for rel_type, ref in fragment.references:
         if ref.id in vertices:
-            g.V(vertices[fragment.fragment_id]) \
-                .addE(rel_type) \
-                .to(vertices[ref.id]) \
-                .iterate()
+            g.V(vertices[fragment.fragment_id]).addE(rel_type).to(vertices[ref.id]).iterate()
 
 connection.close()
 ```
@@ -83,10 +82,10 @@ from gremlin_python.process.graph_traversal import __
 from ddigraph.ingest.fragment_loader import DDIFragmentParser
 
 
-def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = 'ws://localhost:8182/gremlin'):
+def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = "ws://localhost:8182/gremlin"):
     """Parse DDI-L file and load into Gremlin database."""
 
-    connection = DriverRemoteConnection(gremlin_endpoint, 'g')
+    connection = DriverRemoteConnection(gremlin_endpoint, "g")
     g = traversal().withRemote(connection)
 
     try:
@@ -101,24 +100,24 @@ def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = 'ws://localhost:8
             props = fragment.to_dict()
 
             vertex = g.addV(fragment.element_type)
-            vertex = vertex.property('fragment_id', fragment.fragment_id)
+            vertex = vertex.property("fragment_id", fragment.fragment_id)
 
             if fragment.label:
-                vertex = vertex.property('label', fragment.label)
+                vertex = vertex.property("label", fragment.label)
             if fragment.urn:
-                vertex = vertex.property('urn', fragment.urn)
+                vertex = vertex.property("urn", fragment.urn)
             if fragment.agency:
-                vertex = vertex.property('agency', fragment.agency)
+                vertex = vertex.property("agency", fragment.agency)
             if fragment.version:
-                vertex = vertex.property('version', fragment.version)
+                vertex = vertex.property("version", fragment.version)
 
             # Add type-specific properties
             if fragment.element_type == "QuestionItem":
                 if props.get("question_text"):
-                    vertex = vertex.property('question_text', props["question_text"])
+                    vertex = vertex.property("question_text", props["question_text"])
             elif fragment.element_type == "Category":
                 if props.get("category_label"):
-                    vertex = vertex.property('category_label', props["category_label"])
+                    vertex = vertex.property("category_label", props["category_label"])
 
             vertex.next()
             fragment_ids.add(fragment.fragment_id)
@@ -132,10 +131,9 @@ def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = 'ws://localhost:8
         for fragment in parser.parse(ddi_path):
             for rel_type, ref in fragment.references:
                 if ref.id in fragment_ids:
-                    g.V().has('fragment_id', fragment.fragment_id) \
-                        .addE(rel_type) \
-                        .to(__.V().has('fragment_id', ref.id)) \
-                        .iterate()
+                    g.V().has("fragment_id", fragment.fragment_id).addE(rel_type).to(
+                        __.V().has("fragment_id", ref.id)
+                    ).iterate()
                     edge_count += 1
 
         print(f"Created {edge_count} edges")
@@ -144,10 +142,10 @@ def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = 'ws://localhost:8
         connection.close()
 
 
-def query_examples(gremlin_endpoint: str = 'ws://localhost:8182/gremlin'):
+def query_examples(gremlin_endpoint: str = "ws://localhost:8182/gremlin"):
     """Example Gremlin queries."""
 
-    connection = DriverRemoteConnection(gremlin_endpoint, 'g')
+    connection = DriverRemoteConnection(gremlin_endpoint, "g")
     g = traversal().withRemote(connection)
 
     try:
@@ -158,16 +156,19 @@ def query_examples(gremlin_endpoint: str = 'ws://localhost:8182/gremlin'):
             print(f"  {label}: {count}")
 
         # Find all questions
-        questions = g.V().hasLabel('QuestionItem').valueMap(True).toList()
+        questions = g.V().hasLabel("QuestionItem").valueMap(True).toList()
         print(f"\nFound {len(questions)} questions")
 
         # Traverse from instrument to questions
-        paths = g.V().hasLabel('Instrument') \
-            .repeat(__.out('HAS_CONSTRUCT')) \
-            .until(__.hasLabel('QuestionConstruct')) \
-            .out('ASKS_QUESTION') \
-            .path() \
+        paths = (
+            g.V()
+            .hasLabel("Instrument")
+            .repeat(__.out("HAS_CONSTRUCT"))
+            .until(__.hasLabel("QuestionConstruct"))
+            .out("ASKS_QUESTION")
+            .path()
             .toList()
+        )
 
         print(f"\nFound {len(paths)} paths from Instrument to Question")
 
@@ -243,9 +244,7 @@ g.V().hasLabel('IfThenElse')
 from gremlin_python.driver.serializer import GraphSONSerializersV3d0
 
 connection = DriverRemoteConnection(
-    'ws://localhost:8182/gremlin',
-    'g',
-    message_serializer=GraphSONSerializersV3d0()
+    "ws://localhost:8182/gremlin", "g", message_serializer=GraphSONSerializersV3d0()
 )
 ```
 
@@ -261,8 +260,7 @@ from botocore.awsrequest import AWSRequest
 
 # WebSocket connection with SigV4
 connection = DriverRemoteConnection(
-    'wss://your-cluster.region.neptune.amazonaws.com:8182/gremlin',
-    'g'
+    "wss://your-cluster.region.neptune.amazonaws.com:8182/gremlin", "g"
 )
 ```
 
@@ -273,10 +271,10 @@ from gremlin_python.driver import client, serializer
 
 # Cosmos DB requires specific serializer
 connection = DriverRemoteConnection(
-    'wss://your-account.gremlin.cosmos.azure.com:443/',
-    'g',
+    "wss://your-account.gremlin.cosmos.azure.com:443/",
+    "g",
     username="/dbs/your-database/colls/your-graph",
-    password="your-primary-key"
+    password="your-primary-key",
 )
 ```
 
@@ -296,19 +294,17 @@ for i, fragment in enumerate(parser.parse("large_survey.xml")):
     if len(vertices_batch) >= BATCH_SIZE:
         # Submit batch
         for f in vertices_batch:
-            g.addV(f.element_type) \
-                .property('fragment_id', f.fragment_id) \
-                .property('label', f.label or '') \
-                .iterate()
+            g.addV(f.element_type).property("fragment_id", f.fragment_id).property(
+                "label", f.label or ""
+            ).iterate()
         vertices_batch = []
         print(f"Processed {i + 1} vertices")
 
 # Final batch
 for f in vertices_batch:
-    g.addV(f.element_type) \
-        .property('fragment_id', f.fragment_id) \
-        .property('label', f.label or '') \
-        .iterate()
+    g.addV(f.element_type).property("fragment_id", f.fragment_id).property(
+        "label", f.label or ""
+    ).iterate()
 ```
 
 ## See Also

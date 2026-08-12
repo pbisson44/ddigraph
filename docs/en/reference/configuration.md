@@ -162,9 +162,9 @@ settings = Settings(
 )
 
 # Access values
-print(settings.neo4j_uri)                          # "bolt://production:7687"
-print(settings.neo4j_password.get_secret_value())   # "prod-password"
-print(settings.chunk_size)                          # 1000
+print(settings.neo4j_uri)  # "bolt://production:7687"
+print(settings.neo4j_password.get_secret_value())  # "prod-password"
+print(settings.chunk_size)  # 1000
 ```
 
 ### Passing Settings to Loaders

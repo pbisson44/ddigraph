@@ -112,7 +112,7 @@ from ddigraph.ingest._composition_specs import CompositionSpec, Field
 SPECS = {
     "filedscr": CompositionSpec(
         collection="data_files",
-        record="DataFileRecord",        # resolved by name against loader
+        record="DataFileRecord",  # resolved by name against loader
         id_field="file_id",
         # No slug -> if the element has no id, skip it (matches the
         # current ``if not file_id ... return``). A slug enables the
@@ -122,9 +122,9 @@ SPECS = {
         fields=(
             Field("name", lambda e: c.text(e, ".//fileName")),
             Field("uri", lambda e: c.text(e, ".//fileURI") or c.attr(e, "URI")),
-            Field("label", alias="name"),          # reuse another field's value
+            Field("label", alias="name"),  # reuse another field's value
         ),
-        splat_metadata=True,                       # **_common_metadata(elem)
+        splat_metadata=True,  # **_common_metadata(elem)
     ),
 }
 ```

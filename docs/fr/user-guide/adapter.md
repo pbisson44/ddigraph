@@ -77,6 +77,7 @@ a juste besoin d'avoir ces méthodes avec les bonnes signatures.
 ```python
 from ddigraph.schema.adapter import GraphWriteAdapter
 
+
 class GraphWriteAdapter(Protocol):
     def write_batch(
         self,
@@ -87,6 +88,7 @@ class GraphWriteAdapter(Protocol):
     ) -> None | Awaitable[None]:
         """Écrit un lot de données DDI dans le graphe."""
         ...
+
     def purge_dataset(
         self,
         dataset_id: str,
@@ -121,6 +123,7 @@ Pour utiliser une base de données qui n'est pas intégrée, écrivez une classe
 from ddigraph.ingest.loader import DDILoader
 from ddigraph.schema.adapter import GraphWriteAdapter
 
+
 class MyGraphAdapter(GraphWriteAdapter):
     async def write_batch(self, graph, **kwargs):
         # Convertir graph.nodes() / graph.relationships()
@@ -131,8 +134,10 @@ class MyGraphAdapter(GraphWriteAdapter):
             self.backend.create_relationship(
                 rel["start"], rel["end"], rel["type"], rel["properties"]
             )
+
     async def purge_dataset(self, dataset_id, **kwargs):
         self.backend.delete_by_dataset(dataset_id)
+
 
 adapter = MyGraphAdapter()
 loader = DDILoader(driver, adapter=adapter)
@@ -154,9 +159,11 @@ import networkx as nx
 from ddigraph.ingest.loader import DDILoader
 from ddigraph.schema.adapter import GraphWriteAdapter
 
+
 class NetworkXAdapter(GraphWriteAdapter):
     def __init__(self):
         self.graph = nx.MultiDiGraph()
+
     async def write_batch(self, graph, **kwargs):
         # Ajouter les nœuds avec labels et propriétés
         for node in graph.nodes():
@@ -171,13 +178,14 @@ class NetworkXAdapter(GraphWriteAdapter):
                 key=rel["type"],
                 **rel["properties"],
             )
+
     async def purge_dataset(self, dataset_id, **kwargs):
         # Supprimer les nœuds correspondant au jeu de données
         nodes_to_remove = [
-            n for n, d in self.graph.nodes(data=True)
-            if d.get("dataset_id") == dataset_id
+            n for n, d in self.graph.nodes(data=True) if d.get("dataset_id") == dataset_id
         ]
         self.graph.remove_nodes_from(nodes_to_remove)
+
 
 # Utilisation
 adapter = NetworkXAdapter()
@@ -200,6 +208,7 @@ efficaces :
 
 ```python
 from ddigraph.ingest.fragment_loader import DDIFragmentLoader
+
 loader = DDIFragmentLoader(driver, settings=settings)
 result = await loader.load("questionnaire.xml")
 ```
@@ -217,6 +226,7 @@ Pour personnaliser la persistance des FragmentInstance, héritez de `AsyncFragme
 
 ```python
 from ddigraph.ingest.fragment_loader import AsyncFragmentGraphWriter, FragmentBatch
+
 
 class CustomFragmentWriter(AsyncFragmentGraphWriter):
     async def write_batch(self, batch: FragmentBatch) -> dict[str, int]:
@@ -246,9 +256,11 @@ Le patron adaptateur prend en charge divers backends :
 ```python
 from gremlin_python.process.traversal import T
 
+
 class GremlinAdapter(GraphWriteAdapter):
     def __init__(self, g):
         self.g = g  # GraphTraversalSource
+
     async def write_batch(self, graph, **kwargs):
         for node in graph.nodes():
             self.g.addV(node["label"]).property(T.id, node["id"])

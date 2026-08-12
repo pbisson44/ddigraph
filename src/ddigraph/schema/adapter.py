@@ -43,7 +43,7 @@ class GraphWriteAdapter(Protocol):
         *,
         session_config: dict[str, object] | None = None,
         transaction_config: dict[str, object] | None = None,
-    ) -> None | Awaitable[None]:
+    ) -> Awaitable[None] | None:
         """Write a batch of DDI data to the graph.
 
         Args:
@@ -62,7 +62,7 @@ class GraphWriteAdapter(Protocol):
         *,
         session_config: dict[str, object] | None = None,
         transaction_config: dict[str, object] | None = None,
-    ) -> None | Awaitable[None]:
+    ) -> Awaitable[None] | None:
         """Remove all nodes and relationships for a dataset.
 
         Args:

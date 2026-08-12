@@ -61,6 +61,7 @@ from neo4j import AsyncGraphDatabase
 from ddigraph import DDILoader, DDIFragmentLoader, detect_ddi_format
 from ddigraph.config import Settings
 
+
 async def main():
     settings = Settings()
     driver = AsyncGraphDatabase.driver(
@@ -76,6 +77,7 @@ async def main():
         result = await loader.load(path, dataset_id="my-survey")
     print(result)  # {'Instrument': 1, 'Sequence': 388, 'QuestionItem': 373, ...}
     await driver.close()
+
 
 asyncio.run(main())
 ```

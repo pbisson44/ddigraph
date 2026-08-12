@@ -269,9 +269,11 @@ from __future__ import annotations
 from collections.abc import Awaitable
 from typing import Protocol
 
+
 # Protocols that support both sync and async
 class MyProtocol(Protocol):
     def do_work(self) -> None | Awaitable[None]: ...
+
 
 # Async functions for I/O operations
 async def load_data(driver, path: str) -> dict[str, int]:
@@ -343,9 +345,7 @@ class MyBackendAdapter:
         for node in graph.nodes():
             await self.backend.create_node(node["label"], node["properties"])
         for rel in graph.relationships():
-            await self.backend.create_edge(
-                rel["start"], rel["end"], rel["type"], rel["properties"]
-            )
+            await self.backend.create_edge(rel["start"], rel["end"], rel["type"], rel["properties"])
 
     async def purge_dataset(
         self,
