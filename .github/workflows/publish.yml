@@ -9,6 +9,11 @@ on:
       - "v*"
   pull_request:
     branches: [main]
+  # Lets the docs be deployed on demand. `publish` succeeds exactly once
+  # per version -- afterwards detect-release finds the tag and reports
+  # should_release=false -- so a docs deploy that fails for its own
+  # reasons has no way back without this
+  workflow_dispatch: 
 
 permissions:
   contents: read
@@ -245,7 +250,9 @@ jobs:
     needs: [tests, publish]
     if: |
       always() && needs.tests.result == 'success' && (
-        needs.publish.result == 'success' || github.event_name == 'release'
+        needs.publish.result == 'success'
+        || github.event_name == 'release'
+        || github.event_name == 'workflow_dispatch'
       )
     runs-on: ubuntu-latest
     permissions:
