@@ -1077,7 +1077,7 @@ _NODE_MAPPINGS = (
     (
         "processing_events",
         "ProcessingEvent",
-        "event_id",
+        "processing_event_id",
         (
             "dataset_id",
             "dataset_name",
@@ -2118,8 +2118,26 @@ DDI_RELATIONSHIPS: tuple[RelationshipDefinition, ...] = (
 )
 
 
+# Label -> (identity attribute, property attributes) on the *record*, as
+# ``nodes()`` reads them. This is not the same as ``NodeDefinition``, which
+# describes the Neo4j side: there ``id_field`` is the node property the
+# Cypher merges on -- 44 of the 45 codebook mappings call it ``id`` -- while
+# the record attribute is ``study_id``, ``file_id`` and so on. Anything
+# consuming the graph view (RDF export, SHACL, the RDF reader) needs the
+# record-side names, so the derivation lives here beside the table it comes
+# from rather than being repeated per consumer.
+NODE_RECORD_FIELDS: dict[str, tuple[str, tuple[str, ...]]] = {
+    label: (id_field, properties) for _attr, label, id_field, properties in _NODE_MAPPINGS
+} | {
+    # ``Dataset`` is built directly by ``nodes()`` rather than through
+    # ``_NODE_MAPPINGS``; its record attribute genuinely is ``id``.
+    "Dataset": ("id", ("id", "name", "label", "urn", "agency", "version")),
+}
+
+
 __all__ = [
     "DDI_RELATIONSHIPS",
+    "NODE_RECORD_FIELDS",
     "DDIIngestGraph",
     "Node",
     "Relationship",

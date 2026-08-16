@@ -19,11 +19,12 @@ Avec [uv](https://docs.astral.sh/uv/) :
 uv pip install ddigraph
 ```
 
-L'installation de base est légère. Elle ne tire que six paquets
-d'exécution : lxml, neo4j, orjson, pydantic, pydantic-settings et
-xmlschema. Le pilote Neo4j est inclus, donc le backend Neo4j
-fonctionne d'emblée. Les autres backends sont des extras optionnels
-(voir ci-dessous).
+L'installation de base est légère. Elle ne tire que cinq paquets
+d'exécution : lxml, neo4j, orjson, pydantic et pydantic-settings. Le
+pilote Neo4j est inclus, donc le backend Neo4j fonctionne d'emblée. Les
+autres backends sont des extras optionnels (voir ci-dessous).
+
+L'export JSON et CSV fonctionne aussi sans aucun extra.
 
 ## Extras de backend
 
@@ -31,7 +32,8 @@ Chaque backend autre que Neo4j est livré comme extra optionnel.
 N'installez que ceux dont votre cible a besoin :
 
 ```bash
-pip install "ddigraph[rdf]"        # RDF / SPARQL (rdflib)
+pip install "ddigraph[rdf]"        # Lecture et écriture RDF / SPARQL (rdflib)
+pip install "ddigraph[shacl]"      # RDF plus validation SHACL (pyshacl)
 pip install "ddigraph[gremlin]"    # bases Gremlin (gremlinpython)
 pip install "ddigraph[networkx]"   # graphes NetworkX en mémoire
 pip install "ddigraph[pandas]"     # export pandas / Excel

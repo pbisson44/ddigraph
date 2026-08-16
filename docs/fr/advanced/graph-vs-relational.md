@@ -361,8 +361,9 @@ Utilisez le motif adaptateur de ddigraph pour exporter les données graphe vers 
 pandas ou des fichiers CSV pour les équipes plus à l'aise avec ces outils :
 
 ```bash
-python demo/load_pandas.py    # Export to DataFrames
-python demo/export_files.py   # Export to JSON/CSV
+ddigraph export survey.xml --format json -o survey.json
+ddigraph export survey.xml --format csv -o out-dir/   # nodes.csv + relationships.csv
+python demo/load_pandas.py                            # DataFrames (script de démo)
 ```
 
 ## Référence de comparaison des requêtes

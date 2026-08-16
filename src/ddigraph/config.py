@@ -12,8 +12,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Runtime configuration loaded from environment or .env files.
 
-    Environment variables can use either the DDIGRAPH_ prefix (preferred) or the legacy
-    NEO4DDI_ prefix for backward compatibility.
+    Connection settings accept the canonical ``DDIGRAPH_*`` names or the bare
+    ``NEO4J_*`` industry names that Neo4j Aura ``.env`` files ship. When both
+    are set the ``DDIGRAPH_*`` value wins. The ``NEO4DDI_*`` prefix was removed
+    in 0.4.0 and is ignored; setting it raises a ``DeprecationWarning``.
     """
 
     model_config = SettingsConfigDict(
@@ -23,22 +25,27 @@ class Settings(BaseSettings):
         populate_by_name=True,
     )
 
+    # ``AliasChoices`` is first-match-wins, so the canonical ``DDIGRAPH_*``
+    # name must lead. Listing the bare ``NEO4J_*`` industry names first
+    # silently inverted the documented precedence: a stale ``NEO4J_URI``
+    # in a shell or ``.env`` would beat an explicit ``DDIGRAPH_NEO4J_URI``
+    # and redirect writes to the wrong database.
     neo4j_uri: str = Field(
         default="bolt://localhost:7687",
-        validation_alias=AliasChoices("NEO4J_URI", "DDIGRAPH_NEO4J_URI"),
+        validation_alias=AliasChoices("DDIGRAPH_NEO4J_URI", "NEO4J_URI"),
     )
     neo4j_user: str = Field(
         default="neo4j",
-        validation_alias=AliasChoices("NEO4J_USER", "NEO4J_USERNAME", "DDIGRAPH_NEO4J_USER"),
+        validation_alias=AliasChoices("DDIGRAPH_NEO4J_USER", "NEO4J_USER", "NEO4J_USERNAME"),
     )
     neo4j_password: SecretStr = Field(
         default=SecretStr("password"),
         repr=False,
-        validation_alias=AliasChoices("NEO4J_PASSWORD", "DDIGRAPH_NEO4J_PASSWORD"),
+        validation_alias=AliasChoices("DDIGRAPH_NEO4J_PASSWORD", "NEO4J_PASSWORD"),
     )
     neo4j_database: str = Field(
         default="neo4j",
-        validation_alias=AliasChoices("NEO4J_DATABASE", "DDIGRAPH_NEO4J_DATABASE"),
+        validation_alias=AliasChoices("DDIGRAPH_NEO4J_DATABASE", "NEO4J_DATABASE"),
     )
     max_connection_pool_size: int | None = Field(
         default=None,
@@ -184,7 +191,7 @@ def resolve_credentials_source(
     """
     env_vars = env or os.environ
     ddigraph_vars = {"DDIGRAPH_NEO4J_URI", "DDIGRAPH_NEO4J_USER", "DDIGRAPH_NEO4J_PASSWORD"}
-    legacy_vars = {"NEO4J_URI", "NEO4J_USER", "NEO4J_PASSWORD"}
+    legacy_vars = {"NEO4J_URI", "NEO4J_USER", "NEO4J_USERNAME", "NEO4J_PASSWORD"}
 
     if cli_overrides:
         return "CLI arguments (--neo4j-*)"

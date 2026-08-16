@@ -1,4 +1,4 @@
-.PHONY: lint format typecheck test update-schemas check-schemas docs docs-serve lint-md fix-md check-readability clean
+.PHONY: lint format typecheck test update-schemas check-schemas schemas check-schema-definitions vocabulary check-vocabulary docs docs-serve lint-md fix-md check-readability mutation mutation-results clean
 
 # Code quality
 lint:
@@ -39,6 +39,22 @@ schemas:
 
 check-schema-definitions:
 	python scripts/generate_schema_definitions.py --check
+
+# The served RDF vocabulary (docs/{en,fr}/ns/vocabulary.ttl), generated
+# from the same schema tables so it cannot describe terms we do not emit.
+vocabulary:
+	python scripts/generate_vocabulary.py
+
+check-vocabulary:
+	python scripts/generate_vocabulary.py --check
+
+# Mutation testing (scoped -- see [tool.mutmut] in pyproject.toml).
+# Requires the dev extra. Takes a few minutes; not a CI gate.
+mutation:
+	.venv/bin/mutmut run --max-children 4
+
+mutation-results:
+	.venv/bin/mutmut results
 
 # Documentation
 docs:

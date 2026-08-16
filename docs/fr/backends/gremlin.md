@@ -13,10 +13,10 @@ ddigraph prend en charge les bases de données graphe compatibles Gremlin via le
 
 ## Dépendances
 
-GremlinPython est inclus avec ddigraph :
+GremlinPython est un extra optionnel :
 
 ```bash
-pip install ddigraph  # inclut gremlinpython
+pip install "ddigraph[gremlin]"
 ```
 
 ## Utilisation de base
@@ -41,29 +41,35 @@ g = traversal().withRemote(connection)
 ### Charger des données DDI
 
 ```python
-from ddigraph import DDIFragmentParser
+from ddigraph import iter_graph
 
-parser = DDIFragmentParser()
 
-for fragment in parser.parse("survey.xml"):
-    # Créer un sommet
-    vertex = (
-        g.addV(fragment.element_type)
-        .property("id", fragment.fragment_id)
-        .property("label", fragment.label or "")
-        .property("urn", fragment.urn or "")
-        .next()
+def node_key(node):
+    """Une clé stable tirée de toute l'identité, pas du premier champ."""
+    return "|".join(f"{k}={v}" for k, v in sorted(node.identity.items()))
+
+
+vertices = {}
+edges = []
+
+# Première passe : tous les nœuds arrivent avant la première relation.
+# On collecte donc les sommets avant de câbler quoi que ce soit.
+for chunk in iter_graph("survey.xml"):
+    for node in chunk.nodes:
+        vertices[node_key(node)] = (
+            g.addV(node.label)
+            .property("id", node_key(node))
+            .property("name", node.properties.get("label", ""))
+            .next()
+        )
+    edges.extend(
+        (node_key(edge.start), edge.type, node_key(edge.end)) for edge in chunk.relationships
     )
 
-    # Stocker pour la création des arêtes
-    vertices[fragment.fragment_id] = vertex
-
-# Créer les arêtes (seconde passe)
-parser = DDIFragmentParser()
-for fragment in parser.parse("survey.xml"):
-    for rel_type, ref in fragment.references:
-        if ref.id in vertices:
-            g.V(vertices[fragment.fragment_id]).addE(rel_type).to(vertices[ref.id]).iterate()
+# Seconde passe : les extrémités sont désormais toutes dans `vertices`.
+for start, rel_type, end in edges:
+    if start in vertices and end in vertices:
+        g.V(vertices[start]).addE(rel_type).to(vertices[end]).iterate()
 
 connection.close()
 ```
@@ -79,7 +85,7 @@ from gremlin_python.process.anonymous_traversal import traversal
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 from gremlin_python.process.graph_traversal import __
 
-from ddigraph.ingest.fragment_loader import DDIFragmentParser
+from ddigraph import iter_graph
 
 
 def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = "ws://localhost:8182/gremlin"):
@@ -92,49 +98,48 @@ def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = "ws://localhost:8
         # Clear existing data (optional)
         g.V().drop().iterate()
 
-        parser = DDIFragmentParser()
         fragment_ids = set()
 
         # First pass: create all vertices
-        for fragment in parser.parse(ddi_path):
-            props = fragment.to_dict()
+        for chunk in iter_graph(ddi_path):
+            for fragment in chunk.nodes:
+                props = fragment.to_dict()
 
-            vertex = g.addV(fragment.element_type)
-            vertex = vertex.property("fragment_id", fragment.fragment_id)
+                vertex = g.addV(fragment.element_type)
+                vertex = vertex.property("fragment_id", fragment.fragment_id)
 
-            if fragment.label:
-                vertex = vertex.property("label", fragment.label)
-            if fragment.urn:
-                vertex = vertex.property("urn", fragment.urn)
-            if fragment.agency:
-                vertex = vertex.property("agency", fragment.agency)
-            if fragment.version:
-                vertex = vertex.property("version", fragment.version)
+                if fragment.label:
+                    vertex = vertex.property("label", fragment.label)
+                if fragment.urn:
+                    vertex = vertex.property("urn", fragment.urn)
+                if fragment.agency:
+                    vertex = vertex.property("agency", fragment.agency)
+                if fragment.version:
+                    vertex = vertex.property("version", fragment.version)
 
-            # Add type-specific properties
-            if fragment.element_type == "QuestionItem":
-                if props.get("question_text"):
-                    vertex = vertex.property("question_text", props["question_text"])
-            elif fragment.element_type == "Category":
-                if props.get("category_label"):
-                    vertex = vertex.property("category_label", props["category_label"])
+                # Add type-specific properties
+                if fragment.element_type == "QuestionItem":
+                    if props.get("question_text"):
+                        vertex = vertex.property("question_text", props["question_text"])
+                elif fragment.element_type == "Category":
+                    if props.get("category_label"):
+                        vertex = vertex.property("category_label", props["category_label"])
 
-            vertex.next()
-            fragment_ids.add(fragment.fragment_id)
+                vertex.next()
+                fragment_ids.add(fragment.fragment_id)
 
         print(f"Created {len(fragment_ids)} vertices")
 
         # Second pass: create edges
         edge_count = 0
-        parser = DDIFragmentParser()
-
-        for fragment in parser.parse(ddi_path):
-            for rel_type, ref in fragment.references:
-                if ref.id in fragment_ids:
-                    g.V().has("fragment_id", fragment.fragment_id).addE(rel_type).to(
-                        __.V().has("fragment_id", ref.id)
-                    ).iterate()
-                    edge_count += 1
+        for chunk in iter_graph(ddi_path):
+            for fragment in chunk.nodes:
+                for rel_type, ref in fragment.references:
+                    if ref.id in fragment_ids:
+                        g.V().has("fragment_id", fragment.fragment_id).addE(rel_type).to(
+                            __.V().has("fragment_id", ref.id)
+                        ).iterate()
+                        edge_count += 1
 
         print(f"Created {edge_count} edges")
 
@@ -286,9 +291,9 @@ Pour les fichiers DDI volumineux, utilisez des écritures par lots :
 BATCH_SIZE = 100
 
 vertices_batch = []
-parser = DDIFragmentParser()
-
-for i, fragment in enumerate(parser.parse("large_survey.xml")):
+for i, fragment in enumerate(
+    node for chunk in iter_graph("large_survey.xml") for node in chunk.nodes
+):
     vertices_batch.append(fragment)
 
     if len(vertices_batch) >= BATCH_SIZE:

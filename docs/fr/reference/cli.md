@@ -9,7 +9,11 @@ défaut, prenant en charge les fichiers DDI Codebook, DDI-L FragmentInstance et 
 | Commande | Description |
 | --------- | ------------- |
 | `bootstrap` | Créer les contraintes et index (Codebook + DDI-L par défaut ; ajoutez `--no-include-fragments` pour le codebook seul) |
-| `load` | Charger en flux un fichier DDI XML dans Neo4j (détection automatique du format) |
+| `load` | Charger en flux un fichier DDI ou RDF dans Neo4j (détection automatique du format) |
+| `export` | Écrire un fichier DDI en RDF, JSON ou CSV. Aucune base requise |
+| `shapes` | Écrire les formes SHACL du vocabulaire DDI |
+| `preview` | Résumer le contenu d'un fichier DDI. Aucune base requise |
+| `validate` | Vérifier un fichier DDI contre son XSD officiel |
 | `detect` | Détecter le format DDI d'un fichier sans le charger |
 | `version` | Afficher la version de ddigraph installée |
 
@@ -25,7 +29,198 @@ ddigraph bootstrap --neo4j-uri bolt://db:7687 --neo4j-user neo4j --neo4j-passwor
 
 # Codebook seul
 ddigraph bootstrap --no-include-fragments
+
+# Créer aussi le schéma DDI-CDI. Désactivé par défaut : aucun writer
+# fourni n'écrit de nœuds DDI-CDI, les contraintes resteraient inutiles.
+ddigraph bootstrap --include-cdi
 ```
+
+## Exporter des fichiers
+
+`export` écrit un fichier au lieu de charger une base : aucune connexion
+Neo4j n'est nécessaire. La commande accepte les entrées Codebook,
+Lifecycle et CDI.
+
+```bash
+# RDF
+ddigraph export survey.xml --format turtle -o survey.ttl
+ddigraph export survey.xml --format jsonld -o survey.jsonld
+
+# Publier sous votre propre espace de noms
+ddigraph export survey.xml --format turtle -o out.ttl \
+  --base-uri https://example.org/id/
+
+# Données simples. Ces deux formats ne demandent aucun extra.
+ddigraph export survey.xml --format json -o survey.json
+ddigraph export survey.xml --format csv -o out-dir/
+```
+
+Les formats sont `turtle`, `ntriples`, `jsonld`, `rdfxml`, `json` et `csv`.
+Les formats RDF demandent l'extra `rdf`. Le format CSV écrit `nodes.csv` et
+`relationships.csv` dans un dossier, car un graphe ne tient pas dans un
+seul tableau.
+
+| Option | Description |
+| -------- | ------------- |
+| `-o`, `--output` | Fichier de sortie, ou dossier pour `--format csv` |
+| `--format` | Format de sortie (par défaut : `turtle`) |
+| `--base-uri` | Racine d'IRI pour les enregistrements sans URN DDI |
+| `--dataset-id` | Identifiant du jeu de données pour une entrée Codebook |
+| `--dataset-name` | Nom lisible du jeu de données pour une entrée Codebook |
+| `--json` | Afficher le résumé du résultat en JSON |
+
+## Formes SHACL
+
+`shapes` écrit les formes SHACL du vocabulaire. Elles dérivent du schéma
+qui construit aussi les contraintes Neo4j : elles ne peuvent donc pas
+diverger des données.
+
+```bash
+ddigraph shapes -o shapes.ttl
+ddigraph shapes -o shapes.ttl --flavor lifecycle
+```
+
+Utilisez `--flavor` pour valider des données réelles. Un fichier a une
+seule variante, et 21 noms de types DDI apparaissent dans plusieurs
+variantes avec des clés différentes. Sans cette option, les formes des
+autres variantes sont aussi produites, et les contraintes sur lesquelles
+les variantes divergent sont omises.
+
+## Aperçu d'un fichier
+
+`preview` répond à la question « qu'y a-t-il vraiment dans ce fichier ? »
+avant de lancer un chargement. La commande analyse le fichier et affiche
+ce qu'elle a trouvé. Elle n'ouvre jamais de base de données et ne demande
+aucun extra.
+
+<!-- runnable -->
+```bash
+ddigraph preview "$FIXTURE"
+```
+
+La première ligne reprend le chemin que vous avez donné :
+
+```text
+Preview: survey.xml
+Nodes: 6   Relationships: 5
+
+Node types
+  Category           1
+  CodeList           1
+  Instrument         1
+  QuestionConstruct  1
+  QuestionItem       1
+  Sequence           1
+
+Relationships
+  (CodeList)-[:HAS_CATEGORY]->(Category)  1
+  (Instrument)-[:HAS_CONSTRUCT]->(Sequence)  1
+  (QuestionConstruct)-[:REFERENCES_QUESTION]->(QuestionItem)  1
+  (QuestionItem)-[:USES_CODELIST]->(CodeList)  1
+  (Sequence)-[:HAS_CONSTRUCT]->(QuestionConstruct)  1
+```
+
+C'est la *forme* du graphe, pas chaque nœud. Une enquête réelle compte des
+dizaines de milliers de nœuds, et une boîte par nœud devient illisible.
+Les regrouper par type et par nombre de `type -[ARC]-> type` ramène le
+tout à quelque chose qui se lit d'un coup d'œil.
+
+Deux autres formats écrivent le même résumé pour un autre lecteur :
+
+<!-- runnable -->
+```bash
+# À coller dans la documentation, un commentaire GitHub ou tout
+# visualiseur Mermaid
+ddigraph preview "$FIXTURE" --format mermaid
+
+# Une page HTML autonome : sans CDN ni JavaScript, elle marche hors ligne
+ddigraph preview "$FIXTURE" --format html -o preview.html
+```
+
+La sortie Mermaid est une définition `graph LR` :
+
+```mermaid
+graph LR
+    Category["Category<br/>1"]
+    CodeList["CodeList<br/>1"]
+    Instrument["Instrument<br/>1"]
+    QuestionConstruct["QuestionConstruct<br/>1"]
+    QuestionItem["QuestionItem<br/>1"]
+    Sequence["Sequence<br/>1"]
+    CodeList -->|HAS_CATEGORY 1| Category
+    Instrument -->|HAS_CONSTRUCT 1| Sequence
+    QuestionConstruct -->|REFERENCES_QUESTION 1| QuestionItem
+    QuestionItem -->|USES_CODELIST 1| CodeList
+    Sequence -->|HAS_CONSTRUCT 1| QuestionConstruct
+```
+
+Les décomptes donnent la forme, mais pas la preuve que la bonne chose a
+été analysée. `--limit` ajoute des identités d'exemple par type, pour
+vérifier :
+
+<!-- runnable -->
+```bash
+ddigraph preview "$CODEBOOK_FIXTURE" --limit 2
+```
+
+```text
+Sample Variable
+  variable_id=v1
+  variable_id=v2
+```
+
+| Option | Description |
+| -------- | ------------- |
+| `--format` | `text`, `mermaid` ou `html` (par défaut : `text`) |
+| `-o`, `--output` | Écrire dans un fichier plutôt que sur la sortie standard |
+| `--limit` | Afficher jusqu'à N nœuds d'exemple par type (par défaut : 0, décomptes seuls) |
+| `--dataset-id` | Identifiant du jeu de données pour une entrée Codebook |
+
+## Valider contre le XSD
+
+`validate` vérifie un fichier contre le schéma DDI officiel, livré avec le
+package. Il choisit le schéma d'après la variante et, pour DDI-L, d'après
+la version que le document déclare dans son propre espace de noms.
+
+<!-- runnable -->
+```bash
+ddigraph validate "$FIXTURE" --max-issues 3 || true
+```
+
+```text
+File:   fragment_instance.xml
+Flavor: lifecycle 3.3
+Schema: instance_3_3.xsd
+Result: invalid (3 issue(s))
+  line 8: Element '{ddi:datacollection:3_3}Instrument', attribute 'id': The attribute 'id' is not allowed.
+```
+
+La commande sort avec un code non nul en cas de violation : une étape de CI
+tient donc en une ligne.
+
+```bash
+ddigraph validate survey.xml || exit 1
+```
+
+`load` et `export` acceptent `--validate` pour lancer la même vérification
+d'abord et refuser un fichier non conforme :
+
+```bash
+ddigraph load survey.xml --validate
+ddigraph export survey.xml --validate -o out.ttl
+```
+
+| Option | Description |
+| -------- | ------------- |
+| `--flavor` | Forcer `codebook`, `lifecycle` ou `cdi` au lieu de détecter |
+| `--max-issues` | Signaler au plus N problèmes (défaut : 20, `0` = tous) |
+| `--json` | Afficher le résultat en JSON |
+
+**La validation est désactivée par défaut, volontairement.** Le DDI publié
+est souvent imparfait : il s'analyse, il se charge, il n'est pas
+strictement valide. Tous les fichiers XML de ce dépôt sont dans ce cas.
+Refuser des fichiers qui fonctionnent rendrait l'outil moins utile : la
+rigueur est donc quelque chose que vous demandez.
 
 ## Chargement des données
 
@@ -41,6 +236,10 @@ ddigraph load /path/to/questionnaire.xml --format lifecycle
 
 # Pour DDI-L FragmentInstance, --dataset-id est optionnel
 ddigraph load /path/to/fragments.xml
+
+# Charger un graphe RDF. Reconnu par l'extension du fichier, ou
+# forcé avec --format rdf.
+ddigraph load /path/to/survey.ttl
 ```
 
 ### Options de chargement

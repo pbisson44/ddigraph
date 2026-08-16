@@ -295,7 +295,7 @@ async def load_data(driver, path: str) -> dict[str, int]:
 
 To add support for a new DDI element type:
 
-1. **Define the node** in `src/ddigraph/schema/definitions.py`:
+1. **Define the node** in `src/ddigraph/schema/definitions/`:
 
     ```python
     NodeDefinition(

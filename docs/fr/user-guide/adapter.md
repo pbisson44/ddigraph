@@ -298,11 +298,9 @@ queries = DDISchema.generate_constraint_queries(include_fragments=True)
 Le répertoire `demo/` contient des implémentations complètes d'adaptateurs que vous pouvez
 exécuter et modifier :
 
-- **`load_rdf.py`** - Adaptateur RDF/SPARQL utilisant rdflib
-  - Convertit les fragments DDI en triplets RDF
-  - Exporte en Turtle, N-Triples, RDF/XML, JSON-LD
-  - Illustre les requêtes SPARQL
-  - Compatible avec les triplestores Virtuoso, GraphDB, Stardog
+RDF n'en fait pas partie : il est fourni avec le package. Utilisez donc
+`ddigraph export` ou `ddigraph.export()` plutôt que d'écrire un
+adaptateur. Voyez le [guide du backend RDF](../backends/rdf.md).
 
 - **`load_gremlin.py`** - Adaptateur Gremlin utilisant TinkerGraph
   - Requêtes de graphe basées sur les traversées

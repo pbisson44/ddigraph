@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Minimal DDI-CDI 1.0 sample.
+
+  Covers a curated entity from several different CDIBatch collections plus
+  three association elements, so the graph view exercises both the
+  collection -> label map and the relationship projection. Deliberately small:
+  the demo corpus lives in Git LFS and is not materialised in CI.
+-->
+<Wrapper xmlns="http://ddi-cdi/1.0">
+  <ConceptSystem>
+    <Identifier><StringValue>cs-001</StringValue></Identifier>
+    <ObjectName>Labour Force Concepts</ObjectName>
+    <LabelForDisplay>Labour Force Concepts</LabelForDisplay>
+    <ConceptSystem_has_Concept>
+      <Identifier><StringValue>concept-001</StringValue></Identifier>
+    </ConceptSystem_has_Concept>
+  </ConceptSystem>
+
+  <Concept>
+    <Identifier><StringValue>concept-001</StringValue></Identifier>
+    <ObjectName>Employment Status</ObjectName>
+    <LabelForDisplay>Employment Status</LabelForDisplay>
+    <Description>Current employment status of a respondent</Description>
+  </Concept>
+
+  <Category>
+    <Identifier><StringValue>cat-001</StringValue></Identifier>
+    <ObjectName>Employed</ObjectName>
+    <LabelForDisplay>Employed</LabelForDisplay>
+    <Description>In paid employment during the reference week</Description>
+  </Category>
+
+  <CodeList>
+    <Identifier><StringValue>cl-001</StringValue></Identifier>
+    <ObjectName>Employment Codes</ObjectName>
+    <LabelForDisplay>Employment Codes</LabelForDisplay>
+    <CodeList_has_Code>
+      <Identifier><StringValue>code-001</StringValue></Identifier>
+    </CodeList_has_Code>
+  </CodeList>
+
+  <Code>
+    <Identifier><StringValue>code-001</StringValue></Identifier>
+    <ObjectName>EMP01</ObjectName>
+    <Notation>1</Notation>
+    <Code_denotes_Category>
+      <Identifier><StringValue>cat-001</StringValue></Identifier>
+    </Code_denotes_Category>
+  </Code>
+
+  <InstanceVariable>
+    <Identifier><StringValue>iv-001</StringValue></Identifier>
+    <ObjectName>emp_status</ObjectName>
+    <LabelForDisplay>Employment Status</LabelForDisplay>
+    <Description>Derived employment status variable</Description>
+  </InstanceVariable>
+
+  <UnitType>
+    <Identifier><StringValue>ut-001</StringValue></Identifier>
+    <ObjectName>Person</ObjectName>
+    <LabelForDisplay>Person</LabelForDisplay>
+  </UnitType>
+
+  <Organization>
+    <Identifier><StringValue>org-001</StringValue></Identifier>
+    <ObjectName>Central Statistics Office</ObjectName>
+    <LabelForDisplay>CSO</LabelForDisplay>
+  </Organization>
+</Wrapper>

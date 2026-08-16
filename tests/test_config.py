@@ -66,3 +66,51 @@ def test_resolve_credentials_source_no_longer_returns_neo4ddi_branch() -> None:
         resolve_credentials_source({"NEO4DDI_NEO4J_URI": "x"})
         == "defaults (no DDIGRAPH_* or NEO4J_* overrides detected)"
     )
+
+
+@pytest.mark.parametrize(
+    ("field", "ddigraph_var", "legacy_var"),
+    [
+        ("neo4j_uri", "DDIGRAPH_NEO4J_URI", "NEO4J_URI"),
+        ("neo4j_user", "DDIGRAPH_NEO4J_USER", "NEO4J_USER"),
+        ("neo4j_database", "DDIGRAPH_NEO4J_DATABASE", "NEO4J_DATABASE"),
+    ],
+)
+def test_ddigraph_prefix_wins_over_bare_neo4j_name(
+    monkeypatch: pytest.MonkeyPatch, field: str, ddigraph_var: str, legacy_var: str
+) -> None:
+    """``DDIGRAPH_*`` must beat the bare ``NEO4J_*`` name when both are set.
+
+    ``AliasChoices`` is first-match-wins, so ordering the bare industry
+    names first silently inverted the documented precedence: a stale
+    ``NEO4J_URI`` left in a shell or ``.env`` would override an explicit
+    ``DDIGRAPH_NEO4J_URI`` and send writes to the wrong database. The
+    earlier tests only ever set one prefix at a time, so nothing caught it.
+    """
+    monkeypatch.setenv(ddigraph_var, "canonical")
+    monkeypatch.setenv(legacy_var, "legacy")
+
+    assert getattr(Settings(), field) == "canonical"
+
+
+def test_ddigraph_password_wins_over_bare_neo4j_password(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """``SecretStr`` needs unwrapping, so the password gets its own check."""
+    monkeypatch.setenv("DDIGRAPH_NEO4J_PASSWORD", "canonical")
+    monkeypatch.setenv("NEO4J_PASSWORD", "legacy")
+
+    assert Settings().neo4j_password.get_secret_value() == "canonical"
+
+
+def test_bare_neo4j_names_still_apply_when_canonical_absent(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Reordering the aliases must not break Aura-style bare ``NEO4J_*`` files."""
+    monkeypatch.setenv("NEO4J_URI", "bolt://aura:7687")
+    monkeypatch.setenv("NEO4J_USERNAME", "aura-neo4j")
+
+    settings = Settings()
+
+    assert settings.neo4j_uri == "bolt://aura:7687"
+    assert settings.neo4j_user == "aura-neo4j"

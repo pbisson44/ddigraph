@@ -19,18 +19,27 @@ from ddigraph.schema.definitions import DDISchema
 logger = get_logger(__name__)
 
 
-def bootstrap_queries(*, include_fragments: bool = False) -> tuple[str, ...]:
+def bootstrap_queries(
+    *, include_fragments: bool = False, include_cdi: bool = False
+) -> tuple[str, ...]:
     """Compose the ordered schema creation statements.
 
     Args:
         include_fragments: If True, include DDI-L FragmentInstance constraints
             in addition to DDI Codebook constraints.
+        include_cdi: If True, include DDI-CDI 1.0 constraints. Defaults to
+            False because no shipped writer creates DDI-CDI nodes; enabling it
+            pre-provisions the schema for externally written CDI data.
 
     Returns:
         tuple[str, ...]: Constraint creation queries followed by index queries
         for the DDI domain graph schema.
     """
-    return tuple(DDISchema.generate_all_schema_queries(include_fragments))
+    return tuple(
+        DDISchema.generate_all_schema_queries(
+            include_fragments=include_fragments, include_cdi=include_cdi
+        )
+    )
 
 
 def fragment_bootstrap_queries() -> tuple[str, ...]:
@@ -56,6 +65,7 @@ async def ensure_schema(
     database: str | None = None,
     *,
     include_fragments: bool = False,
+    include_cdi: bool = False,
 ) -> None:
     """Ensure indexes and constraints exist for the DDI domain.
 
@@ -63,6 +73,7 @@ async def ensure_schema(
         driver: The Neo4j async driver instance used to open sessions.
         database: Optional database name to target when applying the schema.
         include_fragments: If True, include DDI-L FragmentInstance constraints.
+        include_cdi: If True, include DDI-CDI 1.0 constraints.
 
     Raises:
         PermissionError: If the Neo4j user lacks schema privileges.
@@ -79,7 +90,7 @@ async def ensure_schema(
 
             await session.execute_write(execute)
 
-    queries = bootstrap_queries(include_fragments=include_fragments)
+    queries = bootstrap_queries(include_fragments=include_fragments, include_cdi=include_cdi)
     for query in queries:
         try:
             await _run(query)
@@ -88,8 +99,8 @@ async def ensure_schema(
                 "Schema bootstrap failed because the Neo4j user lacks permission "
                 "to create constraints or indexes. Use a user with the schema "
                 "privileges (e.g., `schema_admin` or `admin`), supply the correct "
-                "database via DDIGRAPH_NEO4J_DATABASE (legacy compatibility alias: "
-                "NEO4DDI_NEO4J_DATABASE; also accepted: NEO4J_DATABASE), or "
+                "database via DDIGRAPH_NEO4J_DATABASE (or the bare NEO4J_DATABASE "
+                "name, which DDIGRAPH_NEO4J_DATABASE overrides), or "
                 "pre-provision the schema manually before running ddigraph."
             ) from exc
 
@@ -130,8 +141,8 @@ async def ensure_fragment_schema(
                 "Schema bootstrap failed because the Neo4j user lacks permission "
                 "to create constraints or indexes. Use a user with the schema "
                 "privileges (e.g., `schema_admin` or `admin`), supply the correct "
-                "database via DDIGRAPH_NEO4J_DATABASE (legacy compatibility alias: "
-                "NEO4DDI_NEO4J_DATABASE; also accepted: NEO4J_DATABASE), or "
+                "database via DDIGRAPH_NEO4J_DATABASE (or the bare NEO4J_DATABASE "
+                "name, which DDIGRAPH_NEO4J_DATABASE overrides), or "
                 "pre-provision the schema manually before running ddigraph."
             ) from exc
 

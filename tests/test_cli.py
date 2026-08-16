@@ -89,7 +89,7 @@ def test_driver_receives_connection_tuning(monkeypatch: pytest.MonkeyPatch) -> N
     parser = cli.build_parser()
     args = parser.parse_args(
         [
-            "ensure-schema",
+            "bootstrap",
             "--neo4j-uri",
             "bolt://db:7687",
             "--neo4j-user",
@@ -142,7 +142,7 @@ def test_driver_receives_tls_settings(monkeypatch: pytest.MonkeyPatch) -> None:
     parser = cli.build_parser()
     args = parser.parse_args(
         [
-            "ensure-schema",
+            "bootstrap",
             "--neo4j-uri",
             "neo4j+s://db:7687",
             "--encrypted",
@@ -188,7 +188,7 @@ def test_tls_settings_ignored_without_cli_flags(monkeypatch: pytest.MonkeyPatch)
     parser = cli.build_parser()
     args = parser.parse_args(
         [
-            "ensure-schema",
+            "bootstrap",
             "--neo4j-uri",
             "bolt://db:7687",
             "--neo4j-user",
@@ -226,7 +226,7 @@ def test_explicit_plaintext_connections_respected(
     monkeypatch.setattr(cli.GraphDatabase, "driver", staticmethod(fake_driver))
 
     parser = cli.build_parser()
-    args = parser.parse_args(["ensure-schema", "--neo4j-uri", "bolt://db:7687", "--no-encrypted"])
+    args = parser.parse_args(["bootstrap", "--neo4j-uri", "bolt://db:7687", "--no-encrypted"])
 
     settings = cli._settings_from_args(args)
     driver = cli._create_driver(settings)
@@ -240,11 +240,15 @@ def test_ensure_schema_invocation(monkeypatch: pytest.MonkeyPatch) -> None:
     calls: dict[str, object] = {}
 
     async def fake_ensure(
-        driver: object, database: str | None = None, include_fragments: bool = False
+        driver: object,
+        database: str | None = None,
+        include_fragments: bool = False,
+        include_cdi: bool = False,
     ) -> None:
         calls["driver"] = driver
         calls["database"] = database
         calls["include_fragments"] = include_fragments
+        calls["include_cdi"] = include_cdi
 
     monkeypatch.setattr(cli, "ensure_schema", fake_ensure)
 
@@ -262,7 +266,7 @@ def test_ensure_schema_invocation(monkeypatch: pytest.MonkeyPatch) -> None:
         return dummy_driver
 
     settings = Settings()
-    args = argparse.Namespace(command="ensure-schema", handler=cli._ensure_schema_command)
+    args = argparse.Namespace(command="bootstrap", handler=cli._ensure_schema_command)
 
     asyncio.run(cli._ensure_schema_command(args, settings, create_driver=fake_driver_factory))
 
@@ -631,31 +635,33 @@ def test_main_applies_overrides(monkeypatch: pytest.MonkeyPatch) -> None:
         return dummy_driver
 
     async def fake_ensure(
-        driver: object, database: str | None = None, include_fragments: bool = False
+        driver: object,
+        database: str | None = None,
+        include_fragments: bool = False,
+        include_cdi: bool = False,
     ) -> None:
         calls["ensure_driver"] = driver
         calls["database"] = database
         calls["include_fragments"] = include_fragments
+        calls["include_cdi"] = include_cdi
 
     monkeypatch.setattr(cli, "_create_async_driver", fake_driver_factory)
     monkeypatch.setattr(cli, "ensure_schema", fake_ensure)
     monkeypatch.setattr(cli, "configure_logging", fake_configure_logging)
 
-    # `ensure-schema` is a deprecated alias for `bootstrap`; assert the warning.
-    with pytest.warns(DeprecationWarning, match="ensure-schema"):
-        cli.main(
-            [
-                "ensure-schema",
-                "--neo4j-uri",
-                "bolt://db:9999",
-                "--neo4j-user",
-                "custom",
-                "--neo4j-password",
-                "secret",
-                "--neo4j-database",
-                "example",
-            ]
-        )
+    cli.main(
+        [
+            "bootstrap",
+            "--neo4j-uri",
+            "bolt://db:9999",
+            "--neo4j-user",
+            "custom",
+            "--neo4j-password",
+            "secret",
+            "--neo4j-database",
+            "example",
+        ]
+    )
 
     log_settings = cast(Settings, calls["log_settings"])
     driver_settings = cast(Settings, calls["driver_settings"])
@@ -836,32 +842,78 @@ def test_bootstrap_subcommand_defaults_to_include_fragments() -> None:
     assert args_opt_out.include_fragments is False
 
 
-def test_ensure_schema_subcommand_emits_deprecation_warning(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """``ensure-schema`` still works but warns it will be removed in 0.5.0."""
-    import warnings
+@pytest.mark.parametrize("removed", ["ensure-schema", "ensure-fragment-schema"])
+def test_removed_schema_subcommands_are_rejected(removed: str) -> None:
+    """The 0.4.x deprecation shims are gone as of 0.5.0.
 
+    Both verbs were deprecated in 0.4.0rc1 with removal announced for
+    0.5.0. ``bootstrap`` covers each of them: it includes fragments by
+    default and takes ``--no-include-fragments`` for the codebook-only
+    case the old ``ensure-schema`` served.
+    """
     parser = cli.build_parser()
-    args = parser.parse_args(["ensure-schema"])
 
-    class _StubDriver:
-        async def close(self) -> None:
-            return None
+    with pytest.raises(SystemExit):
+        parser.parse_args([removed])
 
-    def _stub_factory(_settings: Settings) -> _StubDriver:
-        return _StubDriver()
 
-    # Patch the real ensure_schema call to a no-op so the test does not
-    # need a Neo4j connection.
-    async def _noop(*_a: object, **_kw: object) -> None:
-        return None
+def test_subcommand_surface_is_the_documented_verbs() -> None:
+    """Pin the verb list so a removal or addition is a deliberate edit."""
+    parser = cli.build_parser()
+    subparsers = [a for a in parser._actions if isinstance(a, argparse._SubParsersAction)]
 
-    monkeypatch.setattr(cli, "ensure_schema", _noop)
+    assert len(subparsers) == 1
+    assert set(subparsers[0].choices) == {
+        "load",
+        "detect",
+        "bootstrap",
+        "version",
+        "export",
+        "shapes",
+        "preview",
+        "validate",
+    }
 
-    with warnings.catch_warnings(record=True) as captured:
-        warnings.simplefilter("always")
-        asyncio.run(args.handler(args, Settings(), _stub_factory))
-    deprecations = [w for w in captured if issubclass(w.category, DeprecationWarning)]
-    assert deprecations, "expected ensure-schema to emit a DeprecationWarning"
-    assert "bootstrap" in str(deprecations[0].message)
+
+def test_export_needs_no_connection_options() -> None:
+    """``export`` writes a file; it must not require or accept a database.
+
+    Offering ``--neo4j-uri`` on a command that never opens a connection
+    would imply the export goes through Neo4j, which is exactly the
+    misunderstanding this release is trying to clear up.
+    """
+    parser = cli.build_parser()
+
+    args = parser.parse_args(["export", "tests/fixtures/codebook_sample.xml", "-o", "out.ttl"])
+    assert args.format == "turtle"
+    assert not hasattr(args, "neo4j_uri")
+
+    with pytest.raises(SystemExit):
+        parser.parse_args(
+            [
+                "export",
+                "tests/fixtures/codebook_sample.xml",
+                "-o",
+                "out.ttl",
+                "--neo4j-uri",
+                "bolt://db:7687",
+            ]
+        )
+
+
+def test_export_rejects_an_unknown_format() -> None:
+    """Choices are checked by argparse before any parsing work happens."""
+    parser = cli.build_parser()
+
+    with pytest.raises(SystemExit):
+        parser.parse_args(
+            ["export", "tests/fixtures/codebook_sample.xml", "-o", "o.ttl", "--format", "yaml"]
+        )
+
+
+def test_bootstrap_include_cdi_defaults_off_and_is_settable() -> None:
+    """DDI-CDI schema is opt-in; nothing shipped writes CDI nodes."""
+    parser = cli.build_parser()
+
+    assert parser.parse_args(["bootstrap"]).include_cdi is False
+    assert parser.parse_args(["bootstrap", "--include-cdi"]).include_cdi is True

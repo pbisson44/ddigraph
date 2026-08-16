@@ -19,10 +19,12 @@ With [uv](https://docs.astral.sh/uv/):
 uv pip install ddigraph
 ```
 
-The base install is small. It pulls in only six runtime packages:
-lxml, neo4j, orjson, pydantic, pydantic-settings, and xmlschema. The
-Neo4j driver is included, so the Neo4j backend works out of the box.
-Other backends are opt-in extras (see below).
+The base install is small. It pulls in five runtime packages: lxml,
+neo4j, orjson, pydantic and pydantic-settings. The Neo4j driver is
+included, so the Neo4j backend works out of the box. Other backends are
+opt-in extras (see below).
+
+JSON and CSV export also work with no extra at all.
 
 ## Backend Extras
 
@@ -30,7 +32,8 @@ Each non-Neo4j backend ships as an optional extra. Install only the
 ones your target needs:
 
 ```bash
-pip install "ddigraph[rdf]"        # RDF / SPARQL (rdflib)
+pip install "ddigraph[rdf]"        # RDF / SPARQL read and write (rdflib)
+pip install "ddigraph[shacl]"      # RDF plus SHACL validation (pyshacl)
 pip install "ddigraph[gremlin]"    # Gremlin databases (gremlinpython)
 pip install "ddigraph[networkx]"   # In-memory NetworkX graphs
 pip install "ddigraph[pandas]"     # pandas / Excel export

@@ -91,8 +91,9 @@ contiennent les métadonnées (descriptions) d'un ensemble de données, pas les 
 
 **DDI-CDI** (DDI Cross-Domain Integration) est la version la plus récente de la norme DDI.
 Elle peut décrire une plus grande variété de types de données, y compris les données
-administratives et les données liées. ddigraph charge les fichiers DDI-CDI avec la classe
-`CDILoader`.
+administratives et les données liées. ddigraph lit DDI-CDI avec
+`parse_cdi_batches()` et, depuis la 0.5.0, sait aussi le diffuser via
+`iter_graph()` et l'écrire dans Neo4j comme n'importe quelle autre variante.
 
 ### DDI-L (DDI Cycle de vie)
 
