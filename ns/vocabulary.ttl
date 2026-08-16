@@ -1,0 +1,2209 @@
+# The ddigraph DDI vocabulary.
+#
+# GENERATED FILE -- do not edit by hand.
+# Regenerate with: python scripts/generate_vocabulary.py
+#
+# Terms are derived from DDISchema, the same table that generates the
+# Neo4j constraints and the SHACL shapes, so this document cannot
+# describe a vocabulary the exporter does not actually emit.
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ddigraph: <https://pbisson44.github.io/ddigraph/ns/1.0/> .
+@prefix disco: <http://rdf-vocabulary.ddialliance.org/discovery#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xkos: <http://rdf-vocabulary.ddialliance.org/xkos#> .
+
+<https://pbisson44.github.io/ddigraph/ns/1.0/>
+    a owl:Ontology ;
+    dcterms:title "The ddigraph DDI vocabulary"@en ;
+    dcterms:description "Classes and predicates for DDI metadata exported by ddigraph. Terms with a published equivalent in DISCO, XKOS or SKOS are declared as subclasses or subproperties of it rather than redefined."@en ;
+    owl:versionInfo "1.0" ;
+    rdfs:seeAlso <http://rdf-vocabulary.ddialliance.org/discovery#> , <http://rdf-vocabulary.ddialliance.org/xkos#> , <http://www.w3.org/2004/02/skos/core#> .
+
+
+######################################################################
+# Classes (249)
+######################################################################
+
+ddigraph:Access a owl:Class ;
+    rdfs:label "Access"@en .
+
+ddigraph:AccessCondition a owl:Class ;
+    rdfs:label "AccessCondition"@en .
+
+ddigraph:AccessPolicy a owl:Class ;
+    rdfs:label "AccessPolicy"@en .
+
+ddigraph:ActionToMinimizeLosses a owl:Class ;
+    rdfs:label "ActionToMinimizeLosses"@en .
+
+ddigraph:AggregationVariables a owl:Class ;
+    rdfs:label "AggregationVariables"@en .
+
+ddigraph:ApprovalReview a owl:Class ;
+    rdfs:label "ApprovalReview"@en .
+
+ddigraph:ApprovalReviewDocument a owl:Class ;
+    rdfs:label "ApprovalReviewDocument"@en .
+
+ddigraph:Archive a owl:Class ;
+    rdfs:label "Archive"@en .
+
+ddigraph:Attribute a owl:Class ;
+    rdfs:label "Attribute"@en .
+
+ddigraph:AuthorizedSource a owl:Class ;
+    rdfs:label "AuthorizedSource"@en .
+
+ddigraph:CDIActivity a owl:Class ;
+    rdfs:label "CDIActivity"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity> .
+
+ddigraph:CDIAgent a owl:Class ;
+    rdfs:label "CDIAgent"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Agent> .
+
+ddigraph:CDICategory a owl:Class ;
+    rdfs:label "CDICategory"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
+
+ddigraph:CDICategorySet a owl:Class ;
+    rdfs:label "CDICategorySet"@en .
+
+ddigraph:CDIClassificationFamily a owl:Class ;
+    rdfs:label "CDIClassificationFamily"@en .
+
+ddigraph:CDIClassificationIndex a owl:Class ;
+    rdfs:label "CDIClassificationIndex"@en .
+
+ddigraph:CDIClassificationItem a owl:Class ;
+    rdfs:label "CDIClassificationItem"@en .
+
+ddigraph:CDIClassificationSeries a owl:Class ;
+    rdfs:label "CDIClassificationSeries"@en .
+
+ddigraph:CDICode a owl:Class ;
+    rdfs:label "CDICode"@en .
+
+ddigraph:CDICodeList a owl:Class ;
+    rdfs:label "CDICodeList"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+
+ddigraph:CDIConcept a owl:Class ;
+    rdfs:label "CDIConcept"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
+
+ddigraph:CDIConceptMap a owl:Class ;
+    rdfs:label "CDIConceptMap"@en .
+
+ddigraph:CDIConceptSystem a owl:Class ;
+    rdfs:label "CDIConceptSystem"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+
+ddigraph:CDIConceptSystemCorrespondence a owl:Class ;
+    rdfs:label "CDIConceptSystemCorrespondence"@en .
+
+ddigraph:CDIConceptualVariable a owl:Class ;
+    rdfs:label "CDIConceptualVariable"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#RepresentedVariable> .
+
+ddigraph:CDICorrespondenceTable a owl:Class ;
+    rdfs:label "CDICorrespondenceTable"@en .
+
+ddigraph:CDIDataSet a owl:Class ;
+    rdfs:label "CDIDataSet"@en .
+
+ddigraph:CDIDataStore a owl:Class ;
+    rdfs:label "CDIDataStore"@en .
+
+ddigraph:CDIDataStructure a owl:Class ;
+    rdfs:label "CDIDataStructure"@en .
+
+ddigraph:CDIDataStructureComponent a owl:Class ;
+    rdfs:label "CDIDataStructureComponent"@en .
+
+ddigraph:CDIInstanceVariable a owl:Class ;
+    rdfs:label "CDIInstanceVariable"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Variable> .
+
+ddigraph:CDILogicalRecord a owl:Class ;
+    rdfs:label "CDILogicalRecord"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#LogicalDataSet> .
+
+ddigraph:CDIPhysicalDataSet a owl:Class ;
+    rdfs:label "CDIPhysicalDataSet"@en .
+
+ddigraph:CDIPhysicalRecordSegment a owl:Class ;
+    rdfs:label "CDIPhysicalRecordSegment"@en .
+
+ddigraph:CDIPopulation a owl:Class ;
+    rdfs:label "CDIPopulation"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Universe> .
+
+ddigraph:CDIProcessingAgent a owl:Class ;
+    rdfs:label "CDIProcessingAgent"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#SoftwareAgent> .
+
+ddigraph:CDIRepresentedVariable a owl:Class ;
+    rdfs:label "CDIRepresentedVariable"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#RepresentedVariable> .
+
+ddigraph:CDIStatisticalClassification a owl:Class ;
+    rdfs:label "CDIStatisticalClassification"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#ClassificationLevel> .
+
+ddigraph:CDIUnitType a owl:Class ;
+    rdfs:label "CDIUnitType"@en .
+
+ddigraph:CDIUniverse a owl:Class ;
+    rdfs:label "CDIUniverse"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Universe> .
+
+ddigraph:CDIValueDomain a owl:Class ;
+    rdfs:label "CDIValueDomain"@en .
+
+ddigraph:CDIVariableRelationship a owl:Class ;
+    rdfs:label "CDIVariableRelationship"@en .
+
+ddigraph:Category a owl:Class ;
+    rdfs:label "Category"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
+
+ddigraph:CategoryGroup a owl:Class ;
+    rdfs:label "CategoryGroup"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#ClassificationLevel> .
+
+ddigraph:CategoryMap a owl:Class ;
+    rdfs:label "CategoryMap"@en .
+
+ddigraph:CategoryScheme a owl:Class ;
+    rdfs:label "CategoryScheme"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+
+ddigraph:Citation a owl:Class ;
+    rdfs:label "Citation"@en .
+
+ddigraph:ClassificationCorrespondenceTable a owl:Class ;
+    rdfs:label "ClassificationCorrespondenceTable"@en .
+
+ddigraph:ClassificationFamily a owl:Class ;
+    rdfs:label "ClassificationFamily"@en .
+
+ddigraph:ClassificationIndex a owl:Class ;
+    rdfs:label "ClassificationIndex"@en .
+
+ddigraph:ClassificationItem a owl:Class ;
+    rdfs:label "ClassificationItem"@en .
+
+ddigraph:ClassificationLevel a owl:Class ;
+    rdfs:label "ClassificationLevel"@en .
+
+ddigraph:ClassificationSeries a owl:Class ;
+    rdfs:label "ClassificationSeries"@en .
+
+ddigraph:Code a owl:Class ;
+    rdfs:label "Code"@en .
+
+ddigraph:CodeList a owl:Class ;
+    rdfs:label "CodeList"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+
+ddigraph:CodeListGroup a owl:Class ;
+    rdfs:label "CodeListGroup"@en .
+
+ddigraph:CodeListScheme a owl:Class ;
+    rdfs:label "CodeListScheme"@en .
+
+ddigraph:CodeScheme a owl:Class ;
+    rdfs:label "CodeScheme"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+
+ddigraph:CognitiveExpertReviewActivity a owl:Class ;
+    rdfs:label "CognitiveExpertReviewActivity"@en .
+
+ddigraph:CognitiveInterviewActivity a owl:Class ;
+    rdfs:label "CognitiveInterviewActivity"@en .
+
+ddigraph:Collection a owl:Class ;
+    rdfs:label "Collection"@en .
+
+ddigraph:CollectionEvent a owl:Class ;
+    rdfs:label "CollectionEvent"@en .
+
+ddigraph:CollectionInstrument a owl:Class ;
+    rdfs:label "CollectionInstrument"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Instrument> .
+
+ddigraph:CollectionSituation a owl:Class ;
+    rdfs:label "CollectionSituation"@en .
+
+ddigraph:Comparison a owl:Class ;
+    rdfs:label "Comparison"@en .
+
+ddigraph:ComputationItem a owl:Class ;
+    rdfs:label "ComputationItem"@en .
+
+ddigraph:Concept a owl:Class ;
+    rdfs:label "Concept"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
+
+ddigraph:ConceptGroup a owl:Class ;
+    rdfs:label "ConceptGroup"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#ClassificationLevel> .
+
+ddigraph:ConceptMap a owl:Class ;
+    rdfs:label "ConceptMap"@en .
+
+ddigraph:ConceptScheme a owl:Class ;
+    rdfs:label "ConceptScheme"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+
+ddigraph:ConceptualComponent a owl:Class ;
+    rdfs:label "ConceptualComponent"@en .
+
+ddigraph:ConceptualVariable a owl:Class ;
+    rdfs:label "ConceptualVariable"@en .
+
+ddigraph:ConceptualVariableGroup a owl:Class ;
+    rdfs:label "ConceptualVariableGroup"@en .
+
+ddigraph:ConceptualVariableScheme a owl:Class ;
+    rdfs:label "ConceptualVariableScheme"@en .
+
+ddigraph:ContentReviewActivity a owl:Class ;
+    rdfs:label "ContentReviewActivity"@en .
+
+ddigraph:Contributor a owl:Class ;
+    rdfs:label "Contributor"@en .
+
+ddigraph:ControlConstruct a owl:Class ;
+    rdfs:label "ControlConstruct"@en .
+
+ddigraph:ControlConstructGroup a owl:Class ;
+    rdfs:label "ControlConstructGroup"@en .
+
+ddigraph:ControlConstructScheme a owl:Class ;
+    rdfs:label "ControlConstructScheme"@en .
+
+ddigraph:CoordinateRegion a owl:Class ;
+    rdfs:label "CoordinateRegion"@en .
+
+ddigraph:Coverage a owl:Class ;
+    rdfs:label "Coverage"@en .
+
+ddigraph:DDIGenericIdentifiable a owl:Class ;
+    rdfs:label "DDIGenericIdentifiable"@en .
+
+ddigraph:DDIInstance a owl:Class ;
+    rdfs:label "DDIInstance"@en .
+
+ddigraph:DDIProfile a owl:Class ;
+    rdfs:label "DDIProfile"@en .
+
+ddigraph:DataCaptureDevelopment a owl:Class ;
+    rdfs:label "DataCaptureDevelopment"@en .
+
+ddigraph:DataCollection a owl:Class ;
+    rdfs:label "DataCollection"@en .
+
+ddigraph:DataCollectionEvent a owl:Class ;
+    rdfs:label "DataCollectionEvent"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity> .
+
+ddigraph:DataCollectionMethodology a owl:Class ;
+    rdfs:label "DataCollectionMethodology"@en .
+
+ddigraph:DataFile a owl:Class ;
+    rdfs:label "DataFile"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#DataFile> .
+
+ddigraph:DataRelationship a owl:Class ;
+    rdfs:label "DataRelationship"@en .
+
+ddigraph:DataSet a owl:Class ;
+    rdfs:label "DataSet"@en .
+
+ddigraph:Dataset a owl:Class ;
+    rdfs:label "Dataset"@en ;
+    rdfs:subClassOf <http://purl.org/dc/terms/Dataset> .
+
+ddigraph:DefaultAccess a owl:Class ;
+    rdfs:label "DefaultAccess"@en .
+
+ddigraph:DevelopmentActivity a owl:Class ;
+    rdfs:label "DevelopmentActivity"@en .
+
+ddigraph:DevelopmentActivityGroup a owl:Class ;
+    rdfs:label "DevelopmentActivityGroup"@en .
+
+ddigraph:DevelopmentActivityScheme a owl:Class ;
+    rdfs:label "DevelopmentActivityScheme"@en .
+
+ddigraph:DevelopmentImplementation a owl:Class ;
+    rdfs:label "DevelopmentImplementation"@en .
+
+ddigraph:DevelopmentPlan a owl:Class ;
+    rdfs:label "DevelopmentPlan"@en .
+
+ddigraph:DevelopmentResults a owl:Class ;
+    rdfs:label "DevelopmentResults"@en .
+
+ddigraph:DevelopmentStep a owl:Class ;
+    rdfs:label "DevelopmentStep"@en .
+
+ddigraph:DeviationFromSampleDesign a owl:Class ;
+    rdfs:label "DeviationFromSampleDesign"@en .
+
+ddigraph:DocumentDescription a owl:Class ;
+    rdfs:label "DocumentDescription"@en .
+
+ddigraph:Embargo a owl:Class ;
+    rdfs:label "Embargo"@en .
+
+ddigraph:ExPostEvaluation a owl:Class ;
+    rdfs:label "ExPostEvaluation"@en .
+
+ddigraph:FocusGroupActivity a owl:Class ;
+    rdfs:label "FocusGroupActivity"@en .
+
+ddigraph:Funding a owl:Class ;
+    rdfs:label "Funding"@en .
+
+ddigraph:FundingDocument a owl:Class ;
+    rdfs:label "FundingDocument"@en .
+
+ddigraph:GeneralInstruction a owl:Class ;
+    rdfs:label "GeneralInstruction"@en .
+
+ddigraph:GenerationInstruction a owl:Class ;
+    rdfs:label "GenerationInstruction"@en .
+
+ddigraph:GeographicLevel a owl:Class ;
+    rdfs:label "GeographicLevel"@en .
+
+ddigraph:GeographicLocation a owl:Class ;
+    rdfs:label "GeographicLocation"@en .
+
+ddigraph:GeographicLocationGroup a owl:Class ;
+    rdfs:label "GeographicLocationGroup"@en .
+
+ddigraph:GeographicLocationScheme a owl:Class ;
+    rdfs:label "GeographicLocationScheme"@en .
+
+ddigraph:GeographicStructure a owl:Class ;
+    rdfs:label "GeographicStructure"@en .
+
+ddigraph:GeographicStructureGroup a owl:Class ;
+    rdfs:label "GeographicStructureGroup"@en .
+
+ddigraph:GeographicStructureScheme a owl:Class ;
+    rdfs:label "GeographicStructureScheme"@en .
+
+ddigraph:GrossFileStructure a owl:Class ;
+    rdfs:label "GrossFileStructure"@en .
+
+ddigraph:GrossRecordStructure a owl:Class ;
+    rdfs:label "GrossRecordStructure"@en .
+
+ddigraph:Group a owl:Class ;
+    rdfs:label "Group"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#StudyGroup> .
+
+ddigraph:IfThenElse a owl:Class ;
+    rdfs:label "IfThenElse"@en .
+
+ddigraph:InParameter a owl:Class ;
+    rdfs:label "InParameter"@en .
+
+ddigraph:Individual a owl:Class ;
+    rdfs:label "Individual"@en ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/Person> .
+
+ddigraph:InformationClassification a owl:Class ;
+    rdfs:label "InformationClassification"@en .
+
+ddigraph:Instruction a owl:Class ;
+    rdfs:label "Instruction"@en .
+
+ddigraph:InstructionGroup a owl:Class ;
+    rdfs:label "InstructionGroup"@en .
+
+ddigraph:Instrument a owl:Class ;
+    rdfs:label "Instrument"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Instrument> .
+
+ddigraph:InstrumentGroup a owl:Class ;
+    rdfs:label "InstrumentGroup"@en .
+
+ddigraph:InstrumentScheme a owl:Class ;
+    rdfs:label "InstrumentScheme"@en .
+
+ddigraph:InterviewerInstructionScheme a owl:Class ;
+    rdfs:label "InterviewerInstructionScheme"@en .
+
+ddigraph:ItemMap a owl:Class ;
+    rdfs:label "ItemMap"@en .
+
+ddigraph:LifecycleEvent a owl:Class ;
+    rdfs:label "LifecycleEvent"@en .
+
+ddigraph:LocalGroupContent a owl:Class ;
+    rdfs:label "LocalGroupContent"@en .
+
+ddigraph:LocalHoldingPackage a owl:Class ;
+    rdfs:label "LocalHoldingPackage"@en .
+
+ddigraph:LocalResourcePackageContent a owl:Class ;
+    rdfs:label "LocalResourcePackageContent"@en .
+
+ddigraph:LocalStudyUnitContent a owl:Class ;
+    rdfs:label "LocalStudyUnitContent"@en .
+
+ddigraph:LocationValue a owl:Class ;
+    rdfs:label "LocationValue"@en .
+
+ddigraph:LogicalProduct a owl:Class ;
+    rdfs:label "LogicalProduct"@en .
+
+ddigraph:LogicalRecord a owl:Class ;
+    rdfs:label "LogicalRecord"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#LogicalDataSet> .
+
+ddigraph:Loop a owl:Class ;
+    rdfs:label "Loop"@en .
+
+ddigraph:ManagedDateTimeRepresentation a owl:Class ;
+    rdfs:label "ManagedDateTimeRepresentation"@en .
+
+ddigraph:ManagedItemMap a owl:Class ;
+    rdfs:label "ManagedItemMap"@en .
+
+ddigraph:ManagedMissingValuesRepresentation a owl:Class ;
+    rdfs:label "ManagedMissingValuesRepresentation"@en .
+
+ddigraph:ManagedNumericRepresentation a owl:Class ;
+    rdfs:label "ManagedNumericRepresentation"@en .
+
+ddigraph:ManagedRepresentationGroup a owl:Class ;
+    rdfs:label "ManagedRepresentationGroup"@en .
+
+ddigraph:ManagedRepresentationScheme a owl:Class ;
+    rdfs:label "ManagedRepresentationScheme"@en .
+
+ddigraph:ManagedScaleRepresentation a owl:Class ;
+    rdfs:label "ManagedScaleRepresentation"@en .
+
+ddigraph:ManagedTextRepresentation a owl:Class ;
+    rdfs:label "ManagedTextRepresentation"@en .
+
+ddigraph:MeasureDefinition a owl:Class ;
+    rdfs:label "MeasureDefinition"@en .
+
+ddigraph:MeasurementConstruct a owl:Class ;
+    rdfs:label "MeasurementConstruct"@en .
+
+ddigraph:MeasurementGroup a owl:Class ;
+    rdfs:label "MeasurementGroup"@en .
+
+ddigraph:MeasurementItem a owl:Class ;
+    rdfs:label "MeasurementItem"@en .
+
+ddigraph:MeasurementScheme a owl:Class ;
+    rdfs:label "MeasurementScheme"@en .
+
+ddigraph:Methodology a owl:Class ;
+    rdfs:label "Methodology"@en .
+
+ddigraph:MethodologyNote a owl:Class ;
+    rdfs:label "MethodologyNote"@en .
+
+ddigraph:ModeOfCollection a owl:Class ;
+    rdfs:label "ModeOfCollection"@en .
+
+ddigraph:NCube a owl:Class ;
+    rdfs:label "NCube"@en .
+
+ddigraph:NCubeGroup a owl:Class ;
+    rdfs:label "NCubeGroup"@en .
+
+ddigraph:NCubeInstance a owl:Class ;
+    rdfs:label "NCubeInstance"@en .
+
+ddigraph:NCubeScheme a owl:Class ;
+    rdfs:label "NCubeScheme"@en .
+
+ddigraph:Organization a owl:Class ;
+    rdfs:label "Organization"@en ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/Organization> .
+
+ddigraph:OrganizationGroup a owl:Class ;
+    rdfs:label "OrganizationGroup"@en .
+
+ddigraph:OrganizationScheme a owl:Class ;
+    rdfs:label "OrganizationScheme"@en .
+
+ddigraph:OtherMaterial a owl:Class ;
+    rdfs:label "OtherMaterial"@en .
+
+ddigraph:OtherMaterialGroup a owl:Class ;
+    rdfs:label "OtherMaterialGroup"@en .
+
+ddigraph:OtherMaterialScheme a owl:Class ;
+    rdfs:label "OtherMaterialScheme"@en .
+
+ddigraph:OutParameter a owl:Class ;
+    rdfs:label "OutParameter"@en .
+
+ddigraph:PhysicalDataProduct a owl:Class ;
+    rdfs:label "PhysicalDataProduct"@en .
+
+ddigraph:PhysicalInstance a owl:Class ;
+    rdfs:label "PhysicalInstance"@en .
+
+ddigraph:PhysicalInstanceGroup a owl:Class ;
+    rdfs:label "PhysicalInstanceGroup"@en .
+
+ddigraph:PhysicalRecordSegment a owl:Class ;
+    rdfs:label "PhysicalRecordSegment"@en .
+
+ddigraph:PhysicalStructure a owl:Class ;
+    rdfs:label "PhysicalStructure"@en .
+
+ddigraph:PhysicalStructureGroup a owl:Class ;
+    rdfs:label "PhysicalStructureGroup"@en .
+
+ddigraph:PhysicalStructureScheme a owl:Class ;
+    rdfs:label "PhysicalStructureScheme"@en .
+
+ddigraph:PretestActivity a owl:Class ;
+    rdfs:label "PretestActivity"@en .
+
+ddigraph:ProcessingEvent a owl:Class ;
+    rdfs:label "ProcessingEvent"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#Activity> .
+
+ddigraph:ProcessingEventGroup a owl:Class ;
+    rdfs:label "ProcessingEventGroup"@en .
+
+ddigraph:ProcessingEventScheme a owl:Class ;
+    rdfs:label "ProcessingEventScheme"@en .
+
+ddigraph:ProcessingInstructionGroup a owl:Class ;
+    rdfs:label "ProcessingInstructionGroup"@en .
+
+ddigraph:ProcessingInstructionScheme a owl:Class ;
+    rdfs:label "ProcessingInstructionScheme"@en .
+
+ddigraph:QualityScheme a owl:Class ;
+    rdfs:label "QualityScheme"@en .
+
+ddigraph:QualityStandard a owl:Class ;
+    rdfs:label "QualityStandard"@en .
+
+ddigraph:QualityStandardGroup a owl:Class ;
+    rdfs:label "QualityStandardGroup"@en .
+
+ddigraph:QualityStatement a owl:Class ;
+    rdfs:label "QualityStatement"@en .
+
+ddigraph:QualityStatementGroup a owl:Class ;
+    rdfs:label "QualityStatementGroup"@en .
+
+ddigraph:Question a owl:Class ;
+    rdfs:label "Question"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Question> .
+
+ddigraph:QuestionBlock a owl:Class ;
+    rdfs:label "QuestionBlock"@en .
+
+ddigraph:QuestionConstruct a owl:Class ;
+    rdfs:label "QuestionConstruct"@en .
+
+ddigraph:QuestionFlow a owl:Class ;
+    rdfs:label "QuestionFlow"@en .
+
+ddigraph:QuestionGrid a owl:Class ;
+    rdfs:label "QuestionGrid"@en .
+
+ddigraph:QuestionGroup a owl:Class ;
+    rdfs:label "QuestionGroup"@en .
+
+ddigraph:QuestionItem a owl:Class ;
+    rdfs:label "QuestionItem"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Question> .
+
+ddigraph:QuestionMap a owl:Class ;
+    rdfs:label "QuestionMap"@en .
+
+ddigraph:QuestionScheme a owl:Class ;
+    rdfs:label "QuestionScheme"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Questionnaire> .
+
+ddigraph:RecordLayout a owl:Class ;
+    rdfs:label "RecordLayout"@en .
+
+ddigraph:RecordLayoutGroup a owl:Class ;
+    rdfs:label "RecordLayoutGroup"@en .
+
+ddigraph:RecordLayoutScheme a owl:Class ;
+    rdfs:label "RecordLayoutScheme"@en .
+
+ddigraph:RecordRelationship a owl:Class ;
+    rdfs:label "RecordRelationship"@en .
+
+ddigraph:Relation a owl:Class ;
+    rdfs:label "Relation"@en .
+
+ddigraph:RepeatUntil a owl:Class ;
+    rdfs:label "RepeatUntil"@en .
+
+ddigraph:RepeatWhile a owl:Class ;
+    rdfs:label "RepeatWhile"@en .
+
+ddigraph:Representation a owl:Class ;
+    rdfs:label "Representation"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Representation> .
+
+ddigraph:RepresentationMap a owl:Class ;
+    rdfs:label "RepresentationMap"@en .
+
+ddigraph:RepresentedVariable a owl:Class ;
+    rdfs:label "RepresentedVariable"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#RepresentedVariable> .
+
+ddigraph:RepresentedVariableGroup a owl:Class ;
+    rdfs:label "RepresentedVariableGroup"@en .
+
+ddigraph:RepresentedVariableScheme a owl:Class ;
+    rdfs:label "RepresentedVariableScheme"@en .
+
+ddigraph:ResourcePackage a owl:Class ;
+    rdfs:label "ResourcePackage"@en .
+
+ddigraph:Sample a owl:Class ;
+    rdfs:label "Sample"@en .
+
+ddigraph:SampleFrame a owl:Class ;
+    rdfs:label "SampleFrame"@en .
+
+ddigraph:SampleFrameAccess a owl:Class ;
+    rdfs:label "SampleFrameAccess"@en .
+
+ddigraph:SampleStep a owl:Class ;
+    rdfs:label "SampleStep"@en .
+
+ddigraph:SamplingInformationGroup a owl:Class ;
+    rdfs:label "SamplingInformationGroup"@en .
+
+ddigraph:SamplingInformationScheme a owl:Class ;
+    rdfs:label "SamplingInformationScheme"@en .
+
+ddigraph:SamplingPlan a owl:Class ;
+    rdfs:label "SamplingPlan"@en .
+
+ddigraph:SamplingProcedure a owl:Class ;
+    rdfs:label "SamplingProcedure"@en .
+
+ddigraph:SamplingStage a owl:Class ;
+    rdfs:label "SamplingStage"@en .
+
+ddigraph:Sequence a owl:Class ;
+    rdfs:label "Sequence"@en .
+
+ddigraph:Series a owl:Class ;
+    rdfs:label "Series"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#StudyGroup> .
+
+ddigraph:Software a owl:Class ;
+    rdfs:label "Software"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/prov#SoftwareAgent> .
+
+ddigraph:SpatialCoverage a owl:Class ;
+    rdfs:label "SpatialCoverage"@en .
+
+ddigraph:Split a owl:Class ;
+    rdfs:label "Split"@en .
+
+ddigraph:SplitJoin a owl:Class ;
+    rdfs:label "SplitJoin"@en .
+
+ddigraph:StandardWeight a owl:Class ;
+    rdfs:label "StandardWeight"@en .
+
+ddigraph:StatementItem a owl:Class ;
+    rdfs:label "StatementItem"@en .
+
+ddigraph:StatisticalClassification a owl:Class ;
+    rdfs:label "StatisticalClassification"@en .
+
+ddigraph:Study a owl:Class ;
+    rdfs:label "Study"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Study> .
+
+ddigraph:StudyAuthorization a owl:Class ;
+    rdfs:label "StudyAuthorization"@en .
+
+ddigraph:StudyDevelopment a owl:Class ;
+    rdfs:label "StudyDevelopment"@en .
+
+ddigraph:StudyUnit a owl:Class ;
+    rdfs:label "StudyUnit"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Study> .
+
+ddigraph:SubUniverseClass a owl:Class ;
+    rdfs:label "SubUniverseClass"@en .
+
+ddigraph:TemporalCoverage a owl:Class ;
+    rdfs:label "TemporalCoverage"@en .
+
+ddigraph:TimeMethod a owl:Class ;
+    rdfs:label "TimeMethod"@en .
+
+ddigraph:TopicalCoverage a owl:Class ;
+    rdfs:label "TopicalCoverage"@en .
+
+ddigraph:TranslationActivity a owl:Class ;
+    rdfs:label "TranslationActivity"@en .
+
+ddigraph:UnitType a owl:Class ;
+    rdfs:label "UnitType"@en .
+
+ddigraph:UnitTypeGroup a owl:Class ;
+    rdfs:label "UnitTypeGroup"@en .
+
+ddigraph:UnitTypeScheme a owl:Class ;
+    rdfs:label "UnitTypeScheme"@en .
+
+ddigraph:Universe a owl:Class ;
+    rdfs:label "Universe"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Universe> .
+
+ddigraph:UniverseGroup a owl:Class ;
+    rdfs:label "UniverseGroup"@en .
+
+ddigraph:UniverseMap a owl:Class ;
+    rdfs:label "UniverseMap"@en .
+
+ddigraph:UniverseScheme a owl:Class ;
+    rdfs:label "UniverseScheme"@en .
+
+ddigraph:VarGroup a owl:Class ;
+    rdfs:label "VarGroup"@en .
+
+ddigraph:Variable a owl:Class ;
+    rdfs:label "Variable"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#Variable> .
+
+ddigraph:VariableGroup a owl:Class ;
+    rdfs:label "VariableGroup"@en .
+
+ddigraph:VariableMap a owl:Class ;
+    rdfs:label "VariableMap"@en .
+
+ddigraph:VariableScheme a owl:Class ;
+    rdfs:label "VariableScheme"@en .
+
+ddigraph:VariableStatistics a owl:Class ;
+    rdfs:label "VariableStatistics"@en .
+
+ddigraph:Weight a owl:Class ;
+    rdfs:label "Weight"@en .
+
+ddigraph:Weighting a owl:Class ;
+    rdfs:label "Weighting"@en .
+
+ddigraph:WeightingMethodology a owl:Class ;
+    rdfs:label "WeightingMethodology"@en .
+
+
+######################################################################
+# Object properties (369)
+######################################################################
+
+ddigraph:agencyOrganization a owl:ObjectProperty ;
+    rdfs:label "AGENCYORGANIZATION"@en .
+
+ddigraph:aggregationVariables a owl:ObjectProperty ;
+    rdfs:label "AGGREGATIONVARIABLES"@en .
+
+ddigraph:appliesTo a owl:ObjectProperty ;
+    rdfs:label "APPLIES_TO"@en .
+
+ddigraph:approvalReview a owl:ObjectProperty ;
+    rdfs:label "APPROVALREVIEW"@en .
+
+ddigraph:approvalReviewDocument a owl:ObjectProperty ;
+    rdfs:label "APPROVALREVIEWDOCUMENT"@en .
+
+ddigraph:archive a owl:ObjectProperty ;
+    rdfs:label "ARCHIVE"@en .
+
+ddigraph:archiveOrganization a owl:ObjectProperty ;
+    rdfs:label "ARCHIVEORGANIZATION"@en .
+
+ddigraph:askedAs a owl:ObjectProperty ;
+    rdfs:label "ASKED_AS"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#question> .
+
+ddigraph:asksQuestion a owl:ObjectProperty ;
+    rdfs:label "ASKS_QUESTION"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#question> .
+
+ddigraph:assignsVariable a owl:ObjectProperty ;
+    rdfs:label "ASSIGNS_VARIABLE"@en .
+
+ddigraph:associatedWith a owl:ObjectProperty ;
+    rdfs:label "ASSOCIATED_WITH"@en .
+
+ddigraph:attachmentRegion a owl:ObjectProperty ;
+    rdfs:label "ATTACHMENTREGION"@en .
+
+ddigraph:attribute a owl:ObjectProperty ;
+    rdfs:label "ATTRIBUTE"@en .
+
+ddigraph:authorizedSource a owl:ObjectProperty ;
+    rdfs:label "AUTHORIZEDSOURCE"@en .
+
+ddigraph:authorizingAgency a owl:ObjectProperty ;
+    rdfs:label "AUTHORIZINGAGENCY"@en .
+
+ddigraph:basedOn a owl:ObjectProperty ;
+    rdfs:label "BASED_ON"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#basedOn> .
+
+ddigraph:basedOnSample a owl:ObjectProperty ;
+    rdfs:label "BASEDONSAMPLE"@en .
+
+ddigraph:categoryMap a owl:ObjectProperty ;
+    rdfs:label "CATEGORYMAP"@en .
+
+ddigraph:circumscribes a owl:ObjectProperty ;
+    rdfs:label "CIRCUMSCRIBES"@en .
+
+ddigraph:classificationCorrespondenceTable a owl:ObjectProperty ;
+    rdfs:label "CLASSIFICATIONCORRESPONDENCETABLE"@en .
+
+ddigraph:classificationIndex a owl:ObjectProperty ;
+    rdfs:label "CLASSIFICATIONINDEX"@en .
+
+ddigraph:classificationItem a owl:ObjectProperty ;
+    rdfs:label "CLASSIFICATIONITEM"@en .
+
+ddigraph:classificationLevel a owl:ObjectProperty ;
+    rdfs:label "CLASSIFICATIONLEVEL"@en .
+
+ddigraph:classificationSeries a owl:ObjectProperty ;
+    rdfs:label "CLASSIFICATIONSERIES"@en .
+
+ddigraph:code a owl:ObjectProperty ;
+    rdfs:label "CODE"@en .
+
+ddigraph:codeListGroup a owl:ObjectProperty ;
+    rdfs:label "CODELISTGROUP"@en .
+
+ddigraph:codesClassificationItem a owl:ObjectProperty ;
+    rdfs:label "CODESCLASSIFICATIONITEM"@en .
+
+ddigraph:comparison a owl:ObjectProperty ;
+    rdfs:label "COMPARISON"@en .
+
+ddigraph:complianceConcept a owl:ObjectProperty ;
+    rdfs:label "COMPLIANCECONCEPT"@en .
+
+ddigraph:component a owl:ObjectProperty ;
+    rdfs:label "COMPONENT"@en .
+
+ddigraph:componentSample a owl:ObjectProperty ;
+    rdfs:label "COMPONENTSAMPLE"@en .
+
+ddigraph:conceptGroup a owl:ObjectProperty ;
+    rdfs:label "CONCEPTGROUP"@en .
+
+ddigraph:conceptMap a owl:ObjectProperty ;
+    rdfs:label "CONCEPTMAP"@en .
+
+ddigraph:conceptualComponent a owl:ObjectProperty ;
+    rdfs:label "CONCEPTUALCOMPONENT"@en .
+
+ddigraph:conceptualVariableGroup a owl:ObjectProperty ;
+    rdfs:label "CONCEPTUALVARIABLEGROUP"@en .
+
+ddigraph:conditionalVariable a owl:ObjectProperty ;
+    rdfs:label "CONDITIONALVARIABLE"@en .
+
+ddigraph:contact a owl:ObjectProperty ;
+    rdfs:label "CONTACT"@en .
+
+ddigraph:contactOrganization a owl:ObjectProperty ;
+    rdfs:label "CONTACTORGANIZATION"@en .
+
+ddigraph:contactPerson a owl:ObjectProperty ;
+    rdfs:label "CONTACTPERSON"@en .
+
+ddigraph:contributesTo a owl:ObjectProperty ;
+    rdfs:label "CONTRIBUTES_TO"@en .
+
+ddigraph:contributor a owl:ObjectProperty ;
+    rdfs:label "CONTRIBUTOR"@en .
+
+ddigraph:controlConstructGroup a owl:ObjectProperty ;
+    rdfs:label "CONTROLCONSTRUCTGROUP"@en .
+
+ddigraph:correspondsTo a owl:ObjectProperty ;
+    rdfs:label "CORRESPONDS_TO"@en .
+
+ddigraph:covers a owl:ObjectProperty ;
+    rdfs:label "COVERS"@en .
+
+ddigraph:creator a owl:ObjectProperty ;
+    rdfs:label "CREATOR"@en .
+
+ddigraph:currentStatisticalClassification a owl:ObjectProperty ;
+    rdfs:label "CURRENTSTATISTICALCLASSIFICATION"@en .
+
+ddigraph:custodian a owl:ObjectProperty ;
+    rdfs:label "CUSTODIAN"@en .
+
+ddigraph:dDIProfile a owl:ObjectProperty ;
+    rdfs:label "DDIPROFILE"@en .
+
+ddigraph:dataCaptureDevelopment a owl:ObjectProperty ;
+    rdfs:label "DATACAPTUREDEVELOPMENT"@en .
+
+ddigraph:dataCollectorOrganization a owl:ObjectProperty ;
+    rdfs:label "DATACOLLECTORORGANIZATION"@en .
+
+ddigraph:dateTimeDomain a owl:ObjectProperty ;
+    rdfs:label "DATETIMEDOMAIN"@en .
+
+ddigraph:dateTimeRepresentation a owl:ObjectProperty ;
+    rdfs:label "DATETIMEREPRESENTATION"@en .
+
+ddigraph:defaultDateTimeDataType a owl:ObjectProperty ;
+    rdfs:label "DEFAULTDATETIMEDATATYPE"@en .
+
+ddigraph:defaultMissingValues a owl:ObjectProperty ;
+    rdfs:label "DEFAULTMISSINGVALUES"@en .
+
+ddigraph:defaultNumericDataType a owl:ObjectProperty ;
+    rdfs:label "DEFAULTNUMERICDATATYPE"@en .
+
+ddigraph:defaultTextDataType a owl:ObjectProperty ;
+    rdfs:label "DEFAULTTEXTDATATYPE"@en .
+
+ddigraph:defaultVariableScheme a owl:ObjectProperty ;
+    rdfs:label "DEFAULTVARIABLESCHEME"@en .
+
+ddigraph:definedByConcept a owl:ObjectProperty ;
+    rdfs:label "DEFINED_BY_CONCEPT"@en .
+
+ddigraph:definingCategory a owl:ObjectProperty ;
+    rdfs:label "DEFININGCATEGORY"@en .
+
+ddigraph:denotes a owl:ObjectProperty ;
+    rdfs:label "DENOTES"@en .
+
+ddigraph:dependentVariable a owl:ObjectProperty ;
+    rdfs:label "DEPENDENTVARIABLE"@en .
+
+ddigraph:depositoryGroup a owl:ObjectProperty ;
+    rdfs:label "DEPOSITORYGROUP"@en .
+
+ddigraph:depositoryObject a owl:ObjectProperty ;
+    rdfs:label "DEPOSITORYOBJECT"@en .
+
+ddigraph:depositoryResourcePackage a owl:ObjectProperty ;
+    rdfs:label "DEPOSITORYRESOURCEPACKAGE"@en .
+
+ddigraph:depositoryStudyUnit a owl:ObjectProperty ;
+    rdfs:label "DEPOSITORYSTUDYUNIT"@en .
+
+ddigraph:derivedFrom a owl:ObjectProperty ;
+    rdfs:label "DERIVEDFROM"@en .
+
+ddigraph:describes a owl:ObjectProperty ;
+    rdfs:label "DESCRIBES"@en .
+
+ddigraph:developmentActivityGroup a owl:ObjectProperty ;
+    rdfs:label "DEVELOPMENTACTIVITYGROUP"@en .
+
+ddigraph:developmentImplementation a owl:ObjectProperty ;
+    rdfs:label "DEVELOPMENTIMPLEMENTATION"@en .
+
+ddigraph:developmentPlan a owl:ObjectProperty ;
+    rdfs:label "DEVELOPMENTPLAN"@en .
+
+ddigraph:developmentResults a owl:ObjectProperty ;
+    rdfs:label "DEVELOPMENTRESULTS"@en .
+
+ddigraph:elseConstruct a owl:ObjectProperty ;
+    rdfs:label "ELSE"@en .
+
+ddigraph:embargo a owl:ObjectProperty ;
+    rdfs:label "EMBARGO"@en .
+
+ddigraph:enforcementAgencyOrganization a owl:ObjectProperty ;
+    rdfs:label "ENFORCEMENTAGENCYORGANIZATION"@en .
+
+ddigraph:evaluator a owl:ObjectProperty ;
+    rdfs:label "EVALUATOR"@en .
+
+ddigraph:excludedClassificationItem a owl:ObjectProperty ;
+    rdfs:label "EXCLUDEDCLASSIFICATIONITEM"@en .
+
+ddigraph:excludedGeographicLevel a owl:ObjectProperty ;
+    rdfs:label "EXCLUDEDGEOGRAPHICLEVEL"@en .
+
+ddigraph:excludedLocationValue a owl:ObjectProperty ;
+    rdfs:label "EXCLUDEDLOCATIONVALUE"@en .
+
+ddigraph:excludes a owl:ObjectProperty ;
+    rdfs:label "EXCLUDES"@en .
+
+ddigraph:excludesConcept a owl:ObjectProperty ;
+    rdfs:label "EXCLUDESCONCEPT"@en .
+
+ddigraph:filterVariable a owl:ObjectProperty ;
+    rdfs:label "FILTERVARIABLE"@en .
+
+ddigraph:for a owl:ObjectProperty ;
+    rdfs:label "FOR"@en .
+
+ddigraph:formats a owl:ObjectProperty ;
+    rdfs:label "FORMATS"@en .
+
+ddigraph:from a owl:ObjectProperty ;
+    rdfs:label "FROM"@en .
+
+ddigraph:fundingDocument a owl:ObjectProperty ;
+    rdfs:label "FUNDINGDOCUMENT"@en .
+
+ddigraph:funds a owl:ObjectProperty ;
+    rdfs:label "FUNDS"@en .
+
+ddigraph:generalInstruction a owl:ObjectProperty ;
+    rdfs:label "GENERALINSTRUCTION"@en .
+
+ddigraph:generates a owl:ObjectProperty ;
+    rdfs:label "GENERATES"@en .
+
+ddigraph:generationInstruction a owl:ObjectProperty ;
+    rdfs:label "GENERATIONINSTRUCTION"@en .
+
+ddigraph:geographicLayerBase a owl:ObjectProperty ;
+    rdfs:label "GEOGRAPHICLAYERBASE"@en .
+
+ddigraph:geographicLevel a owl:ObjectProperty ;
+    rdfs:label "GEOGRAPHICLEVEL"@en .
+
+ddigraph:geographicLocation a owl:ObjectProperty ;
+    rdfs:label "GEOGRAPHICLOCATION"@en .
+
+ddigraph:geographicLocationGroup a owl:ObjectProperty ;
+    rdfs:label "GEOGRAPHICLOCATIONGROUP"@en .
+
+ddigraph:geographicStructure a owl:ObjectProperty ;
+    rdfs:label "GEOGRAPHICSTRUCTURE"@en .
+
+ddigraph:geographicStructureGroup a owl:ObjectProperty ;
+    rdfs:label "GEOGRAPHICSTRUCTUREGROUP"@en .
+
+ddigraph:geographyStructureVariable a owl:ObjectProperty ;
+    rdfs:label "GEOGRAPHYSTRUCTUREVARIABLE"@en .
+
+ddigraph:governedBy a owl:ObjectProperty ;
+    rdfs:label "GOVERNED_BY"@en .
+
+ddigraph:group a owl:ObjectProperty ;
+    rdfs:label "GROUP"@en .
+
+ddigraph:groupingConcept a owl:ObjectProperty ;
+    rdfs:label "GROUPINGCONCEPT"@en .
+
+ddigraph:groupingUniverse a owl:ObjectProperty ;
+    rdfs:label "GROUPINGUNIVERSE"@en .
+
+ddigraph:groups a owl:ObjectProperty ;
+    rdfs:label "GROUPS"@en .
+
+ddigraph:has a owl:ObjectProperty ;
+    rdfs:label "HAS"@en .
+
+ddigraph:hasCategory a owl:ObjectProperty ;
+    rdfs:label "HAS_CATEGORY"@en ;
+    owl:inverseOf <http://www.w3.org/2004/02/skos/core#inScheme> .
+
+ddigraph:hasClassificationItem a owl:ObjectProperty ;
+    rdfs:label "HAS_CLASSIFICATION_ITEM"@en .
+
+ddigraph:hasCode a owl:ObjectProperty ;
+    rdfs:label "HAS_CODE"@en ;
+    owl:inverseOf <http://www.w3.org/2004/02/skos/core#inScheme> .
+
+ddigraph:hasComparison a owl:ObjectProperty ;
+    rdfs:label "HAS_COMPARISON"@en .
+
+ddigraph:hasComponent a owl:ObjectProperty ;
+    rdfs:label "HAS_COMPONENT"@en .
+
+ddigraph:hasConcept a owl:ObjectProperty ;
+    rdfs:label "HAS_CONCEPT"@en ;
+    owl:inverseOf <http://www.w3.org/2004/02/skos/core#inScheme> .
+
+ddigraph:hasConceptFrom a owl:ObjectProperty ;
+    rdfs:label "HAS_CONCEPT_FROM"@en .
+
+ddigraph:hasConceptMap a owl:ObjectProperty ;
+    rdfs:label "HAS_CONCEPT_MAP"@en .
+
+ddigraph:hasConstruct a owl:ObjectProperty ;
+    rdfs:label "HAS_CONSTRUCT"@en .
+
+ddigraph:hasContact a owl:ObjectProperty ;
+    rdfs:label "HAS_CONTACT"@en .
+
+ddigraph:hasDataCollection a owl:ObjectProperty ;
+    rdfs:label "HAS_DATA_COLLECTION"@en .
+
+ddigraph:hasDataRelationship a owl:ObjectProperty ;
+    rdfs:label "HAS_DATA_RELATIONSHIP"@en .
+
+ddigraph:hasExternalUrl a owl:ObjectProperty ;
+    rdfs:label "HAS_EXTERNAL_URL"@en .
+
+ddigraph:hasInstruction a owl:ObjectProperty ;
+    rdfs:label "HAS_INSTRUCTION"@en .
+
+ddigraph:hasInternal a owl:ObjectProperty ;
+    rdfs:label "HAS_INTERNAL"@en .
+
+ddigraph:hasLogicalRecord a owl:ObjectProperty ;
+    rdfs:label "HAS_LOGICAL_RECORD"@en .
+
+ddigraph:hasPhysicalInstance a owl:ObjectProperty ;
+    rdfs:label "HAS_PHYSICAL_INSTANCE"@en .
+
+ddigraph:hasPhysicalRecordSegment a owl:ObjectProperty ;
+    rdfs:label "HAS_PHYSICAL_RECORD_SEGMENT"@en .
+
+ddigraph:hasPrecondition a owl:ObjectProperty ;
+    rdfs:label "HAS_PRECONDITION"@en .
+
+ddigraph:hasRelatedMaterial a owl:ObjectProperty ;
+    rdfs:label "HAS_RELATED_MATERIAL"@en .
+
+ddigraph:hasRepresentation a owl:ObjectProperty ;
+    rdfs:label "HAS_REPRESENTATION"@en .
+
+ddigraph:hasRepresentedVariableScheme a owl:ObjectProperty ;
+    rdfs:label "HAS_REPRESENTED_VARIABLE_SCHEME"@en .
+
+ddigraph:hasRulingBy a owl:ObjectProperty ;
+    rdfs:label "HAS_RULING_BY"@en .
+
+ddigraph:hasSource a owl:ObjectProperty ;
+    rdfs:label "HAS_SOURCE"@en .
+
+ddigraph:hasStatisticalClassification a owl:ObjectProperty ;
+    rdfs:label "HAS_STATISTICAL_CLASSIFICATION"@en .
+
+ddigraph:hasSubActivity a owl:ObjectProperty ;
+    rdfs:label "HAS_SUB_ACTIVITY"@en .
+
+ddigraph:hasSubControlLogic a owl:ObjectProperty ;
+    rdfs:label "HAS_SUB_CONTROL_LOGIC"@en .
+
+ddigraph:hasSubStep a owl:ObjectProperty ;
+    rdfs:label "HAS_SUB_STEP"@en .
+
+ddigraph:hasTarget a owl:ObjectProperty ;
+    rdfs:label "HAS_TARGET"@en .
+
+ddigraph:hasValueFrom a owl:ObjectProperty ;
+    rdfs:label "HAS_VALUE_FROM"@en .
+
+ddigraph:hasValueRepresentation a owl:ObjectProperty ;
+    rdfs:label "HAS_VALUE_REPRESENTATION"@en .
+
+ddigraph:highestLevel a owl:ObjectProperty ;
+    rdfs:label "HIGHESTLEVEL"@en .
+
+ddigraph:identifies a owl:ObjectProperty ;
+    rdfs:label "IDENTIFIES"@en .
+
+ddigraph:identifyingVariable a owl:ObjectProperty ;
+    rdfs:label "IDENTIFYINGVARIABLE"@en .
+
+ddigraph:imputation a owl:ObjectProperty ;
+    rdfs:label "IMPUTATION"@en .
+
+ddigraph:inCategoryGroup a owl:ObjectProperty ;
+    rdfs:label "IN_CATEGORY_GROUP"@en .
+
+ddigraph:inClassificationFamily a owl:ObjectProperty ;
+    rdfs:label "IN_CLASSIFICATION_FAMILY"@en .
+
+ddigraph:inCodelistScheme a owl:ObjectProperty ;
+    rdfs:label "IN_CODELIST_SCHEME"@en .
+
+ddigraph:inConceptScheme a owl:ObjectProperty ;
+    rdfs:label "IN_CONCEPT_SCHEME"@en .
+
+ddigraph:inConceptualVariableScheme a owl:ObjectProperty ;
+    rdfs:label "IN_CONCEPTUAL_VARIABLE_SCHEME"@en .
+
+ddigraph:inControlConstructScheme a owl:ObjectProperty ;
+    rdfs:label "IN_CONTROL_CONSTRUCT_SCHEME"@en .
+
+ddigraph:inDataset a owl:ObjectProperty ;
+    rdfs:label "IN_DATASET"@en ;
+    rdfs:subPropertyOf <http://purl.org/dc/terms/isPartOf> .
+
+ddigraph:inDevelopmentActivityScheme a owl:ObjectProperty ;
+    rdfs:label "IN_DEVELOPMENT_ACTIVITY_SCHEME"@en .
+
+ddigraph:inFile a owl:ObjectProperty ;
+    rdfs:label "IN_FILE"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#dataFile> .
+
+ddigraph:inFlow a owl:ObjectProperty ;
+    rdfs:label "IN_FLOW"@en .
+
+ddigraph:inGeographicLocationScheme a owl:ObjectProperty ;
+    rdfs:label "IN_GEOGRAPHIC_LOCATION_SCHEME"@en .
+
+ddigraph:inGeographicStructureScheme a owl:ObjectProperty ;
+    rdfs:label "IN_GEOGRAPHIC_STRUCTURE_SCHEME"@en .
+
+ddigraph:inGrid a owl:ObjectProperty ;
+    rdfs:label "IN_GRID"@en .
+
+ddigraph:inInstructionScheme a owl:ObjectProperty ;
+    rdfs:label "IN_INSTRUCTION_SCHEME"@en .
+
+ddigraph:inInstrumentScheme a owl:ObjectProperty ;
+    rdfs:label "IN_INSTRUMENT_SCHEME"@en .
+
+ddigraph:inMeasurementScheme a owl:ObjectProperty ;
+    rdfs:label "IN_MEASUREMENT_SCHEME"@en .
+
+ddigraph:inNcubeScheme a owl:ObjectProperty ;
+    rdfs:label "IN_NCUBE_SCHEME"@en .
+
+ddigraph:inProcessingEventScheme a owl:ObjectProperty ;
+    rdfs:label "IN_PROCESSING_EVENT_SCHEME"@en .
+
+ddigraph:inProcessingInstructionScheme a owl:ObjectProperty ;
+    rdfs:label "IN_PROCESSING_INSTRUCTION_SCHEME"@en .
+
+ddigraph:inQuestionScheme a owl:ObjectProperty ;
+    rdfs:label "IN_QUESTION_SCHEME"@en .
+
+ddigraph:inRepresentedVariableGroup a owl:ObjectProperty ;
+    rdfs:label "IN_REPRESENTED_VARIABLE_GROUP"@en .
+
+ddigraph:inSamplingInformationScheme a owl:ObjectProperty ;
+    rdfs:label "IN_SAMPLING_INFORMATION_SCHEME"@en .
+
+ddigraph:inScheme a owl:ObjectProperty ;
+    rdfs:label "IN_SCHEME"@en ;
+    rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#inScheme> .
+
+ddigraph:inUnitTypeScheme a owl:ObjectProperty ;
+    rdfs:label "IN_UNIT_TYPE_SCHEME"@en .
+
+ddigraph:inUniverse a owl:ObjectProperty ;
+    rdfs:label "IN_UNIVERSE"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#universe> .
+
+ddigraph:inUniverseScheme a owl:ObjectProperty ;
+    rdfs:label "IN_UNIVERSE_SCHEME"@en .
+
+ddigraph:inVariableScheme a owl:ObjectProperty ;
+    rdfs:label "IN_VARIABLE_SCHEME"@en .
+
+ddigraph:includesConcept a owl:ObjectProperty ;
+    rdfs:label "INCLUDESCONCEPT"@en .
+
+ddigraph:independentVariable a owl:ObjectProperty ;
+    rdfs:label "INDEPENDENTVARIABLE"@en .
+
+ddigraph:indexes a owl:ObjectProperty ;
+    rdfs:label "INDEXES"@en .
+
+ddigraph:informationClassification a owl:ObjectProperty ;
+    rdfs:label "INFORMATIONCLASSIFICATION"@en .
+
+ddigraph:informs a owl:ObjectProperty ;
+    rdfs:label "INFORMS"@en .
+
+ddigraph:inputMeasurement a owl:ObjectProperty ;
+    rdfs:label "INPUTMEASUREMENT"@en .
+
+ddigraph:inputQuestion a owl:ObjectProperty ;
+    rdfs:label "INPUTQUESTION"@en .
+
+ddigraph:inputVariable a owl:ObjectProperty ;
+    rdfs:label "INPUTVARIABLE"@en .
+
+ddigraph:instructionGroup a owl:ObjectProperty ;
+    rdfs:label "INSTRUCTIONGROUP"@en .
+
+ddigraph:instrumentFor a owl:ObjectProperty ;
+    rdfs:label "INSTRUMENT_FOR"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#instrument> .
+
+ddigraph:instrumentGroup a owl:ObjectProperty ;
+    rdfs:label "INSTRUMENTGROUP"@en .
+
+ddigraph:invokes a owl:ObjectProperty ;
+    rdfs:label "INVOKES"@en .
+
+ddigraph:isBasedOn a owl:ObjectProperty ;
+    rdfs:label "IS_BASED_ON"@en .
+
+ddigraph:isBoundedBy a owl:ObjectProperty ;
+    rdfs:label "IS_BOUNDED_BY"@en .
+
+ddigraph:isComposedOf a owl:ObjectProperty ;
+    rdfs:label "IS_COMPOSED_OF"@en .
+
+ddigraph:isDefinedBy a owl:ObjectProperty ;
+    rdfs:label "IS_DEFINED_BY"@en .
+
+ddigraph:isDescribedBy a owl:ObjectProperty ;
+    rdfs:label "IS_DESCRIBED_BY"@en .
+
+ddigraph:isIndexedBy a owl:ObjectProperty ;
+    rdfs:label "IS_INDEXED_BY"@en .
+
+ddigraph:isMaintainedBy a owl:ObjectProperty ;
+    rdfs:label "IS_MAINTAINED_BY"@en .
+
+ddigraph:isOwnedBy a owl:ObjectProperty ;
+    rdfs:label "IS_OWNED_BY"@en .
+
+ddigraph:isPredecessorOf a owl:ObjectProperty ;
+    rdfs:label "IS_PREDECESSOR_OF"@en .
+
+ddigraph:isRepresentedBy a owl:ObjectProperty ;
+    rdfs:label "IS_REPRESENTED_BY"@en .
+
+ddigraph:isStoredIn a owl:ObjectProperty ;
+    rdfs:label "IS_STORED_IN"@en .
+
+ddigraph:isStructuredBy a owl:ObjectProperty ;
+    rdfs:label "IS_STRUCTURED_BY"@en .
+
+ddigraph:isSuccessorOf a owl:ObjectProperty ;
+    rdfs:label "IS_SUCCESSOR_OF"@en .
+
+ddigraph:isVariantOf a owl:ObjectProperty ;
+    rdfs:label "IS_VARIANT_OF"@en .
+
+ddigraph:keyVariable a owl:ObjectProperty ;
+    rdfs:label "KEYVARIABLE"@en .
+
+ddigraph:localGroupContent a owl:ObjectProperty ;
+    rdfs:label "LOCALGROUPCONTENT"@en .
+
+ddigraph:localHoldingPackage a owl:ObjectProperty ;
+    rdfs:label "LOCALHOLDINGPACKAGE"@en .
+
+ddigraph:localObject a owl:ObjectProperty ;
+    rdfs:label "LOCALOBJECT"@en .
+
+ddigraph:localResourcePackageContent a owl:ObjectProperty ;
+    rdfs:label "LOCALRESOURCEPACKAGECONTENT"@en .
+
+ddigraph:localStudyUnitContent a owl:ObjectProperty ;
+    rdfs:label "LOCALSTUDYUNITCONTENT"@en .
+
+ddigraph:locationValue a owl:ObjectProperty ;
+    rdfs:label "LOCATIONVALUE"@en .
+
+ddigraph:logicalProduct a owl:ObjectProperty ;
+    rdfs:label "LOGICALPRODUCT"@en .
+
+ddigraph:logicalRecord a owl:ObjectProperty ;
+    rdfs:label "LOGICALRECORD"@en .
+
+ddigraph:loopVariable a owl:ObjectProperty ;
+    rdfs:label "LOOP_VARIABLE"@en .
+
+ddigraph:lowestLevel a owl:ObjectProperty ;
+    rdfs:label "LOWESTLEVEL"@en .
+
+ddigraph:maintenanceUnit a owl:ObjectProperty ;
+    rdfs:label "MAINTENANCEUNIT"@en .
+
+ddigraph:managedDateTimeRepresentation a owl:ObjectProperty ;
+    rdfs:label "MANAGEDDATETIMEREPRESENTATION"@en .
+
+ddigraph:managedItemMap a owl:ObjectProperty ;
+    rdfs:label "MANAGEDITEMMAP"@en .
+
+ddigraph:managedMissingValuesRepresentation a owl:ObjectProperty ;
+    rdfs:label "MANAGEDMISSINGVALUESREPRESENTATION"@en .
+
+ddigraph:managedNumericRepresentation a owl:ObjectProperty ;
+    rdfs:label "MANAGEDNUMERICREPRESENTATION"@en .
+
+ddigraph:managedRepresentationGroup a owl:ObjectProperty ;
+    rdfs:label "MANAGEDREPRESENTATIONGROUP"@en .
+
+ddigraph:managedRepresentationScheme a owl:ObjectProperty ;
+    rdfs:label "MANAGEDREPRESENTATIONSCHEME"@en .
+
+ddigraph:managedScaleRepresentation a owl:ObjectProperty ;
+    rdfs:label "MANAGEDSCALEREPRESENTATION"@en .
+
+ddigraph:managedTextRepresentation a owl:ObjectProperty ;
+    rdfs:label "MANAGEDTEXTREPRESENTATION"@en .
+
+ddigraph:maps a owl:ObjectProperty ;
+    rdfs:label "MAPS"@en .
+
+ddigraph:mapsTo a owl:ObjectProperty ;
+    rdfs:label "MAPS_TO"@en .
+
+ddigraph:measureDefinition a owl:ObjectProperty ;
+    rdfs:label "MEASUREDEFINITION"@en .
+
+ddigraph:measurementGroup a owl:ObjectProperty ;
+    rdfs:label "MEASUREMENTGROUP"@en .
+
+ddigraph:measures a owl:ObjectProperty ;
+    rdfs:label "MEASURES"@en .
+
+ddigraph:missingValues a owl:ObjectProperty ;
+    rdfs:label "MISSINGVALUES"@en .
+
+ddigraph:missingValuesDomain a owl:ObjectProperty ;
+    rdfs:label "MISSINGVALUESDOMAIN"@en .
+
+ddigraph:nCube a owl:ObjectProperty ;
+    rdfs:label "NCUBE"@en .
+
+ddigraph:nCubeGroup a owl:ObjectProperty ;
+    rdfs:label "NCUBEGROUP"@en .
+
+ddigraph:nCubeInstance a owl:ObjectProperty ;
+    rdfs:label "NCUBEINSTANCE"@en .
+
+ddigraph:nCubeMeasureDefinition a owl:ObjectProperty ;
+    rdfs:label "NCUBEMEASUREDEFINITION"@en .
+
+ddigraph:numericDomain a owl:ObjectProperty ;
+    rdfs:label "NUMERICDOMAIN"@en .
+
+ddigraph:numericRepresentation a owl:ObjectProperty ;
+    rdfs:label "NUMERICREPRESENTATION"@en .
+
+ddigraph:operatesOn a owl:ObjectProperty ;
+    rdfs:label "OPERATES_ON"@en .
+
+ddigraph:organizationGroup a owl:ObjectProperty ;
+    rdfs:label "ORGANIZATIONGROUP"@en .
+
+ddigraph:organizationScheme a owl:ObjectProperty ;
+    rdfs:label "ORGANIZATIONSCHEME"@en .
+
+ddigraph:organizes a owl:ObjectProperty ;
+    rdfs:label "ORGANIZES"@en .
+
+ddigraph:originalArchiveOrganization a owl:ObjectProperty ;
+    rdfs:label "ORIGINALARCHIVEORGANIZATION"@en .
+
+ddigraph:otherMaterial a owl:ObjectProperty ;
+    rdfs:label "OTHERMATERIAL"@en .
+
+ddigraph:otherMaterialGroup a owl:ObjectProperty ;
+    rdfs:label "OTHERMATERIALGROUP"@en .
+
+ddigraph:otherMaterialScheme a owl:ObjectProperty ;
+    rdfs:label "OTHERMATERIALSCHEME"@en .
+
+ddigraph:overriddenCode a owl:ObjectProperty ;
+    rdfs:label "OVERRIDDENCODE"@en .
+
+ddigraph:owner a owl:ObjectProperty ;
+    rdfs:label "OWNER"@en .
+
+ddigraph:parentClassificationItem a owl:ObjectProperty ;
+    rdfs:label "PARENTCLASSIFICATIONITEM"@en .
+
+ddigraph:parentGeographicLevel a owl:ObjectProperty ;
+    rdfs:label "PARENTGEOGRAPHICLEVEL"@en .
+
+ddigraph:partOf a owl:ObjectProperty ;
+    rdfs:label "PART_OF"@en ;
+    rdfs:subPropertyOf <http://purl.org/dc/terms/isPartOf> .
+
+ddigraph:performs a owl:ObjectProperty ;
+    rdfs:label "PERFORMS"@en .
+
+ddigraph:physicalDataProduct a owl:ObjectProperty ;
+    rdfs:label "PHYSICALDATAPRODUCT"@en .
+
+ddigraph:physicalInstanceGroup a owl:ObjectProperty ;
+    rdfs:label "PHYSICALINSTANCEGROUP"@en .
+
+ddigraph:physicalStructure a owl:ObjectProperty ;
+    rdfs:label "PHYSICALSTRUCTURE"@en .
+
+ddigraph:physicalStructureGroup a owl:ObjectProperty ;
+    rdfs:label "PHYSICALSTRUCTUREGROUP"@en .
+
+ddigraph:physicalStructureLink a owl:ObjectProperty ;
+    rdfs:label "PHYSICALSTRUCTURELINK"@en .
+
+ddigraph:physicalStructureScheme a owl:ObjectProperty ;
+    rdfs:label "PHYSICALSTRUCTURESCHEME"@en .
+
+ddigraph:predecessor a owl:ObjectProperty ;
+    rdfs:label "PREDECESSOR"@en .
+
+ddigraph:processingEvent a owl:ObjectProperty ;
+    rdfs:label "PROCESSINGEVENT"@en .
+
+ddigraph:processingEventGroup a owl:ObjectProperty ;
+    rdfs:label "PROCESSINGEVENTGROUP"@en .
+
+ddigraph:processingInstruction a owl:ObjectProperty ;
+    rdfs:label "PROCESSINGINSTRUCTION"@en .
+
+ddigraph:processingInstructionGroup a owl:ObjectProperty ;
+    rdfs:label "PROCESSINGINSTRUCTIONGROUP"@en .
+
+ddigraph:produces a owl:ObjectProperty ;
+    rdfs:label "PRODUCES"@en .
+
+ddigraph:publisher a owl:ObjectProperty ;
+    rdfs:label "PUBLISHER"@en .
+
+ddigraph:qualifies a owl:ObjectProperty ;
+    rdfs:label "QUALIFIES"@en .
+
+ddigraph:qualityScheme a owl:ObjectProperty ;
+    rdfs:label "QUALITYSCHEME"@en .
+
+ddigraph:qualityStandard a owl:ObjectProperty ;
+    rdfs:label "QUALITYSTANDARD"@en .
+
+ddigraph:qualityStandardGroup a owl:ObjectProperty ;
+    rdfs:label "QUALITYSTANDARDGROUP"@en .
+
+ddigraph:qualityStatement a owl:ObjectProperty ;
+    rdfs:label "QUALITYSTATEMENT"@en .
+
+ddigraph:qualityStatementGroup a owl:ObjectProperty ;
+    rdfs:label "QUALITYSTATEMENTGROUP"@en .
+
+ddigraph:questionGroup a owl:ObjectProperty ;
+    rdfs:label "QUESTIONGROUP"@en .
+
+ddigraph:questionMap a owl:ObjectProperty ;
+    rdfs:label "QUESTIONMAP"@en .
+
+ddigraph:receives a owl:ObjectProperty ;
+    rdfs:label "RECEIVES"@en .
+
+ddigraph:recommendedSampleFrame a owl:ObjectProperty ;
+    rdfs:label "RECOMMENDEDSAMPLEFRAME"@en .
+
+ddigraph:recordLayout a owl:ObjectProperty ;
+    rdfs:label "RECORDLAYOUT"@en .
+
+ddigraph:recordLayoutGroup a owl:ObjectProperty ;
+    rdfs:label "RECORDLAYOUTGROUP"@en .
+
+ddigraph:recordLayoutScheme a owl:ObjectProperty ;
+    rdfs:label "RECORDLAYOUTSCHEME"@en .
+
+ddigraph:references a owl:ObjectProperty ;
+    rdfs:label "REFERENCES"@en .
+
+ddigraph:referencesIndividual a owl:ObjectProperty ;
+    rdfs:label "REFERENCES_INDIVIDUAL"@en .
+
+ddigraph:referencesOrganization a owl:ObjectProperty ;
+    rdfs:label "REFERENCES_ORGANIZATION"@en .
+
+ddigraph:referencesQuestion a owl:ObjectProperty ;
+    rdfs:label "REFERENCES_QUESTION"@en .
+
+ddigraph:referencesVariable a owl:ObjectProperty ;
+    rdfs:label "REFERENCES_VARIABLE"@en .
+
+ddigraph:refersTo a owl:ObjectProperty ;
+    rdfs:label "REFERS_TO"@en .
+
+ddigraph:refines a owl:ObjectProperty ;
+    rdfs:label "REFINES"@en .
+
+ddigraph:relatedMap a owl:ObjectProperty ;
+    rdfs:label "RELATEDMAP"@en .
+
+ddigraph:relatedTo a owl:ObjectProperty ;
+    rdfs:label "RELATEDTO"@en .
+
+ddigraph:relation a owl:ObjectProperty ;
+    rdfs:label "RELATION"@en .
+
+ddigraph:representationMap a owl:ObjectProperty ;
+    rdfs:label "REPRESENTATIONMAP"@en .
+
+ddigraph:represents a owl:ObjectProperty ;
+    rdfs:label "REPRESENTS"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#representation> .
+
+ddigraph:resourceObject a owl:ObjectProperty ;
+    rdfs:label "RESOURCEOBJECT"@en .
+
+ddigraph:responseDomain a owl:ObjectProperty ;
+    rdfs:label "RESPONSEDOMAIN"@en .
+
+ddigraph:responsibleAgency a owl:ObjectProperty ;
+    rdfs:label "RESPONSIBLEAGENCY"@en .
+
+ddigraph:responsibleForSampling a owl:ObjectProperty ;
+    rdfs:label "RESPONSIBLEFORSAMPLING"@en .
+
+ddigraph:restricts a owl:ObjectProperty ;
+    rdfs:label "RESTRICTS"@en .
+
+ddigraph:reviewObject a owl:ObjectProperty ;
+    rdfs:label "REVIEWOBJECT"@en .
+
+ddigraph:sample a owl:ObjectProperty ;
+    rdfs:label "SAMPLE"@en .
+
+ddigraph:sampleFrame a owl:ObjectProperty ;
+    rdfs:label "SAMPLEFRAME"@en .
+
+ddigraph:sampleFrameUsed a owl:ObjectProperty ;
+    rdfs:label "SAMPLEFRAMEUSED"@en .
+
+ddigraph:sampleLocation a owl:ObjectProperty ;
+    rdfs:label "SAMPLELOCATION"@en .
+
+ddigraph:sampleSizeFormula a owl:ObjectProperty ;
+    rdfs:label "SAMPLESIZEFORMULA"@en .
+
+ddigraph:samplingInformationGroup a owl:ObjectProperty ;
+    rdfs:label "SAMPLINGINFORMATIONGROUP"@en .
+
+ddigraph:samplingPlan a owl:ObjectProperty ;
+    rdfs:label "SAMPLINGPLAN"@en .
+
+ddigraph:samplingPlanImplemented a owl:ObjectProperty ;
+    rdfs:label "SAMPLINGPLANIMPLEMENTED"@en .
+
+ddigraph:samplingStage a owl:ObjectProperty ;
+    rdfs:label "SAMPLINGSTAGE"@en .
+
+ddigraph:samplingUnit a owl:ObjectProperty ;
+    rdfs:label "SAMPLINGUNIT"@en .
+
+ddigraph:scaleDomain a owl:ObjectProperty ;
+    rdfs:label "SCALEDOMAIN"@en .
+
+ddigraph:scaleRepresentation a owl:ObjectProperty ;
+    rdfs:label "SCALEREPRESENTATION"@en .
+
+ddigraph:similarConcept a owl:ObjectProperty ;
+    rdfs:label "SIMILARCONCEPT"@en .
+
+ddigraph:sourceClassification a owl:ObjectProperty ;
+    rdfs:label "SOURCECLASSIFICATION"@en .
+
+ddigraph:sourceClassificationItem a owl:ObjectProperty ;
+    rdfs:label "SOURCECLASSIFICATIONITEM"@en .
+
+ddigraph:sourceFrame a owl:ObjectProperty ;
+    rdfs:label "SOURCEFRAME"@en .
+
+ddigraph:sourceItem a owl:ObjectProperty ;
+    rdfs:label "SOURCEITEM"@en .
+
+ddigraph:sourceLevel a owl:ObjectProperty ;
+    rdfs:label "SOURCELEVEL"@en .
+
+ddigraph:sourceLinkVariable a owl:ObjectProperty ;
+    rdfs:label "SOURCELINKVARIABLE"@en .
+
+ddigraph:sourceLogicalRecord a owl:ObjectProperty ;
+    rdfs:label "SOURCELOGICALRECORD"@en .
+
+ddigraph:sourceParam a owl:ObjectProperty ;
+    rdfs:label "SOURCE_PARAM"@en .
+
+ddigraph:sourceScheme a owl:ObjectProperty ;
+    rdfs:label "SOURCESCHEME"@en .
+
+ddigraph:sourceVariable a owl:ObjectProperty ;
+    rdfs:label "SOURCEVARIABLE"@en .
+
+ddigraph:spatialCoverage a owl:ObjectProperty ;
+    rdfs:label "SPATIALCOVERAGE"@en .
+
+ddigraph:standardWeight a owl:ObjectProperty ;
+    rdfs:label "STANDARDWEIGHT"@en .
+
+ddigraph:structures a owl:ObjectProperty ;
+    rdfs:label "STRUCTURES"@en .
+
+ddigraph:studyUnit a owl:ObjectProperty ;
+    rdfs:label "STUDYUNIT"@en .
+
+ddigraph:subCategory a owl:ObjectProperty ;
+    rdfs:label "SUBCATEGORY"@en .
+
+ddigraph:subUniverseClass a owl:ObjectProperty ;
+    rdfs:label "SUBUNIVERSECLASS"@en .
+
+ddigraph:subclassOf a owl:ObjectProperty ;
+    rdfs:label "SUBCLASSOF"@en .
+
+ddigraph:successor a owl:ObjectProperty ;
+    rdfs:label "SUCCESSOR"@en .
+
+ddigraph:successorClassificationItem a owl:ObjectProperty ;
+    rdfs:label "SUCCESSORCLASSIFICATIONITEM"@en .
+
+ddigraph:summaryData a owl:ObjectProperty ;
+    rdfs:label "SUMMARYDATA"@en .
+
+ddigraph:takesConceptsFrom a owl:ObjectProperty ;
+    rdfs:label "TAKES_CONCEPTS_FROM"@en .
+
+ddigraph:takesSentinelConceptsFrom a owl:ObjectProperty ;
+    rdfs:label "TAKES_SENTINEL_CONCEPTS_FROM"@en .
+
+ddigraph:takesSentinelValuesFrom a owl:ObjectProperty ;
+    rdfs:label "TAKES_SENTINEL_VALUES_FROM"@en .
+
+ddigraph:takesSubstantiveConceptsFrom a owl:ObjectProperty ;
+    rdfs:label "TAKES_SUBSTANTIVE_CONCEPTS_FROM"@en .
+
+ddigraph:takesSubstantiveValuesFrom a owl:ObjectProperty ;
+    rdfs:label "TAKES_SUBSTANTIVE_VALUES_FROM"@en .
+
+ddigraph:takesValuesFrom a owl:ObjectProperty ;
+    rdfs:label "TAKES_VALUES_FROM"@en .
+
+ddigraph:targetClassification a owl:ObjectProperty ;
+    rdfs:label "TARGETCLASSIFICATION"@en .
+
+ddigraph:targetClassificationItem a owl:ObjectProperty ;
+    rdfs:label "TARGETCLASSIFICATIONITEM"@en .
+
+ddigraph:targetItem a owl:ObjectProperty ;
+    rdfs:label "TARGETITEM"@en .
+
+ddigraph:targetLevel a owl:ObjectProperty ;
+    rdfs:label "TARGETLEVEL"@en .
+
+ddigraph:targetLinkVariable a owl:ObjectProperty ;
+    rdfs:label "TARGETLINKVARIABLE"@en .
+
+ddigraph:targetLogicalRecord a owl:ObjectProperty ;
+    rdfs:label "TARGETLOGICALRECORD"@en .
+
+ddigraph:targetParam a owl:ObjectProperty ;
+    rdfs:label "TARGET_PARAM"@en .
+
+ddigraph:targetScheme a owl:ObjectProperty ;
+    rdfs:label "TARGETSCHEME"@en .
+
+ddigraph:temporalCoverage a owl:ObjectProperty ;
+    rdfs:label "TEMPORALCOVERAGE"@en .
+
+ddigraph:textDomain a owl:ObjectProperty ;
+    rdfs:label "TEXTDOMAIN"@en .
+
+ddigraph:textRepresentation a owl:ObjectProperty ;
+    rdfs:label "TEXTREPRESENTATION"@en .
+
+ddigraph:thenConstruct a owl:ObjectProperty ;
+    rdfs:label "THEN"@en .
+
+ddigraph:to a owl:ObjectProperty ;
+    rdfs:label "TO"@en .
+
+ddigraph:topLevel a owl:ObjectProperty ;
+    rdfs:label "TOPLEVEL"@en .
+
+ddigraph:topicalCoverage a owl:ObjectProperty ;
+    rdfs:label "TOPICALCOVERAGE"@en .
+
+ddigraph:unitType a owl:ObjectProperty ;
+    rdfs:label "UNITTYPE"@en .
+
+ddigraph:unitTypeClassified a owl:ObjectProperty ;
+    rdfs:label "UNITTYPECLASSIFIED"@en .
+
+ddigraph:unitTypeGroup a owl:ObjectProperty ;
+    rdfs:label "UNITTYPEGROUP"@en .
+
+ddigraph:universeGroup a owl:ObjectProperty ;
+    rdfs:label "UNIVERSEGROUP"@en .
+
+ddigraph:universeMap a owl:ObjectProperty ;
+    rdfs:label "UNIVERSEMAP"@en .
+
+ddigraph:untilConstruct a owl:ObjectProperty ;
+    rdfs:label "UNTIL"@en .
+
+ddigraph:uses a owl:ObjectProperty ;
+    rdfs:label "USES"@en .
+
+ddigraph:usesCategory a owl:ObjectProperty ;
+    rdfs:label "USES_CATEGORY"@en .
+
+ddigraph:usesCategoryScheme a owl:ObjectProperty ;
+    rdfs:label "USES_CATEGORY_SCHEME"@en .
+
+ddigraph:usesCodelist a owl:ObjectProperty ;
+    rdfs:label "USES_CODELIST"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#responseDomain> .
+
+ddigraph:usesConcept a owl:ObjectProperty ;
+    rdfs:label "USES_CONCEPT"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#concept> .
+
+ddigraph:usesConceptualVariable a owl:ObjectProperty ;
+    rdfs:label "USES_CONCEPTUAL_VARIABLE"@en .
+
+ddigraph:usesConstruct a owl:ObjectProperty ;
+    rdfs:label "USES_CONSTRUCT"@en .
+
+ddigraph:usesDevelopmentActivity a owl:ObjectProperty ;
+    rdfs:label "USES_DEVELOPMENT_ACTIVITY"@en .
+
+ddigraph:usesIndex a owl:ObjectProperty ;
+    rdfs:label "USES_INDEX"@en .
+
+ddigraph:usesInstrument a owl:ObjectProperty ;
+    rdfs:label "USES_INSTRUMENT"@en .
+
+ddigraph:usesMeasurement a owl:ObjectProperty ;
+    rdfs:label "USES_MEASUREMENT"@en .
+
+ddigraph:usesMethodology a owl:ObjectProperty ;
+    rdfs:label "USES_METHODOLOGY"@en .
+
+ddigraph:usesQuestionItem a owl:ObjectProperty ;
+    rdfs:label "USES_QUESTION_ITEM"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/discovery#question> .
+
+ddigraph:usesRepresentedVariable a owl:ObjectProperty ;
+    rdfs:label "USES_REPRESENTED_VARIABLE"@en .
+
+ddigraph:usesResourcePackage a owl:ObjectProperty ;
+    rdfs:label "USES_RESOURCE_PACKAGE"@en .
+
+ddigraph:usesStatisticalClassification a owl:ObjectProperty ;
+    rdfs:label "USES_STATISTICAL_CLASSIFICATION"@en .
+
+ddigraph:usesVariable a owl:ObjectProperty ;
+    rdfs:label "USES_VARIABLE"@en .
+
+ddigraph:variableGroup a owl:ObjectProperty ;
+    rdfs:label "VARIABLEGROUP"@en .
+
+ddigraph:variableMap a owl:ObjectProperty ;
+    rdfs:label "VARIABLEMAP"@en .
+
+ddigraph:variableStatistics a owl:ObjectProperty ;
+    rdfs:label "VARIABLESTATISTICS"@en .
+
+ddigraph:variableValue a owl:ObjectProperty ;
+    rdfs:label "VARIABLEVALUE"@en .
+
+ddigraph:variantOf a owl:ObjectProperty ;
+    rdfs:label "VARIANTOF"@en .
+
+ddigraph:versionResponsibility a owl:ObjectProperty ;
+    rdfs:label "VERSIONRESPONSIBILITY"@en .
+
+ddigraph:weightVariable a owl:ObjectProperty ;
+    rdfs:label "WEIGHTVARIABLE"@en .
+
+ddigraph:weighting a owl:ObjectProperty ;
+    rdfs:label "WEIGHTING"@en .
+
+ddigraph:weightingMethodology a owl:ObjectProperty ;
+    rdfs:label "WEIGHTINGMETHODOLOGY"@en .
+
+ddigraph:weightingProcess a owl:ObjectProperty ;
+    rdfs:label "WEIGHTINGPROCESS"@en .
+
+ddigraph:whileConstruct a owl:ObjectProperty ;
+    rdfs:label "WHILE"@en .
+
+
+######################################################################
+# Datatype properties (85)
+######################################################################
+
+ddigraph:abbreviation a owl:DatatypeProperty ;
+    rdfs:label "abbreviation"@en .
+
+ddigraph:abstract a owl:DatatypeProperty ;
+    rdfs:label "abstract"@en .
+
+ddigraph:accessConditionId a owl:DatatypeProperty ;
+    rdfs:label "access_condition_id"@en .
+
+ddigraph:accessPolicyId a owl:DatatypeProperty ;
+    rdfs:label "access_policy_id"@en .
+
+ddigraph:activityType a owl:DatatypeProperty ;
+    rdfs:label "activity_type"@en .
+
+ddigraph:authorizationId a owl:DatatypeProperty ;
+    rdfs:label "authorization_id"@en .
+
+ddigraph:authorizationStatement a owl:DatatypeProperty ;
+    rdfs:label "authorization_statement"@en .
+
+ddigraph:authors a owl:DatatypeProperty ;
+    rdfs:label "authors"@en .
+
+ddigraph:bibliographic a owl:DatatypeProperty ;
+    rdfs:label "bibliographic"@en .
+
+ddigraph:categoryGroupId a owl:DatatypeProperty ;
+    rdfs:label "category_group_id"@en .
+
+ddigraph:categoryId a owl:DatatypeProperty ;
+    rdfs:label "category_id"@en .
+
+ddigraph:categoryIds a owl:DatatypeProperty ;
+    rdfs:label "category_ids"@en .
+
+ddigraph:citationId a owl:DatatypeProperty ;
+    rdfs:label "citation_id"@en .
+
+ddigraph:codeListId a owl:DatatypeProperty ;
+    rdfs:label "code_list_id"@en .
+
+ddigraph:codeSchemeId a owl:DatatypeProperty ;
+    rdfs:label "code_scheme_id"@en .
+
+ddigraph:comparisonId a owl:DatatypeProperty ;
+    rdfs:label "comparison_id"@en .
+
+ddigraph:comparisonType a owl:DatatypeProperty ;
+    rdfs:label "comparison_type"@en .
+
+ddigraph:completionDate a owl:DatatypeProperty ;
+    rdfs:label "completion_date"@en .
+
+ddigraph:concept a owl:DatatypeProperty ;
+    rdfs:label "concept"@en .
+
+ddigraph:constructId a owl:DatatypeProperty ;
+    rdfs:label "construct_id"@en .
+
+ddigraph:constructType a owl:DatatypeProperty ;
+    rdfs:label "construct_type"@en .
+
+ddigraph:contributorId a owl:DatatypeProperty ;
+    rdfs:label "contributor_id"@en .
+
+ddigraph:controlConstructReference a owl:DatatypeProperty ;
+    rdfs:label "control_construct_reference"@en .
+
+ddigraph:controlConstructReferences a owl:DatatypeProperty ;
+    rdfs:label "control_construct_references"@en .
+
+ddigraph:coverageId a owl:DatatypeProperty ;
+    rdfs:label "coverage_id"@en .
+
+ddigraph:coverageType a owl:DatatypeProperty ;
+    rdfs:label "coverage_type"@en .
+
+ddigraph:datasetId a owl:DatatypeProperty ;
+    rdfs:label "dataset_id"@en .
+
+ddigraph:datasetName a owl:DatatypeProperty ;
+    rdfs:label "dataset_name"@en .
+
+ddigraph:developmentId a owl:DatatypeProperty ;
+    rdfs:label "development_id"@en .
+
+ddigraph:developmentResultsReferences a owl:DatatypeProperty ;
+    rdfs:label "development_results_references"@en .
+
+ddigraph:docId a owl:DatatypeProperty ;
+    rdfs:label "doc_id"@en .
+
+ddigraph:elementType a owl:DatatypeProperty ;
+    rdfs:label "element_type"@en .
+
+ddigraph:evaluationId a owl:DatatypeProperty ;
+    rdfs:label "evaluation_id"@en .
+
+ddigraph:eventId a owl:DatatypeProperty ;
+    rdfs:label "event_id"@en .
+
+ddigraph:externalInstrumentLocations a owl:DatatypeProperty ;
+    rdfs:label "external_instrument_locations"@en .
+
+ddigraph:fieldedLanguages a owl:DatatypeProperty ;
+    rdfs:label "fielded_languages"@en .
+
+ddigraph:fileId a owl:DatatypeProperty ;
+    rdfs:label "file_id"@en .
+
+ddigraph:fundingId a owl:DatatypeProperty ;
+    rdfs:label "funding_id"@en .
+
+ddigraph:grantNumber a owl:DatatypeProperty ;
+    rdfs:label "grant_number"@en .
+
+ddigraph:groupId a owl:DatatypeProperty ;
+    rdfs:label "group_id"@en .
+
+ddigraph:id a owl:DatatypeProperty ;
+    rdfs:label "id"@en .
+
+ddigraph:instrumentId a owl:DatatypeProperty ;
+    rdfs:label "instrument_id"@en .
+
+ddigraph:instrumentType a owl:DatatypeProperty ;
+    rdfs:label "instrument_type"@en .
+
+ddigraph:language a owl:DatatypeProperty ;
+    rdfs:label "language"@en .
+
+ddigraph:logicalRecordId a owl:DatatypeProperty ;
+    rdfs:label "logical_record_id"@en .
+
+ddigraph:materialId a owl:DatatypeProperty ;
+    rdfs:label "material_id"@en .
+
+ddigraph:ncubeGroupId a owl:DatatypeProperty ;
+    rdfs:label "ncube_group_id"@en .
+
+ddigraph:ncubeId a owl:DatatypeProperty ;
+    rdfs:label "ncube_id"@en .
+
+ddigraph:ncubeIds a owl:DatatypeProperty ;
+    rdfs:label "ncube_ids"@en .
+
+ddigraph:noteId a owl:DatatypeProperty ;
+    rdfs:label "note_id"@en .
+
+ddigraph:organizationId a owl:DatatypeProperty ;
+    rdfs:label "organization_id"@en .
+
+ddigraph:parentFlowId a owl:DatatypeProperty ;
+    rdfs:label "parent_flow_id"@en .
+
+ddigraph:parentGridId a owl:DatatypeProperty ;
+    rdfs:label "parent_grid_id"@en .
+
+ddigraph:parentQuestionId a owl:DatatypeProperty ;
+    rdfs:label "parent_question_id"@en .
+
+ddigraph:physicalStructureId a owl:DatatypeProperty ;
+    rdfs:label "physical_structure_id"@en .
+
+ddigraph:policyType a owl:DatatypeProperty ;
+    rdfs:label "policy_type"@en .
+
+ddigraph:processingEventId a owl:DatatypeProperty ;
+    rdfs:label "processing_event_id"@en .
+
+ddigraph:producer a owl:DatatypeProperty ;
+    rdfs:label "producer"@en .
+
+ddigraph:qualityId a owl:DatatypeProperty ;
+    rdfs:label "quality_id"@en .
+
+ddigraph:questionFlowId a owl:DatatypeProperty ;
+    rdfs:label "question_flow_id"@en .
+
+ddigraph:questionGridId a owl:DatatypeProperty ;
+    rdfs:label "question_grid_id"@en .
+
+ddigraph:questionId a owl:DatatypeProperty ;
+    rdfs:label "question_id"@en .
+
+ddigraph:questionItemId a owl:DatatypeProperty ;
+    rdfs:label "question_item_id"@en .
+
+ddigraph:referencedConstructId a owl:DatatypeProperty ;
+    rdfs:label "referenced_construct_id"@en .
+
+ddigraph:representationId a owl:DatatypeProperty ;
+    rdfs:label "representation_id"@en .
+
+ddigraph:representedVariableId a owl:DatatypeProperty ;
+    rdfs:label "represented_variable_id"@en .
+
+ddigraph:reusableAgency a owl:DatatypeProperty ;
+    rdfs:label "reusable_agency"@en .
+
+ddigraph:reusableId a owl:DatatypeProperty ;
+    rdfs:label "reusable_id"@en .
+
+ddigraph:reusableTypeOfObject a owl:DatatypeProperty ;
+    rdfs:label "reusable_type_of_object"@en .
+
+ddigraph:reusableUrn a owl:DatatypeProperty ;
+    rdfs:label "reusable_urn"@en .
+
+ddigraph:reusableVersion a owl:DatatypeProperty ;
+    rdfs:label "reusable_version"@en .
+
+ddigraph:role a owl:DatatypeProperty ;
+    rdfs:label "role"@en .
+
+ddigraph:sampleFrameId a owl:DatatypeProperty ;
+    rdfs:label "sample_frame_id"@en .
+
+ddigraph:samplingId a owl:DatatypeProperty ;
+    rdfs:label "sampling_id"@en .
+
+ddigraph:seriesId a owl:DatatypeProperty ;
+    rdfs:label "series_id"@en .
+
+ddigraph:softwareId a owl:DatatypeProperty ;
+    rdfs:label "software_id"@en .
+
+ddigraph:standard a owl:DatatypeProperty ;
+    rdfs:label "standard"@en .
+
+ddigraph:studyId a owl:DatatypeProperty ;
+    rdfs:label "study_id"@en .
+
+ddigraph:text a owl:DatatypeProperty ;
+    rdfs:label "text"@en .
+
+ddigraph:universeId a owl:DatatypeProperty ;
+    rdfs:label "universe_id"@en .
+
+ddigraph:uri a owl:DatatypeProperty ;
+    rdfs:label "uri"@en .
+
+ddigraph:varGroupId a owl:DatatypeProperty ;
+    rdfs:label "var_group_id"@en .
+
+ddigraph:variableId a owl:DatatypeProperty ;
+    rdfs:label "variable_id"@en .
+
+ddigraph:variableIds a owl:DatatypeProperty ;
+    rdfs:label "variable_ids"@en .
+
+ddigraph:weightId a owl:DatatypeProperty ;
+    rdfs:label "weight_id"@en .

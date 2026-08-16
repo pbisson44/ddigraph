@@ -2,175 +2,252 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>https://pbisson44.github.io/ddigraph/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/advanced/ai-readiness/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/advanced/ai-readiness/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/advanced/ai-readiness/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/advanced/graph-vs-relational/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/advanced/graph-vs-relational/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/advanced/graph-vs-relational/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/advanced/interoperability/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/advanced/interoperability/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/advanced/interoperability/"/>
     </url>
     <url>
+        <loc>https://pbisson44.github.io/ddigraph/advanced/rdf-case-study/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/advanced/rdf-case-study/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/advanced/rdf-case-study/"/>
+    </url>
+    <url>
         <loc>https://pbisson44.github.io/ddigraph/advanced/tuning/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/advanced/tuning/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/advanced/tuning/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/backends/gremlin/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/backends/gremlin/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/backends/gremlin/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/backends/neo4j/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/backends/neo4j/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/backends/neo4j/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/backends/networkx/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/backends/networkx/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/backends/networkx/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/backends/rdf/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/backends/rdf/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/backends/rdf/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/getting-started/first-queries/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/getting-started/first-queries/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/getting-started/first-queries/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/getting-started/installation/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/getting-started/installation/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/getting-started/installation/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/getting-started/quickstart/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/getting-started/quickstart/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/getting-started/quickstart/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/getting-started/ten-minutes/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/getting-started/ten-minutes/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/getting-started/ten-minutes/"/>
     </url>
     <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/01-metadata-as-a-graph/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/01-metadata-as-a-graph/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/01-metadata-as-a-graph/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/02-first-look/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/02-first-look/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/02-first-look/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/03-the-graph-model/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/03-the-graph-model/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/03-the-graph-model/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/04-linked-data/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/04-linked-data/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/04-linked-data/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/05-validation/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/05-validation/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/05-validation/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/06-your-own-pipeline/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/06-your-own-pipeline/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/06-your-own-pipeline/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/07-grounding-an-llm/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/07-grounding-an-llm/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/07-grounding-an-llm/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/learn/08-tools-over-the-graph/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/learn/08-tools-over-the-graph/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/learn/08-tools-over-the-graph/"/>
+    </url>
+    <url>
+        <loc>https://pbisson44.github.io/ddigraph/ns/1.0/</loc>
+        <lastmod>2026-08-16</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/ns/1.0/"/>
+        <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/ns/1.0/"/>
+    </url>
+    <url>
         <loc>https://pbisson44.github.io/ddigraph/project/changelog/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/project/changelog/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/project/changelog/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/project/contributing/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/project/contributing/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/project/contributing/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/project/dsl-design/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/project/dsl-design/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/project/dsl-design/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/project/faq/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/project/faq/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/project/faq/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/project/presentation/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/project/presentation/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/project/presentation/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/reference/cli/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/reference/cli/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/reference/cli/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/reference/configuration/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/reference/configuration/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/reference/configuration/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/reference/glossary/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/reference/glossary/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/reference/glossary/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/user-guide/adapter/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/user-guide/adapter/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/user-guide/adapter/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/user-guide/architecture/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/user-guide/architecture/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/user-guide/architecture/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/user-guide/fragments/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/user-guide/fragments/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/user-guide/fragments/"/>
     </url>
     <url>
         <loc>https://pbisson44.github.io/ddigraph/user-guide/relationships/</loc>
-        <lastmod>2026-06-13</lastmod>
+        <lastmod>2026-08-16</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pbisson44.github.io/ddigraph/user-guide/relationships/"/>
         <xhtml:link rel="alternate" hreflang="fr" href="https://pbisson44.github.io/ddigraph/fr/user-guide/relationships/"/>
