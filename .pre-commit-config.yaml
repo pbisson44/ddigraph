@@ -40,3 +40,10 @@ repos:
         entry: python scripts/generate_schema_definitions.py --check
         pass_filenames: false
         files: ^(schemas/|src/ddigraph/schema/_overrides/|scripts/generate_schema_definitions\.py)
+
+      - id: vocabulary-document-up-to-date
+        name: Served RDF vocabulary up to date
+        language: system
+        entry: python scripts/generate_vocabulary.py --check
+        pass_filenames: false
+        files: ^(src/ddigraph/rdf/vocabulary\.py|src/ddigraph/schema/|scripts/generate_vocabulary\.py)

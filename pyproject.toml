@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ddigraph"
-version = "0.4.3"
+version = "0.5.0"
 description = "DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases (Neo4j, RDF, Gremlin, NetworkX)"
 authors = [{name = "ddigraph maintainers", email = "ddigraph@noreply.github.com"}]
 readme = "README.md"
@@ -53,7 +53,6 @@ dependencies = [
   "orjson>=3.10",
   "pydantic>=2.7",
   "pydantic-settings>=2.13.1",
-  "xmlschema>=3.4",
 ]
 
 [project.scripts]
@@ -71,12 +70,14 @@ Issues = "https://github.com/pbisson44/ddigraph/issues"
 # Backend extras: install only what your target environment uses.
 # ``pip install ddigraph[rdf]`` enables the RDF/SPARQL demo path, etc.
 rdf = ["rdflib>=7.5.0,<8.0.0"]
+shacl = ["rdflib>=7.5.0,<8.0.0", "pyshacl>=0.26"]
 gremlin = ["gremlinpython>=3.8.1,<4.0.0"]
 networkx = ["networkx>=3.6.1"]
 pandas = ["pandas>=2.3.3", "openpyxl>=3.1.5"]
 sdmx = ["sdmx1>=2.26"]
 all = [
   "rdflib>=7.5.0,<8.0.0",
+  "pyshacl>=0.26",
   "gremlinpython>=3.8.1,<4.0.0",
   "networkx>=3.6.1",
   "pandas>=2.3.3",
@@ -93,6 +94,18 @@ dev = [
   "psutil>=5.9",
   "types-lxml>=2026.2.16",
   "pre-commit>=3.7",
+  # Build-time only: ``scripts/generate_schema_definitions.py`` drives the
+  # XSD -> ``schema/_generated`` codegen with ``xmlschema.XMLSchema11``.
+  # Nothing under ``src/ddigraph/`` imports it and the script is not shipped
+  # in the wheel, so it has no business in the runtime dependency set.
+  "xmlschema>=3.4",
+  # The RDF tier is optional at runtime but exercised by the test suite.
+  "rdflib>=7.5.0,<8.0.0",
+  "pyshacl>=0.26",
+  # Needed so the runnable NetworkX examples in the docs actually execute
+  # rather than skip. Pure Python and small; the heavier extras
+  # (gremlinpython, pandas) stay out and their examples skip instead.
+  "networkx>=3.6.1",
   # Packaging audit tools used by the CI publish pipeline.
   "build>=1.2",
   "twine>=5.1",
@@ -110,6 +123,9 @@ docs = [
 [tool.ruff]
 line-length = 100
 target-version = "py314"
+# ``mutmut`` generates a mutated copy of the tree here. It is machine
+# written, deliberately broken, and regenerated on every run.
+extend-exclude = ["mutants"]
 
 [tool.ruff.lint]
 select = [
@@ -167,7 +183,7 @@ plugins = ["pydantic.mypy"]
 # the base install does not pull in. They are user-facing examples,
 # not part of the typed package surface; exclude them from strict
 # type checking so the CI matrix does not need every extra installed.
-exclude = ["^demo/"]
+exclude = ["^demo/", "^mutants/"]
 
 [[tool.mypy.overrides]]
 module = ["lxml", "lxml.*"]
@@ -232,6 +248,7 @@ ignore = [
   "demo/**",
   "docs/**",
   "hooks/**",
+  "plans/**",
   "scripts/**",
   "tests/**",
 ]
@@ -260,4 +277,36 @@ include = [
   "LICENSE",
   "NOTICE",
   "README.md",
+]
+
+[tool.mutmut]
+# Mutation testing is scoped, not global. The parsers run to thousands of
+# lines and mutating them would take hours for little signal: they are
+# already pinned by byte-equality snapshots and a blocking 100 % XSD
+# coverage gate. What benefits is the 0.5.0 vocabulary and graph tier,
+# where the tests are the only thing between a subtle mapping error and
+# silently wrong RDF.
+#
+# Run with: make mutation
+source_paths = ["src/ddigraph"]
+only_mutate = [
+  "src/ddigraph/rdf/vocabulary.py",
+  "src/ddigraph/rdf/writer.py",
+  "src/ddigraph/rdf/reader.py",
+  "src/ddigraph/graph/writer.py",
+  "src/ddigraph/graph/view.py",
+]
+# mutmut runs from a copied tree, so anything the suite reads at runtime
+# has to come along: the fixtures, the bundled XSDs, and the overrides
+# TOML the schema tables are built from.
+also_copy = ["tests/", "schemas/", "pyproject.toml"]
+# Only the tests that actually cover the mutated modules. Running all
+# 1400 per mutant would make this unusable.
+pytest_add_cli_args_test_selection = [
+  "tests/test_rdf_vocabulary.py",
+  "tests/test_rdf_export.py",
+  "tests/test_rdf_roundtrip.py",
+  "tests/test_shacl.py",
+  "tests/test_graph_view.py",
+  "tests/test_graph_writer.py",
 ]

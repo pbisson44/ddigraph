@@ -223,3 +223,8 @@ __marimo__/
 /ddi_graph.jsonld
 /ddi_data.xlsx
 /ddi_export/
+
+# mutmut's mutated copy of the source tree and its run state
+mutants/
+.mutmut-cache
+mutmut-stats.json

@@ -69,7 +69,7 @@ et les fichiers français dans `docs/fr/`.
 
 Pour ajouter la prise en charge d'un nouveau type d'élément DDI :
 
-1. **Définir le type de noeud** dans `src/ddigraph/schema/definitions.py` -- ajoutez le label,
+1. **Définir le type de noeud** dans `src/ddigraph/schema/definitions/` -- ajoutez le label,
    les propriétés et les contraintes d'unicité
 2. **Ajouter la logique d'analyse** dans l'analyseur approprié (`codebook_loader.py` ou
    `fragment_loader.py`)
@@ -99,7 +99,6 @@ class MyBackendAdapter(GraphWriteAdapter):
 
 Consultez les adaptateurs existants dans `demo/` pour des implémentations de référence :
 
-- `demo/load_rdf.py` -- Adaptateur RDF/SPARQL
 - `demo/load_gremlin.py` -- Adaptateur Gremlin
 - `demo/load_networkx.py` -- Adaptateur NetworkX
 - `demo/load_pandas.py` -- Adaptateur pandas

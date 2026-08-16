@@ -297,11 +297,9 @@ queries = DDISchema.generate_constraint_queries(include_fragments=True)
 
 The `demo/` directory includes complete adapter implementations that you can run and modify:
 
-- **`load_rdf.py`** - RDF/SPARQL adapter using rdflib
-  - Maps DDI fragments to RDF triples
-  - Exports to Turtle, N-Triples, RDF/XML, JSON-LD
-  - Demonstrates SPARQL queries
-  - Compatible with Virtuoso, GraphDB, Stardog triplestores
+RDF is not among them: it ships with the package, so use `ddigraph export`
+or `ddigraph.export()` rather than writing an adapter for it. See the
+[RDF backend guide](../backends/rdf.md).
 
 - **`load_gremlin.py`** - Gremlin adapter using TinkerGraph
   - Traversal-based graph queries

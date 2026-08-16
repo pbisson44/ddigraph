@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A minimal DDI-CDI document that genuinely satisfies ddi-cdi.xsd.
+
+  It exists so the XSD validator has a positive case to prove itself
+  against. Every other fixture in this directory is synthetic - written to
+  exercise the parsers, not to conform - and a validator tested only on
+  invalid input proves nothing except that it can say no.
+
+  Note the namespace. ``cdi_sample.xml`` uses ``http://ddi-cdi/1.0``, which
+  is not the namespace the published schema declares; the parsers are
+  tolerant about it, the schema is not.
+-->
+<cdi:DDICDIModels
+    xmlns:cdi="http://ddialliance.org/Specification/DDI-CDI/1.0/XMLSchema/"/>

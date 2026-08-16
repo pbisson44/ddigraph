@@ -349,8 +349,9 @@ metadata that describes that data. Link the two by dataset and variable IDs.
 Use ddigraph's adapter pattern to export graph data to pandas DataFrames or CSV files for teams more comfortable with those tools:
 
 ```bash
-python demo/load_pandas.py    # Export to DataFrames
-python demo/export_files.py   # Export to JSON/CSV
+ddigraph export survey.xml --format json -o survey.json
+ddigraph export survey.xml --format csv -o out-dir/   # nodes.csv + relationships.csv
+python demo/load_pandas.py                            # DataFrames (demo script)
 ```
 
 ## Query Comparison Reference

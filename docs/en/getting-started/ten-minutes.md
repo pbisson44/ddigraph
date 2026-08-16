@@ -251,10 +251,13 @@ print(f"Nodes: {G.number_of_nodes()}, Edges: {G.number_of_edges()}")
 ```
 
 !!! tip "More backends"
-    The `demo/` directory in the repository contains complete examples for
-    [RDF/SPARQL](https://github.com/pbisson44/ddigraph/blob/main/demo/load_rdf.py),
-    [Gremlin](https://github.com/pbisson44/ddigraph/blob/main/demo/load_gremlin.py), and
+    RDF ships with the package: use `ddigraph export`. See the
+    [RDF backend guide](../backends/rdf.md).
+
+    For the others, the `demo/` directory has worked examples for
+    [Gremlin](https://github.com/pbisson44/ddigraph/blob/main/demo/load_gremlin.py) and
     [pandas](https://github.com/pbisson44/ddigraph/blob/main/demo/load_pandas.py).
+    Both are examples rather than shipped adapters.
 
 ---
 

@@ -38,4 +38,21 @@ def validate_readable_xml_path(raw_path: Path | str) -> Path:
     return Path(os.path.realpath(path))
 
 
-__all__ = ["validate_readable_xml_path"]
+def default_dataset_id(path: str | Path) -> str:
+    """Derive a dataset identifier from a file name (codebook flavor only).
+
+    Args:
+        path: The DDI file the identifier is being derived for.
+
+    Returns:
+        The file stem with spaces replaced by underscores, or ``"default"``
+        when the name yields no usable stem (for example ``/path/.xml``,
+        whose stem is a leading dot).
+    """
+    stem = Path(path).stem.replace(" ", "_")
+    if not stem or stem.startswith("."):
+        return "default"
+    return stem
+
+
+__all__ = ["default_dataset_id", "validate_readable_xml_path"]

@@ -3,7 +3,7 @@ site_description: DDI to Knowledge Graph toolkit - transform DDI metadata into g
 site_url: https://pbisson44.github.io/ddigraph/
 repo_url: https://github.com/pbisson44/ddigraph
 repo_name: pbisson44/ddigraph
-copyright: Copyright &copy; 2025 Philippe Bisson - MIT License
+copyright: Copyright &copy; 2026 Philippe Bisson - MIT License
 
 nav:
   - Home: index.md
@@ -12,6 +12,16 @@ nav:
       - Quick Start: getting-started/quickstart.md
       - 10 Minutes to ddigraph: getting-started/ten-minutes.md
       - Your First Queries: getting-started/first-queries.md
+  - Learn:
+      - Course overview: learn/index.md
+      - "1. Metadata is a graph": learn/01-metadata-as-a-graph.md
+      - "2. Look before you load": learn/02-first-look.md
+      - "3. Nodes, edges, identity": learn/03-the-graph-model.md
+      - "4. Joining the wider world": learn/04-linked-data.md
+      - "5. Proving it is right": learn/05-validation.md
+      - "6. Build your own pipeline": learn/06-your-own-pipeline.md
+      - "7. Grounding a model": learn/07-grounding-an-llm.md
+      - "8. Tools over the graph": learn/08-tools-over-the-graph.md
   - Understanding ddigraph:
       - How It Loads Your Data: user-guide/architecture.md
       - Relationship Model: user-guide/relationships.md
@@ -24,6 +34,7 @@ nav:
   - Reference:
       - CLI: reference/cli.md
       - Configuration: reference/configuration.md
+      - RDF Vocabulary: ns/1.0.md
       - Glossary: reference/glossary.md
   - Advanced:
       - Performance Tuning: advanced/tuning.md
@@ -31,6 +42,7 @@ nav:
       - Graph vs Relational: advanced/graph-vs-relational.md
       - AI Readiness: advanced/ai-readiness.md
       - Standards Interoperability: advanced/interoperability.md
+      - "Case study: RDF": advanced/rdf-case-study.md
   - Project:
       - Presentation: project/presentation.md
       - FAQ: project/faq.md
@@ -83,6 +95,16 @@ extra:
     - name: Français
       link: /ddigraph/fr/
       lang: fr
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/pbisson44/ddigraph
+      name: ddigraph on GitHub
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/ddigraph/
+      name: ddigraph on PyPI
+    - icon: material/coffee
+      link: https://buymeacoffee.com/pbisson44
+      name: Buy me a coffee
 
 markdown_extensions:
   - admonition
@@ -90,6 +112,13 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.details
+  # Lets the changelog pages include the real CHANGELOG.md instead of
+  # duplicating it. The hand-maintained copies had drifted to the point of
+  # stopping at v0.1.0, with no 0.4.x content at all.
+  - pymdownx.snippets:
+      base_path:
+        - .
+      check_paths: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -127,6 +156,16 @@ plugins:
             Quick Start: Démarrage rapide
             10 Minutes to ddigraph: 10 minutes avec ddigraph
             Your First Queries: Vos premières requêtes
+            Learn: Apprendre
+            Course overview: Vue d'ensemble du cours
+            "1. Metadata is a graph": "1. Les métadonnées sont un graphe"
+            "2. Look before you load": "2. Regarder avant de charger"
+            "3. Nodes, edges, identity": "3. Nœuds, arcs, identité"
+            "4. Joining the wider world": "4. Rejoindre le monde extérieur"
+            "5. Proving it is right": "5. Prouver que c'est juste"
+            "6. Build your own pipeline": "6. Construire votre pipeline"
+            "7. Grounding a model": "7. Ancrer un modèle"
+            "8. Tools over the graph": "8. Des outils sur le graphe"
             Understanding ddigraph: Comprendre ddigraph
             How It Loads Your Data: Comment ddigraph charge vos données
             Relationship Model: Modèle relationnel
@@ -139,6 +178,7 @@ plugins:
             Reference: Référence
             CLI: CLI
             Configuration: Configuration
+            RDF Vocabulary: Vocabulaire RDF
             Glossary: Glossaire
             Advanced: Avancé
             Performance Tuning: Optimisation des performances
@@ -146,8 +186,10 @@ plugins:
             Graph vs Relational: Graphe vs Relationnel
             AI Readiness: Préparation pour l'IA
             Standards Interoperability: Interopérabilité des standards
+            "Case study: RDF": "Étude de cas : RDF"
             Project: Projet
             Presentation: Présentation
             FAQ: FAQ
             Contributing: Contribuer
+            "Codebook DSL design": Conception du DSL Codebook
             Changelog: Journal des modifications

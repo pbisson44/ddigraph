@@ -14,11 +14,14 @@ import orjson
 from neo4j import AsyncDriver, AsyncGraphDatabase, Driver, GraphDatabase
 
 from ddigraph.config import Settings, resolve_credentials_source
-from ddigraph.graph.bootstrap import ensure_fragment_schema, ensure_schema
+from ddigraph.exporter import FORMATS as export_formats, RDF_FORMATS as rdf_formats
+from ddigraph.graph.bootstrap import ensure_schema
 from ddigraph.ingest.fragment_loader import DDIFragmentLoader, detect_ddi_format
 from ddigraph.ingest.loader import DRY_RUN_MESSAGE, DDILoader, normalize_dataset_id
 from ddigraph.logging import configure_logging, get_logger
 from ddigraph.paths import validate_readable_xml_path
+from ddigraph.previewer import FORMATS as preview_formats
+from ddigraph.rdf.shacl import FLAVORS as shacl_flavors
 
 logger = get_logger(__name__)
 
@@ -353,65 +356,20 @@ async def _ensure_schema_command(
     driver_factory = create_driver or _create_async_driver
     driver = driver_factory(settings)
     include_fragments = getattr(args, "include_fragments", False)
+    include_cdi = getattr(args, "include_cdi", False)
 
     try:
         await ensure_schema(
             driver,
             database=settings.neo4j_database,
             include_fragments=include_fragments,
+            include_cdi=include_cdi,
         )
         msg = "Schema ensured (including fragments)" if include_fragments else "Schema ensured"
         logger.info(msg, extra={"database": settings.neo4j_database})
         print(f"{msg} for database '{settings.neo4j_database}'")
     finally:
         await driver.close()
-
-
-async def _ensure_fragment_schema_command(
-    args: argparse.Namespace, settings: Settings, create_driver: Any = None
-) -> None:
-    """Run the fragment-only schema bootstrap routine."""
-    driver_factory = create_driver or _create_async_driver
-    driver = driver_factory(settings)
-
-    try:
-        await ensure_fragment_schema(driver, database=settings.neo4j_database)
-        logger.info("Fragment schema ensured", extra={"database": settings.neo4j_database})
-        print(f"Fragment schema ensured for database '{settings.neo4j_database}'")
-    finally:
-        await driver.close()
-
-
-async def _deprecated_ensure_schema_command(
-    args: argparse.Namespace, settings: Settings, create_driver: Any = None
-) -> None:
-    """Forward ``ensure-schema`` to ``bootstrap`` with a deprecation notice."""
-    import warnings
-
-    warnings.warn(
-        "``ddigraph ensure-schema`` is deprecated; use "
-        "``ddigraph bootstrap`` (with ``--no-include-fragments`` for "
-        "codebook-only). The old command will be removed in 0.5.0.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    await _ensure_schema_command(args, settings, create_driver)
-
-
-async def _deprecated_ensure_fragment_schema_command(
-    args: argparse.Namespace, settings: Settings, create_driver: Any = None
-) -> None:
-    """Forward ``ensure-fragment-schema`` to ``bootstrap`` with a deprecation notice."""
-    import warnings
-
-    warnings.warn(
-        "``ddigraph ensure-fragment-schema`` is deprecated; use "
-        "``ddigraph bootstrap`` (fragments are included by default). "
-        "The old command will be removed in 0.5.0.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    await _ensure_fragment_schema_command(args, settings, create_driver)
 
 
 async def _load_command_async(
@@ -421,7 +379,7 @@ async def _load_command_async(
     # Detect format if auto
     ddi_format = getattr(args, "format", "auto")
     if ddi_format == "auto":
-        ddi_format = detect_ddi_format(args.xml_path)
+        ddi_format = _detect_load_format(args.xml_path)
         logger.info(f"Auto-detected DDI format: {ddi_format}")
 
     driver_factory = create_driver or _create_async_driver
@@ -445,7 +403,17 @@ async def _load_command_async(
             print(DRY_RUN_MESSAGE)
 
         totals: dict[str, int] = {}
-        if ddi_format == "lifecycle":
+        if ddi_format == "rdf":
+            from ddigraph.graph.writer import GraphChunkWriter
+            from ddigraph.rdf.reader import read_graph
+
+            writer = GraphChunkWriter(
+                driver,
+                database=settings.neo4j_database,
+                chunk_size=settings.chunk_size,
+            )
+            totals = await writer.write(read_graph(args.xml_path))
+        elif ddi_format == "lifecycle":
             # Use DDI-L FragmentInstance loader
             fragment_loader = DDIFragmentLoader(driver, settings=settings)
             totals = await fragment_loader.load(
@@ -486,8 +454,33 @@ async def _load_command_async(
         await driver.close()
 
 
+def _detect_load_format(path: str) -> str:
+    """Return the format ``load`` should use for a path.
+
+    RDF is recognised by extension rather than by sniffing: ``detect_ddi_format``
+    reads the file as XML, and while RDF/XML would parse, Turtle and JSON-LD
+    would not, so the three serialisations would disagree about the same graph.
+
+    Args:
+        path: The input file path.
+
+    Returns:
+        ``"rdf"``, or the DDI flavor reported by ``detect_ddi_format``.
+    """
+    from ddigraph.rdf.reader import EXTENSION_FORMATS
+
+    suffix = Path(path).suffix.lower()
+    # ``.xml`` appears in both maps; DDI XML is the overwhelmingly common
+    # case for this command, so it stays with the XML parsers.
+    if suffix in EXTENSION_FORMATS and suffix != ".xml":
+        return "rdf"
+    return detect_ddi_format(path)
+
+
 def _load_command(args: argparse.Namespace, settings: Settings, create_driver: Any = None) -> None:
     """Stream DDI XML into Neo4j using configured settings."""
+    _preflight_validate(args)
+
     totals = asyncio.run(_load_command_async(args, settings, create_driver))
 
     if getattr(args, "json_output", False):
@@ -512,6 +505,181 @@ def _detect_command(args: argparse.Namespace, settings: Settings) -> None:
         print(f"File: {args.xml_path}")
 
 
+def _export_command(args: argparse.Namespace, settings: Settings) -> None:
+    """Export a DDI file to RDF, JSON, or CSV.
+
+    Needs no Neo4j connection: the whole path runs off the parser tier and
+    the backend-neutral graph view.
+    """
+    from ddigraph.exporter import export
+
+    _preflight_validate(args)
+
+    try:
+        result = export(
+            args.xml_path,
+            args.output,
+            format=args.format,
+            base=args.base_uri,
+            dataset_id=getattr(args, "dataset_id", None),
+            dataset_name=getattr(args, "dataset_name", None),
+            chunk_size=settings.chunk_size,
+        )
+    except ImportError as exc:
+        raise SystemExit(str(exc)) from exc
+
+    if getattr(args, "json_output", False):
+        payload = {
+            "path": str(result.path),
+            "format": result.format,
+            "nodes": result.nodes,
+            "relationships": result.relationships,
+            "triples": result.triples,
+        }
+        print(orjson.dumps(payload).decode())
+        return
+
+    print(f"Wrote {result.path}")
+    print(f"Format: {result.format}")
+    print(f"Nodes: {result.nodes}  Relationships: {result.relationships}")
+    if result.triples is not None:
+        print(f"Triples: {result.triples}")
+
+
+def _shapes_command(args: argparse.Namespace, settings: Settings) -> None:
+    """Write SHACL shapes derived from the DDI schema.
+
+    Takes no input document: the shapes come from ``DDISchema``, the same
+    table that generates the Neo4j constraints.
+    """
+    from ddigraph.exporter import RDF_FORMATS
+
+    try:
+        from ddigraph.rdf.shacl import shapes_graph
+    except ImportError as exc:  # pragma: no cover - defensive
+        raise SystemExit(str(exc)) from exc
+
+    try:
+        graph = shapes_graph(flavor=args.flavor)
+    except ImportError as exc:
+        raise SystemExit(str(exc)) from exc
+
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    graph.serialize(destination=str(output), format=RDF_FORMATS[args.format])
+
+    if getattr(args, "json_output", False):
+        payload = {"path": str(output), "flavor": args.flavor, "triples": len(graph)}
+        print(orjson.dumps(payload).decode())
+        return
+
+    print(f"Wrote {output}")
+    print(f"Flavor: {args.flavor or 'all'}")
+    print(f"Triples: {len(graph)}")
+
+
+def _preflight_validate(args: argparse.Namespace) -> None:
+    """Refuse to process a file that fails its XSD, when asked to.
+
+    Only runs when ``--validate`` was passed. Reads the same flavor the
+    command itself will use, so the two never disagree about what the file
+    is.
+    """
+    if not getattr(args, "validate", False):
+        return
+
+    from ddigraph.validation import SchemaUnavailableError, validate
+
+    # ``--format`` means different things on different verbs: the DDI flavor
+    # on ``load``, but the *output* format on ``export``, where it is
+    # "turtle" or "csv". Only forward it when it actually names a flavor;
+    # otherwise let the document speak for itself.
+    requested = getattr(args, "format", None)
+    flavor = requested if requested in {"codebook", "lifecycle", "cdi"} else None
+
+    try:
+        result = validate(args.xml_path, flavor=flavor, max_issues=20)
+    except SchemaUnavailableError as exc:
+        raise SystemExit(str(exc)) from exc
+
+    if result.valid:
+        return
+
+    lines = [f"{args.xml_path} does not conform to {result.schema.name}:"]
+    lines += [f"  {issue}" for issue in result.issues]
+    lines.append("Drop --validate to process it anyway.")
+    raise SystemExit("\n".join(lines))
+
+
+def _validate_command(args: argparse.Namespace, settings: Settings) -> None:
+    """Validate a DDI file against the XSD its flavor and version call for.
+
+    Exits non-zero when the document does not conform, so it drops into a
+    shell pipeline or a CI step without extra glue.
+    """
+    from ddigraph.validation import SchemaUnavailableError, validate
+
+    try:
+        result = validate(
+            args.xml_path,
+            flavor=None if args.flavor == "auto" else args.flavor,
+            max_issues=args.max_issues,
+        )
+    except SchemaUnavailableError as exc:
+        raise SystemExit(str(exc)) from exc
+
+    if getattr(args, "json_output", False):
+        payload = {
+            "path": str(args.xml_path),
+            "flavor": result.flavor,
+            "version": result.version,
+            "schema": str(result.schema),
+            "valid": result.valid,
+            "issues": [
+                {"line": issue.line, "column": issue.column, "message": issue.message}
+                for issue in result.issues
+            ],
+        }
+        print(orjson.dumps(payload).decode())
+        raise SystemExit(0 if result.valid else 1)
+
+    version = f" {result.version.replace('_', '.')}" if result.version else ""
+    print(f"File:   {args.xml_path}")
+    print(f"Flavor: {result.flavor}{version}")
+    print(f"Schema: {result.schema}")
+
+    if result.valid:
+        print("Result: valid")
+        return
+
+    print(f"Result: invalid ({len(result.issues)} issue(s))")
+    for issue in result.issues:
+        print(f"  {issue}")
+    raise SystemExit(1)
+
+
+def _preview_command(args: argparse.Namespace, settings: Settings) -> None:
+    """Summarise a DDI file's graph shape, with no database involved."""
+    from ddigraph.previewer import preview
+
+    rendered = preview(
+        args.xml_path,
+        format=args.format,
+        limit=args.limit,
+        dataset_id=getattr(args, "dataset_id", None),
+        chunk_size=settings.chunk_size,
+    )
+
+    if args.output:
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(rendered, encoding="utf-8")
+        print(f"Wrote {output}")
+        return
+
+    print(rendered, end="")
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Construct the top-level CLI argument parser.
 
@@ -528,30 +696,6 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     subcommands = parser.add_subparsers(dest="command", required=True)
-
-    # ensure-schema command
-    ensure_parser = subcommands.add_parser(
-        "ensure-schema",
-        help="Deprecated alias for ``bootstrap``; will be removed in 0.5.0.",
-    )
-    _add_connection_options(ensure_parser)
-    ensure_parser.add_argument(
-        "--include-fragments",
-        dest="include_fragments",
-        action="store_true",
-        help="Also create schema for DDI-L FragmentInstance format",
-    )
-    ensure_parser.set_defaults(handler=_deprecated_ensure_schema_command)
-
-    # ensure-fragment-schema command
-    frag_schema_parser = subcommands.add_parser(
-        "ensure-fragment-schema",
-        help=(
-            "Deprecated; use ``ddigraph bootstrap --include-fragments``. Will be removed in 0.5.0."
-        ),
-    )
-    _add_connection_options(frag_schema_parser)
-    frag_schema_parser.set_defaults(handler=_deprecated_ensure_fragment_schema_command)
 
     # load command
     load_parser = subcommands.add_parser(
@@ -586,9 +730,12 @@ def build_parser() -> argparse.ArgumentParser:
     load_parser.add_argument(
         "--format",
         dest="format",
-        choices=["auto", "codebook", "lifecycle"],
+        choices=["auto", "codebook", "lifecycle", "rdf"],
         default="auto",
-        help="DDI format: auto (detect), codebook, or lifecycle (default: auto)",
+        help=(
+            "Input format: auto (detect), codebook, lifecycle, or rdf for a "
+            "Turtle/JSON-LD/N-Triples/RDF-XML graph (default: auto)"
+        ),
     )
     load_parser.add_argument(
         "--dataset-id",
@@ -604,6 +751,11 @@ def build_parser() -> argparse.ArgumentParser:
         dest="json_output",
         action="store_true",
         help="Output ingestion totals as JSON",
+    )
+    load_parser.add_argument(
+        "--validate",
+        action="store_true",
+        help="Check the file against its official XSD first, and refuse to load it if invalid",
     )
     load_parser.set_defaults(handler=_load_command)
 
@@ -625,10 +777,180 @@ def build_parser() -> argparse.ArgumentParser:
     )
     detect_parser.set_defaults(handler=_detect_command)
 
-    # bootstrap command -- canonical alias for ``ensure-schema`` that
-    # defaults to including the DDI-L fragment schema. The two original
-    # commands stay registered for backward compatibility but emit a
-    # DeprecationWarning when invoked.
+    # export command -- writes a file instead of loading a database. Needs no
+    # Neo4j connection, so it deliberately carries none of the connection
+    # options; RDF formats need the optional ``[rdf]`` extra.
+    export_parser = subcommands.add_parser(
+        "export",
+        help=(
+            "Export a DDI file to RDF, JSON, or CSV without touching Neo4j "
+            "(RDF formats need the [rdf] extra)"
+        ),
+    )
+    export_parser.add_argument(
+        "xml_path",
+        type=resolve_xml_path,
+        help="Path to a DDI Codebook, DDI-L FragmentInstance, or DDI-CDI file",
+    )
+    export_parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="Output file, or output directory when --format csv",
+    )
+    export_parser.add_argument(
+        "--format",
+        choices=list(export_formats),
+        default="turtle",
+        help="Output format (default: turtle)",
+    )
+    export_parser.add_argument(
+        "--base-uri",
+        dest="base_uri",
+        default=None,
+        help=(
+            "IRI stem for subjects with no DDI URN. Recommended when "
+            "publishing; defaults to a urn:ddigraph: identifier rather than "
+            "inventing an http:// domain"
+        ),
+    )
+    export_parser.add_argument(
+        "--dataset-id",
+        dest="dataset_id",
+        type=resolve_dataset_id,
+        default=None,
+        help="Dataset identifier for codebook input (default: the file stem)",
+    )
+    export_parser.add_argument(
+        "--dataset-name",
+        dest="dataset_name",
+        default=None,
+        help="Human-readable dataset name for codebook input",
+    )
+    export_parser.add_argument(
+        "--json",
+        dest="json_output",
+        action="store_true",
+        help="Emit the result summary as JSON",
+    )
+    export_parser.add_argument(
+        "--validate",
+        action="store_true",
+        help="Check the input against its official XSD first, and refuse it if invalid",
+    )
+    export_parser.set_defaults(handler=_export_command)
+
+    # shapes command -- derives SHACL from DDISchema. It takes no input
+    # document because the shapes describe the vocabulary, not one file.
+    shapes_parser = subcommands.add_parser(
+        "shapes",
+        help="Write SHACL shapes for the DDI vocabulary (needs the [shacl] extra)",
+    )
+    shapes_parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="Output file for the shapes graph",
+    )
+    shapes_parser.add_argument(
+        "--flavor",
+        choices=list(shacl_flavors),
+        default=None,
+        help=(
+            "Restrict shapes to one DDI flavor. Recommended when validating "
+            "real data, since a document has exactly one flavor and the "
+            "flavors key some shared labels differently"
+        ),
+    )
+    shapes_parser.add_argument(
+        "--format",
+        choices=list(rdf_formats),
+        default="turtle",
+        help="Serialisation for the shapes graph (default: turtle)",
+    )
+    shapes_parser.add_argument(
+        "--json",
+        dest="json_output",
+        action="store_true",
+        help="Emit the result summary as JSON",
+    )
+    shapes_parser.set_defaults(handler=_shapes_command)
+
+    # preview command -- answers "what is actually in this file?" without a
+    # database and without an optional extra.
+    preview_parser = subcommands.add_parser(
+        "preview",
+        help="Summarise a DDI file's graph shape as text, Mermaid, or a self-contained HTML page",
+    )
+    preview_parser.add_argument(
+        "xml_path",
+        type=resolve_xml_path,
+        help="Path to a DDI Codebook, DDI-L FragmentInstance, or DDI-CDI file",
+    )
+    preview_parser.add_argument(
+        "--format",
+        choices=list(preview_formats),
+        default="text",
+        help="Output format (default: text)",
+    )
+    preview_parser.add_argument(
+        "-o",
+        "--output",
+        default=None,
+        help="Write to a file instead of stdout",
+    )
+    preview_parser.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="Show up to N example nodes per type (default: 0, counts only)",
+    )
+    preview_parser.add_argument(
+        "--dataset-id",
+        dest="dataset_id",
+        type=resolve_dataset_id,
+        default=None,
+        help="Dataset identifier for codebook input (default: the file stem)",
+    )
+    preview_parser.set_defaults(handler=_preview_command)
+
+    # validate command -- checks a file against the official DDI XSDs that
+    # ship with the package. Opt-in rather than automatic: published DDI is
+    # frequently imperfect, and refusing to read a file that parses and
+    # loads perfectly well would make the tool less useful, not more.
+    validate_parser = subcommands.add_parser(
+        "validate",
+        help="Validate a DDI file against its official XSD",
+    )
+    validate_parser.add_argument(
+        "xml_path",
+        type=resolve_xml_path,
+        help="Path to a DDI Codebook, DDI-L FragmentInstance, or DDI-CDI file",
+    )
+    validate_parser.add_argument(
+        "--flavor",
+        choices=["auto", "codebook", "lifecycle", "cdi"],
+        default="auto",
+        help="Force a DDI flavor instead of detecting it (default: auto)",
+    )
+    validate_parser.add_argument(
+        "--max-issues",
+        dest="max_issues",
+        type=int,
+        default=20,
+        help="Report at most N issues; 0 reports all of them (default: 20)",
+    )
+    validate_parser.add_argument(
+        "--json",
+        dest="json_output",
+        action="store_true",
+        help="Print the result as JSON",
+    )
+    validate_parser.set_defaults(handler=_validate_command)
+
+    # bootstrap command -- the single schema-creation verb. It replaced
+    # ``ensure-schema`` and ``ensure-fragment-schema``, which were deprecated
+    # in 0.4.0rc1 and removed in 0.5.0; fragments are included by default.
     bootstrap_parser = subcommands.add_parser(
         "bootstrap",
         help=(
@@ -643,6 +965,16 @@ def build_parser() -> argparse.ArgumentParser:
         default=True,
         action=argparse.BooleanOptionalAction,
         help="Include DDI-L FragmentInstance schema (default: enabled)",
+    )
+    bootstrap_parser.add_argument(
+        "--include-cdi",
+        dest="include_cdi",
+        default=False,
+        action=argparse.BooleanOptionalAction,
+        help=(
+            "Include DDI-CDI 1.0 schema (default: disabled -- no shipped "
+            "writer creates DDI-CDI nodes)"
+        ),
     )
     bootstrap_parser.set_defaults(handler=_ensure_schema_command)
 

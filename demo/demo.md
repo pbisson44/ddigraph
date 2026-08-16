@@ -19,11 +19,13 @@ This folder contains demo scripts and a sample DDI file for testing ddigraph wit
      neo4j:5
    ```
 
-3. Create a `.env` file with your credentials:
+3. Point ddigraph at your database, with environment variables or a
+   `.env` file beside the script:
 
    ```bash
-   cp .env.example .env
-   # Edit .env with your Neo4j password
+   export DDIGRAPH_NEO4J_URI=bolt://localhost:7687
+   export DDIGRAPH_NEO4J_USER=neo4j
+   export DDIGRAPH_NEO4J_PASSWORD=password
    ```
 
 ## Demo Scripts
@@ -86,24 +88,38 @@ Output:
 - Question text analysis
 - Export to Excel workbook
 
-### RDF/SPARQL (Semantic Web)
+### Preview (no database)
 
-Load DDI into RDF for semantic web applications and SPARQL queries:
+Before loading anything, see what is in the file. This needs no Neo4j and
+no optional extra:
 
 ```bash
-# Requires: pip install rdflib
-python load_rdf.py
- 
-# With specific file
-python load_rdf.py /path/to/ddi.xml
+ddigraph preview Ireland_LabourSurvey.xml
+ddigraph preview Ireland_LabourSurvey.xml --format html -o preview.html
 ```
 
 Output:
 
-- RDF graph with DDI ontology mapping
-- Export to Turtle, N-Triples, RDF/XML, JSON-LD
-- SPARQL query examples
-- Compatible with triplestores (Virtuoso, GraphDB, Stardog)
+- A count for every node type and every `type -[EDGE]-> type`
+- `--limit N` adds example identities per type
+- `--format mermaid` for a diagram, `--format html` for a self-contained page
+
+### RDF/SPARQL (Semantic Web)
+
+RDF is part of the package as of 0.5.0, so there is no demo script for it.
+Use the command directly:
+
+```bash
+pip install "ddigraph[rdf]"
+
+ddigraph export /path/to/ddi.xml --format turtle -o survey.ttl
+ddigraph shapes -o shapes.ttl --flavor lifecycle
+ddigraph load survey.ttl
+```
+
+The vocabulary, the SKOS mapping and the subject IRIs are all handled for
+you. See [the RDF backend guide](../docs/en/backends/rdf.md) for what comes
+out and how to query it.
 
 ### Gremlin (Graph Traversals)
 
@@ -126,20 +142,19 @@ Output:
 
 ### JSON/CSV Export
 
-Export DDI to JSON and CSV files for use in other tools:
+Also part of the package as of 0.5.0, and needing no optional extra:
 
 ```bash
-python export_files.py
-
-# With output directory
-python export_files.py /path/to/ddi.xml --output-dir ./my_export
+ddigraph export /path/to/ddi.xml --format json -o graph.json
+ddigraph export /path/to/ddi.xml --format csv -o ./my_export
 ```
 
 Output:
 
-- `nodes.json` / `nodes.csv` - All nodes with properties
-- `relationships.json` / `relationships.csv` - All relationships
-- `summary.json` - Graph statistics
+- `graph.json` - nodes, relationships, and a summary in one document
+- `nodes.csv` / `relationships.csv` - the same graph as two tables
+
+`ddigraph export` works on Codebook, Lifecycle and CDI alike.
 
 ## Sample Output (Neo4j)
 
@@ -236,38 +251,44 @@ Question text length:
 
 ## Sample Output (RDF/SPARQL)
 
-```bash
-============================================================
- RDF GRAPH ANALYSIS
-============================================================
- 
-Basic Stats:
-  Total triples: 19071
-  Unique resources: 2762
- 
-Resources by Type:
-  ddi:Category: 1065
-  ddi:Sequence: 388
-  ddi:QuestionItem: 373
-  ddi:IfThenElse: 357
-  ddi:CodeList: 196
- 
-Top Relationships:
-  ddi:HAS_CATEGORY: 1096
-  ddi:HAS_CONSTRUCT: 767
-  ddi:REFERENCES_QUESTION: 376
-  ddi:USES_CODELIST: 296
- 
-============================================================
- SPARQL QUERY EXAMPLES
-============================================================
- 
---- Query 1: Find Instruments ---
-Found 1 instrument(s)
- 
---- Query 3: Questions with CodeLists ---
-Found 296 question-codelist pairs
+This is `ddigraph export --format turtle` on
+`tests/fixtures/fragment_instance.xml`, a six-node file kept small enough to
+read. The numbers scale, the shape does not change.
+
+```text
+Nodes: 6  Relationships: 5
+Triples: 56
 ```
+
+Every node carries two types — the published class for interoperability and
+the project class for identity:
+
+```text
+disco:Instrument            1     ddigraph:Instrument         1
+disco:Question              1     ddigraph:QuestionItem       1
+skos:Concept                1     ddigraph:Category           1
+                                  ddigraph:Sequence           1
+                                  ddigraph:QuestionConstruct  1
+```
+
+`Category` becomes a `skos:Concept`, `QuestionItem` a `disco:Question`.
+Predicates are published terms where one exists and `lowerCamelCase`
+otherwise — never the Neo4j relationship name:
+
+```text
+rdf:type              10
+owl:versionInfo        6
+dcterms:publisher      6
+ddigraph:ddiId         6
+ddigraph:fragmentId    6
+dcterms:identifier     5
+rdfs:label             3
+ddigraph:hasConstruct  2
+```
+
+No Neo4j relationship name reaches the output, and the DDI URN survives
+intact as the subject. Those two properties are what make the file worth
+sending to another system.
 
 ## Sample Output (Gremlin)
 
@@ -312,22 +333,29 @@ Edges by Type:
 | `audit_graph_standalone.py` | Standalone audit (no ddigraph dependency) |
 | `load_networkx.py` | Load DDI into NetworkX for local analysis |
 | `load_pandas.py` | Load DDI into pandas DataFrames |
-| `load_rdf.py` | Load DDI into RDF for SPARQL queries |
 | `load_gremlin.py` | Load DDI into Gremlin for traversal queries |
-| `export_files.py` | Export DDI to JSON/CSV files |
+| `load_sdmx_lfs.py` | Load the SDMX companion files |
+| `sdmx_from_physical_instance.py` | Derive an SDMX DSD from a DDI PhysicalInstance |
+| `search_lfs_metadata.py` | Search the loaded graph from the command line |
 | `Ireland_LabourSurvey.xml` | Sample DDI-L FragmentInstance (148K lines) |
-| `.env.example` | Example environment configuration |
+
+The XML and TTL files here are stored in Git LFS. A plain `git clone`
+without `git lfs pull` leaves them as small pointer files, which parse as
+XML right up until they fail — run `git lfs pull` before the demos.
 
 ## Adapter Pattern
 
-These demos demonstrate the adapter pattern described in the [Adapter Architecture](../docs/adapter.md) documentation. The same DDI parser can output to:
+These demos demonstrate the adapter pattern described in the [Custom Adapters](../docs/en/user-guide/adapter.md) documentation. The same DDI parser can output to:
 
-- **Neo4j** - Production graph database
-- **NetworkX** - Local graph analysis
-- **pandas** - DataFrame analysis
- **RDF/SPARQL** - Semantic web triplestores
-- **Gremlin** - JanusGraph, Neptune, Cosmos DB
-- **JSON/CSV** - File export
+- **Neo4j** - production graph database, shipped in the package
+- **RDF/SPARQL** - semantic web triplestores, shipped in the package
+- **JSON/CSV** - file export, shipped in the package
+- **NetworkX** - local graph analysis (demo script)
+- **pandas** - DataFrame analysis (demo script)
+- **Gremlin** - JanusGraph, Neptune, Cosmos DB (demo script)
+
+The first three are `ddigraph load` and `ddigraph export`. The last three are
+worked examples built on `iter_graph`, not shipped adapters.
 
 To create your own adapter, implement the batch writing interface:
 

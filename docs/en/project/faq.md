@@ -44,12 +44,13 @@ multi-backend adapter architecture. You can load DDI data into:
 
     ```python
     import networkx as nx
-    from ddigraph import DDIFragmentParser
+    from ddigraph import iter_graph
 
     G = nx.MultiDiGraph()
-    parser = DDIFragmentParser()
-    for fragment in parser.parse("survey.xml"):
-        G.add_node(fragment.fragment_id, label=fragment.element_type)
+    for chunk in iter_graph("survey.xml"):
+        for node in chunk.nodes:
+            node_id = next(iter(node.identity.values()))
+            G.add_node(node_id, node_type=node.label)
     print(f"Loaded {G.number_of_nodes()} nodes")
     ```
 

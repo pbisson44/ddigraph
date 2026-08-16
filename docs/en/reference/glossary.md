@@ -87,7 +87,8 @@ itself.
 
 **DDI-CDI** (DDI Cross-Domain Integration) is the newest version of the DDI standard.
 It can describe a wider range of data types, including administrative data and linked data.
-ddigraph loads DDI-CDI files using the `CDILoader` class.
+ddigraph reads DDI-CDI with `parse_cdi_batches()`, and since 0.5.0 can also
+stream it through `iter_graph()` and write it to Neo4j like any other flavor.
 
 ### DDI-L (DDI Lifecycle)
 

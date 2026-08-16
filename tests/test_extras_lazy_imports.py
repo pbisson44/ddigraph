@@ -36,6 +36,12 @@ _OPTIONAL_DEPS = frozenset(
         "openpyxl",
         "sdmx1",
         "sdmx",
+        # Not an extra: ``xmlschema`` is a build-time codegen dependency in
+        # ``[dev]``. A base install does not have it, so the same invariant
+        # applies -- importing it from ``src/`` would break ``pip install
+        # ddigraph`` just as surely as importing ``rdflib`` would.
+        "xmlschema",
+        "pyshacl",
     }
 )
 

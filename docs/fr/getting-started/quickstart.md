@@ -52,23 +52,12 @@ Neo4j — c'est l'option la plus complète et la plus facile pour débuter.
     avec des outils du web sémantique ou des triplestores comme Virtuoso, GraphDB ou Stardog.
 
     ```python
-    from rdflib import Graph, Namespace, Literal, URIRef
-    from rdflib.namespace import RDF, RDFS
-    from ddigraph import DDIFragmentParser
+    import ddigraph
 
-    DDI = Namespace("http://ddi.example.org/")
-    g = Graph()
-    g.bind("ddi", DDI)
-
-    parser = DDIFragmentParser()
-    for fragment in parser.parse("survey.xml"):
-        subj = DDI[fragment.fragment_id]
-        g.add((subj, RDF.type, DDI[fragment.element_type]))
-        if fragment.label:
-            g.add((subj, RDFS.label, Literal(fragment.label)))
-
-    # Sauvegarder dans un fichier Turtle
-    g.serialize("output.ttl", format="turtle")
+    # Un seul appel. Le vocabulaire, la conversion SKOS et les IRI sont
+    # gérés pour vous ; voyez le guide RDF pour le détail de la sortie.
+    result = ddigraph.export("survey.xml", "output.ttl", format="turtle")
+    print(result.triples, "triples")
     ```
 
 === "NetworkX"
@@ -79,15 +68,21 @@ Neo4j — c'est l'option la plus complète et la plus facile pour débuter.
 
     ```python
     import networkx as nx
-    from ddigraph import DDIFragmentParser
+
+    from ddigraph import iter_graph
+
+
+    def node_id(node):
+        return "|".join(str(v) for _k, v in sorted(node.identity.items()))
+
 
     G = nx.MultiDiGraph()
-    parser = DDIFragmentParser()
 
-    for fragment in parser.parse("survey.xml"):
-        G.add_node(fragment.fragment_id, label=fragment.element_type, **fragment.to_dict())
-        for rel_type, ref in fragment.references:
-            G.add_edge(fragment.fragment_id, ref.id, key=rel_type)
+    for chunk in iter_graph("survey.xml"):
+        for node in chunk.nodes:
+            G.add_node(node_id(node), node_type=node.label, **node.properties)
+        for edge in chunk.relationships:
+            G.add_edge(node_id(edge.start), node_id(edge.end), key=edge.type)
 
     print(f"Chargé : {G.number_of_nodes()} nœuds, {G.number_of_edges()} arêtes")
     ```
@@ -100,16 +95,17 @@ Neo4j — c'est l'option la plus complète et la plus facile pour débuter.
     ```python
     from gremlin_python.process.anonymous_traversal import traversal
     from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
-    from ddigraph import DDIFragmentParser
+    from ddigraph import iter_graph
 
     connection = DriverRemoteConnection("ws://localhost:8182/gremlin", "g")
     g = traversal().withRemote(connection)
 
-    parser = DDIFragmentParser()
-    for fragment in parser.parse("survey.xml"):
-        g.addV(fragment.element_type).property("id", fragment.fragment_id).property(
-            "label", fragment.label or ""
-        ).iterate()
+    for chunk in iter_graph("survey.xml"):
+        for node in chunk.nodes:
+            node_id = next(iter(node.identity.values()))
+            g.addV(node.label).property("id", node_id).property(
+                "name", node.properties.get("label", "")
+            ).iterate()
 
     connection.close()
     ```
@@ -138,6 +134,21 @@ print(format_type)  # "codebook", "lifecycle" ou "cdi"
 
 Si vous n'êtes pas sûr du format de votre fichier, exécutez `detect_ddi_format` et il vous
 le dira.
+
+Le format n'est que la première question. Pour voir ce que contient
+vraiment le fichier, affichez-en un aperçu. Aucune base n'est requise :
+
+<!-- runnable -->
+```bash
+ddigraph preview "$FIXTURE"
+```
+
+La commande affiche un décompte par type de nœud et par relation : vous
+savez donc ce qu'un chargement produirait avant de le lancer.
+`--format html -o preview.html` écrit le même résumé sous forme de page
+à ouvrir dans un navigateur. Voyez la
+[référence CLI](../reference/cli.md#apercu-dun-fichier) pour les autres
+formats.
 
 ---
 
@@ -181,7 +192,7 @@ niveau restent disponibles :
 ```python
 import asyncio
 from neo4j import AsyncGraphDatabase
-from ddigraph import DDILoader, DDIFragmentLoader, detect_ddi_format
+from ddigraph import DDILoader, DDIFragmentLoader, detect_ddi_format, iter_graph
 from ddigraph.config import Settings
 from ddigraph.graph.bootstrap import ensure_schema
 
@@ -203,10 +214,12 @@ async def load_ddi(path: str, dataset_id: str = "default"):
             loader = DDIFragmentLoader(driver, settings=settings)
             result = await loader.load(path)
         elif fmt == "cdi":
-            from ddigraph.ingest.cdi_loader import CDILoader
+            # DDI-CDI has no dedicated loader class. Stream it through the
+            # backend-neutral view instead, which every flavor supports.
+            from ddigraph.graph.writer import GraphChunkWriter
 
-            loader = CDILoader(driver, settings=settings)
-            result = await loader.load(path)
+            writer = GraphChunkWriter(driver, database=settings.neo4j_database)
+            result = await writer.write(iter_graph(path))
         else:
             loader = DDILoader(driver, settings=settings)
             result = await loader.load(path, dataset_id=dataset_id)

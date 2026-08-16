@@ -77,6 +77,32 @@ def test_no_private_names_in_dunder_all(module_name: str) -> None:
     assert not private, f"{module_name}.__all__ exports private name(s): {private}"
 
 
+def test_no_exported_name_shadows_a_submodule() -> None:
+    """A re-exported function must not share a name with a submodule.
+
+    ``from ddigraph.x import x`` rebinds ``ddigraph.x`` from the module to
+    the function, so ``import ddigraph.x`` then ``ddigraph.x.helper(...)``
+    raises ``AttributeError`` for anything else in that module. It nearly
+    happened to ``preview``, which is why the module is ``previewer`` --
+    matching ``exporter`` / ``export``, the same pairing one level up.
+    """
+    import ddigraph
+
+    submodules = {
+        path.stem
+        for path in _SRC.iterdir()
+        if path.suffix == ".py" and not path.stem.startswith("_")
+    } | {path.name for path in _SRC.iterdir() if path.is_dir() and not path.name.startswith("_")}
+
+    clashes = sorted(submodules & set(ddigraph.__all__))
+
+    assert not clashes, (
+        f"ddigraph.__all__ exports name(s) that also name a submodule: {clashes}. "
+        "The export shadows the module, so ``import ddigraph.<name>`` stops "
+        "reaching anything else the module defines."
+    )
+
+
 def test_private_modules_are_not_referenced_from_docs_or_demos() -> None:
     """User-facing documentation and demos must not import private modules.
 

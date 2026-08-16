@@ -28,6 +28,19 @@ def schemas_root() -> Path:
     )
 
 
+def schema_bundle_root() -> Path:
+    """Return the directory holding *every* bundled schema family.
+
+    :func:`schemas_root` points at the DDI-L tree alone. XSD validation also
+    needs ``ddi-c/`` and ``ddi-cdi/``, which sit beside it, so this returns
+    their shared parent.
+    """
+    return _find_first_existing(
+        PACKAGE_ROOT / "schemas" / "manifest.json",
+        PROJECT_ROOT / "schemas" / "manifest.json",
+    ).parent
+
+
 def manifest_path() -> Path:
     """Return the path to the bundled schema manifest."""
     return _find_first_existing(
@@ -44,4 +57,9 @@ def update_schemas_script() -> Path:
     )
 
 
-__all__ = ["manifest_path", "schemas_root", "update_schemas_script"]
+__all__ = [
+    "manifest_path",
+    "schema_bundle_root",
+    "schemas_root",
+    "update_schemas_script",
+]

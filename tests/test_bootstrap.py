@@ -9,6 +9,7 @@ from neo4j import AsyncDriver
 from neo4j.exceptions import Forbidden
 
 from ddigraph.graph.bootstrap import bootstrap_queries, ensure_schema
+from ddigraph.schema.definitions import DDISchema
 
 T = TypeVar("T")
 
@@ -75,8 +76,8 @@ def test_ensure_schema_surfaces_permission_errors() -> None:
         "Schema bootstrap failed because the Neo4j user lacks permission "
         "to create constraints or indexes. Use a user with the schema "
         "privileges (e.g., `schema_admin` or `admin`), supply the correct "
-        "database via DDIGRAPH_NEO4J_DATABASE (legacy compatibility alias: "
-        "NEO4DDI_NEO4J_DATABASE; also accepted: NEO4J_DATABASE), or "
+        "database via DDIGRAPH_NEO4J_DATABASE (or the bare NEO4J_DATABASE "
+        "name, which DDIGRAPH_NEO4J_DATABASE overrides), or "
         "pre-provision the schema manually before running ddigraph."
     )
 
@@ -167,3 +168,26 @@ def test_bootstrap_queries_cover_all_labels() -> None:
     }
 
     assert not missing_indexes, f"Missing indexes for: {sorted(missing_indexes)}"
+
+
+def _cdi_query_count(queries: list[str]) -> int:
+    """Count queries that target a DDI-CDI node label."""
+    cdi_labels = {node.label for node in DDISchema.CDI_NODES}
+    return sum(1 for q in queries if any(f"(n:{label})" in q for label in cdi_labels))
+
+
+def test_bootstrap_excludes_cdi_by_default() -> None:
+    """A codebook bootstrap must not create DDI-CDI constraints.
+
+    ``bootstrap_queries`` used to forward ``include_fragments``
+    positionally into ``generate_all_schema_queries(include_fragments,
+    include_cdi)``, so ``include_cdi`` kept its ``True`` default and could
+    never be turned off. Half of every codebook bootstrap created schema
+    for a format that has no shipped writer.
+    """
+    assert _cdi_query_count(list(bootstrap_queries())) == 0
+
+
+def test_bootstrap_includes_cdi_when_requested() -> None:
+    """The flag is reachable in both directions."""
+    assert _cdi_query_count(list(bootstrap_queries(include_cdi=True))) > 0

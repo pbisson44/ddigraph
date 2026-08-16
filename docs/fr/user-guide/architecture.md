@@ -65,7 +65,7 @@ flowchart LR
     XML --> P --> FB --> C --> DB
 ```
 
-### DDI-CDI 1.0 (`CDILoader`)
+### DDI-CDI 1.0 (`parse_cdi_batches`)
 
 DDI Cross-Domain Integration — le standard DDI le plus récent. Il décrit une plus grande
 variété de types de données : concepts, variables, classifications, structures de données
@@ -281,7 +281,7 @@ Consultez [Adaptateurs personnalisés](adapter.md) pour des exemples.
 
 Pour ajouter vos propres types de nœuds ou relations :
 
-1. Étendez `DDISchema` dans `src/ddigraph/schema/definitions.py`
+1. Étendez `DDISchema` dans `src/ddigraph/schema/definitions/`
 2. Mettez à jour le chargeur approprié pour extraire les nouveaux éléments XML
 3. Régénérez les requêtes d'initialisation depuis le schéma
 

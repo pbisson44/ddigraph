@@ -5,10 +5,10 @@ prototyping, local analysis, and integration with Python data science tools.
 
 ## Dependencies
 
-NetworkX is included with ddigraph:
+NetworkX is an optional extra:
 
 ```bash
-pip install ddigraph  # includes networkx
+pip install "ddigraph[networkx]"
 ```
 
 For visualization:
@@ -22,26 +22,34 @@ pip install pyvis       # interactive HTML visualization
 
 ### Load DDI to NetworkX
 
+<!-- runnable -->
 ```python
+import os
+
 import networkx as nx
-from ddigraph import DDIFragmentParser
+
+from ddigraph import iter_graph
+
+
+def node_id(node):
+    """Nodes are keyed on identity, which may have more than one part."""
+    return "|".join(str(value) for _key, value in sorted(node.identity.items()))
+
 
 G = nx.MultiDiGraph()  # Directed graph with parallel edges
-parser = DDIFragmentParser()
 
-for fragment in parser.parse("survey.xml"):
-    # Add node with properties
-    G.add_node(
-        fragment.fragment_id,
-        label=fragment.element_type,
-        name=fragment.label or "",
-        urn=fragment.urn or "",
-        **fragment.to_dict(),
-    )
-
-    # Add edges
-    for rel_type, ref in fragment.references:
-        G.add_edge(fragment.fragment_id, ref.id, key=rel_type, relationship=rel_type)
+for chunk in iter_graph(os.environ["FIXTURE"]):
+    for node in chunk.nodes:
+        # ``node_type``, not ``label``: DDI records carry their own
+        # ``label`` property, and it would collide.
+        G.add_node(node_id(node), node_type=node.label, **node.properties)
+    for edge in chunk.relationships:
+        G.add_edge(
+            node_id(edge.start),
+            node_id(edge.end),
+            key=edge.type,
+            relationship=edge.type,
+        )
 
 print(f"Graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 ```
@@ -55,36 +63,30 @@ See `demo/load_networkx.py` for a complete example:
 
 import networkx as nx
 from collections import Counter
-from ddigraph.ingest.fragment_loader import DDIFragmentParser
+from ddigraph import iter_graph
 
 
 def load_ddi_to_networkx(ddi_path: str) -> nx.MultiDiGraph:
     """Parse DDI-L file and create NetworkX graph."""
 
     G = nx.MultiDiGraph()
-    parser = DDIFragmentParser()
-    fragment_ids = set()
 
-    for fragment in parser.parse(ddi_path):
-        props = fragment.to_dict()
-
-        G.add_node(
-            fragment.fragment_id,
-            node_type=fragment.element_type,
-            label=fragment.label or "",
-            urn=fragment.urn or "",
-            agency=fragment.agency or "",
-            version=fragment.version or "",
-            **{k: v for k, v in props.items() if v is not None},
-        )
-        fragment_ids.add(fragment.fragment_id)
-
-    # Second pass for edges
-    parser = DDIFragmentParser()
-    for fragment in parser.parse(ddi_path):
-        for rel_type, ref in fragment.references:
-            if ref.id in fragment_ids:
-                G.add_edge(fragment.fragment_id, ref.id, key=rel_type, relationship=rel_type)
+    # iter_graph streams nodes first, then relationships, so a single pass
+    # is enough: every endpoint is already a node by the time edges arrive.
+    for chunk in iter_graph(ddi_path):
+        for node in chunk.nodes:
+            G.add_node(
+                node_id(node),
+                node_type=node.label,
+                **{k: v for k, v in node.properties.items() if v is not None},
+            )
+        for edge in chunk.relationships:
+            G.add_edge(
+                node_id(edge.start),
+                node_id(edge.end),
+                key=edge.type,
+                relationship=edge.type,
+            )
 
     return G
 
@@ -132,7 +134,7 @@ if __name__ == "__main__":
 
 ```python
 # Graph info
-print(nx.info(G))
+print(f"{G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 
 # Connected components (for undirected view)
 undirected = G.to_undirected()
@@ -256,7 +258,7 @@ nx.write_gexf(G, "graph.gexf")
 # JSON (node-link format)
 import json
 
-data = nx.node_link_data(G)
+data = nx.node_link_data(G, edges="edges")
 with open("graph.json", "w") as f:
     json.dump(data, f, indent=2)
 
@@ -294,9 +296,9 @@ For large DDI files, consider:
 G = nx.DiGraph()
 
 # Process in chunks
-parser = DDIFragmentParser()
-for i, fragment in enumerate(parser.parse("large_file.xml")):
-    G.add_node(fragment.fragment_id, node_type=fragment.element_type)
+for chunk in iter_graph("large_file.xml"):
+    for node in chunk.nodes:
+        G.add_node(node_id(node), node_type=node.label)
 
     if i % 1000 == 0:
         print(f"Processed {i} fragments")

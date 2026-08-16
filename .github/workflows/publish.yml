@@ -181,6 +181,12 @@ jobs:
 
       - name: Publish package via OIDC Trusted Publishing
         uses: pypa/gh-action-pypi-publish@v1.14.2
+        with:
+          # A version can be uploaded to PyPI exactly once. Without this, any
+          # re-run -- a manually published release, a re-pushed tag, a retried
+          # job -- fails on "file already exists" even though nothing is
+          # wrong. Skipping makes the whole pipeline idempotent.
+          skip-existing: true
 
       - name: Tag release on main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -193,10 +199,54 @@ jobs:
           git tag -a "v${VERSION}" -m "Release v${VERSION}"
           git push origin "v${VERSION}"
 
+      - name: Create the GitHub Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.detect-release.outputs.version }}
+        run: |
+          set -euo pipefail
+          # Release notes are the matching CHANGELOG section: everything from
+          # this version's heading up to the next one.
+          awk -v v="## ${VERSION}" '
+            $0 ~ "^" v { found = 1; next }
+            found && /^## [0-9]/ { exit }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+
+          if [ ! -s release-notes.md ]; then
+            echo "No CHANGELOG section for ${VERSION}; releasing without notes." >&2
+            echo "See CHANGELOG.md for details." > release-notes.md
+          fi
+
+          # Tolerate a re-run: creating an existing release is an error, but
+          # it is not a failure worth going red over.
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            echo "Release v${VERSION} already exists; updating its notes."
+            gh release edit "v${VERSION}" --notes-file release-notes.md
+          else
+            gh release create "v${VERSION}" \
+              --title "v${VERSION}" \
+              --notes-file release-notes.md
+          fi
+
   docs:
     name: Deploy docs
-    if: github.event_name == 'release'
-    needs: tests
+    # Deploys when a release actually happened, by either route:
+    #
+    #  * the `publish` job just released from a version bump on main, or
+    #  * a human published a Release through the GitHub UI.
+    #
+    # It deliberately does NOT key off the Release created by the step above.
+    # GitHub does not fire workflow events for anything created with the
+    # default GITHUB_TOKEN -- a recursion guard -- so a `release` trigger
+    # would never see it and the site would silently never update. Depending
+    # on the `publish` job keeps the deploy inside the same run instead.
+    needs: [tests, publish]
+    if: |
+      always() && needs.tests.result == 'success' && (
+        needs.publish.result == 'success' || github.event_name == 'release'
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

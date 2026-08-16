@@ -41,6 +41,7 @@ from ddigraph.ingest.fragment_loader import (
     detect_ddi_format,
 )
 from ddigraph.ingest.loader import DDILoader
+from ddigraph.paths import default_dataset_id
 
 type FlavorName = Literal["codebook", "lifecycle", "cdi", "unknown"]
 
@@ -107,14 +108,10 @@ def _driver(settings: Settings) -> AsyncDriver:
     )
 
 
-def _default_dataset_id(path: str | Path) -> str:
-    """Derive a dataset identifier from a file name (codebook flavor only)."""
-    stem = Path(path).stem.replace(" ", "_")
-    # A path ending in ``.xml`` with no real stem (e.g. ``/path/.xml``)
-    # produces a leading-dot stem; treat that as a missing identifier.
-    if not stem or stem.startswith("."):
-        return "default"
-    return stem
+# Re-exported under its historical private name so existing callers and
+# tests keep working; the implementation moved to ``ddigraph.paths`` when
+# ``ddigraph.graph.view`` needed the same derivation.
+_default_dataset_id = default_dataset_id
 
 
 async def aload(

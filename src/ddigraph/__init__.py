@@ -1,10 +1,11 @@
 """ddigraph - DDI to Knowledge Graph transformation toolkit.
 
 This package transforms DDI (Data Documentation Initiative) XML
-metadata into a Neo4j knowledge graph. Streaming parsers also emit
-records that can drive other backends through the parser tier --
-see ``demo/load_rdf.py``, ``demo/load_gremlin.py``,
-``demo/load_networkx.py``, and ``demo/load_pandas.py`` for examples.
+metadata into a Neo4j knowledge graph, and reads and writes RDF. Any DDI
+flavor can also be streamed as backend-neutral nodes and relationships
+through :func:`ddigraph.iter_graph`, which is how you drive a store this
+package does not ship an adapter for; ``demo/load_gremlin.py``,
+``demo/load_networkx.py`` and ``demo/load_pandas.py`` are worked examples.
 The high-level entry points are:
 
 * :func:`ddigraph.load` -- sync load of a DDI file into a Neo4j target.
@@ -13,6 +14,13 @@ The high-level entry points are:
   lifecycle, cdi) of a file without loading.
 * :func:`ddigraph.bootstrap` -- create the indexes/constraints DDI
   ingestion needs.
+* :func:`ddigraph.export` -- write a DDI file out as RDF, JSON or CSV.
+  Needs no database.
+* :func:`ddigraph.iter_graph` -- stream any DDI flavor as
+  backend-neutral :class:`ddigraph.GraphChunk` values, for building your
+  own consumer.
+* :func:`ddigraph.preview` -- summarise a DDI file's graph shape as
+  text, Mermaid or a self-contained HTML page. Needs no database.
 
 Typical usage::
 
@@ -29,7 +37,9 @@ When ``target`` is omitted, connection details come from the env-driven
 The public API surface ships in two tiers:
 
 * **Supported** -- ``load``, ``aload``, ``detect``, ``bootstrap``,
-  ``abootstrap``, ``LoadResult``, ``Settings``, ``__version__``.
+  ``abootstrap``, ``export``, ``iter_graph``, ``preview``,
+  ``LoadResult``, ``ExportResult``, ``GraphChunk``, ``Settings``,
+  ``__version__``.
   These names follow semantic versioning across minor releases.
 * **Power-user** -- ``DDILoader``, ``DDIFragmentLoader``,
   ``DDIFragmentParser``, ``DDIBatch``, ``CDIBatch``,
@@ -53,6 +63,8 @@ from ddigraph.api import (
     load,
 )
 from ddigraph.config import Settings
+from ddigraph.exporter import ExportResult, export
+from ddigraph.graph.view import GraphChunk, iter_graph
 from ddigraph.ingest.cdi_loader import (
     CDIBatch,
     CDIBatchStream,
@@ -67,19 +79,25 @@ from ddigraph.ingest.fragment_loader import (
     detect_ddi_format,
 )
 from ddigraph.ingest.loader import DDIBatch, DDILoader, parse_ddi_batches
+from ddigraph.previewer import preview
 from ddigraph.schema.definitions import DDISchema
 
 try:
     __version__ = version("ddigraph")
 except PackageNotFoundError:
-    # Package not installed (development mode)
-    __version__ = "0.4.0"
+    # Running from a source tree that was never installed. Deliberately not
+    # a real release number: a hard-coded fallback silently goes stale (it
+    # sat at "0.4.0" through three patch releases), and a version that
+    # cannot be trusted should look untrustworthy.
+    __version__ = "0.0.0.dev0"
 
 # Intentionally split into two tiers (supported / power-user) with a
 # blank-line break instead of alphabetised; see the module docstring.
 __all__ = [  # noqa: RUF022 (tier ordering is intentional)
     # Supported public API -- the 90 % case, semver-stable across
     # minor releases. See the module docstring for details.
+    "ExportResult",
+    "GraphChunk",
     "LoadResult",
     "Settings",
     "__version__",
@@ -87,7 +105,10 @@ __all__ = [  # noqa: RUF022 (tier ordering is intentional)
     "aload",
     "bootstrap",
     "detect",
+    "export",
+    "iter_graph",
     "load",
+    "preview",
     # Power-user surface -- the parser tier, batch types, and the
     # shared schema container. Importable from ``ddigraph`` but carries
     # no stability guarantee across minor releases.

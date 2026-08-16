@@ -135,7 +135,7 @@ La configuration est gérée par la classe `Settings` basée sur Pydantic. Vous 
 l'utiliser directement dans votre code Python :
 
 ```python
-from ddigraph.settings import Settings
+from ddigraph.config import Settings
 
 # Charger depuis les variables d'environnement et le fichier .env
 settings = Settings()
@@ -149,7 +149,7 @@ print(settings.dry_run)  # False
 Les champs de la classe `Settings` correspondent directement aux variables d'environnement :
 
 ```python
-from ddigraph.settings import Settings
+from ddigraph.config import Settings
 
 # Surcharger des valeurs programmatiquement
 settings = Settings(
