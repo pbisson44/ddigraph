@@ -7,7 +7,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ---
 
-## 0.5.0 — unreleased
+## 0.5.0 — 2026-08-15
 
 Makes the RDF story real. The package advertised five graph backends and
 shipped one, and the RDF surface that did exist was spread across four
