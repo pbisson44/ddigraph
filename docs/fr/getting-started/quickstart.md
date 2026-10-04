@@ -67,24 +67,22 @@ Neo4j — c'est l'option la plus complète et la plus facile pour débuter.
     locales rapides ou du prototypage.
 
     ```python
-    import networkx as nx
+    from ddigraph.backends.networkx import to_networkx
 
-    from ddigraph import iter_graph
-
-
-    def node_id(node):
-        return "|".join(str(v) for _k, v in sorted(node.identity.items()))
-
-
-    G = nx.MultiDiGraph()
-
-    for chunk in iter_graph("survey.xml"):
-        for node in chunk.nodes:
-            G.add_node(node_id(node), node_type=node.label, **node.properties)
-        for edge in chunk.relationships:
-            G.add_edge(node_id(edge.start), node_id(edge.end), key=edge.type)
-
+    G = to_networkx("survey.xml")
     print(f"Chargé : {G.number_of_nodes()} nœuds, {G.number_of_edges()} arêtes")
+    ```
+
+=== "pandas"
+
+    **Qu'est-ce que c'est ?** pandas range le graphe dans deux tableaux : une ligne par nœud et une par
+    relation. Utilisez ceci quand l'étape suivante est un tableur ou un rapport.
+
+    ```python
+    from ddigraph.backends.pandas import to_dataframes
+
+    frames = to_dataframes("survey.xml")
+    print(frames.nodes["node_label"].value_counts())
     ```
 
 === "Gremlin"
@@ -93,19 +91,16 @@ Neo4j — c'est l'option la plus complète et la plus facile pour débuter.
     des bases de données comme JanusGraph, Amazon Neptune et Azure Cosmos DB.
 
     ```python
-    from gremlin_python.process.anonymous_traversal import traversal
     from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
-    from ddigraph import iter_graph
+    from gremlin_python.process.anonymous_traversal import traversal
+
+    from ddigraph.backends.gremlin import write_gremlin
 
     connection = DriverRemoteConnection("ws://localhost:8182/gremlin", "g")
-    g = traversal().withRemote(connection)
+    g = traversal().with_(connection)
 
-    for chunk in iter_graph("survey.xml"):
-        for node in chunk.nodes:
-            node_id = next(iter(node.identity.values()))
-            g.addV(node.label).property("id", node_id).property(
-                "name", node.properties.get("label", "")
-            ).iterate()
+    result = write_gremlin(g, "survey.xml")  # safe to run twice
+    print(result.nodes, "sommets,", result.relationships, "arêtes")
 
     connection.close()
     ```

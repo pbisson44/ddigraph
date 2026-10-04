@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ddigraph"
-version = "0.5.0"
+version = "0.5.1"
 description = "DDI to Knowledge Graph toolkit - transform DDI metadata into graph databases (Neo4j, RDF, Gremlin, NetworkX)"
 authors = [{name = "ddigraph maintainers", email = "ddigraph@noreply.github.com"}]
 readme = "README.md"
@@ -68,7 +68,7 @@ Issues = "https://github.com/pbisson44/ddigraph/issues"
 
 [project.optional-dependencies]
 # Backend extras: install only what your target environment uses.
-# ``pip install ddigraph[rdf]`` enables the RDF/SPARQL demo path, etc.
+# ``pip install ddigraph[networkx]`` enables ``ddigraph.backends.networkx``, etc.
 rdf = ["rdflib>=7.5.0,<8.0.0"]
 shacl = ["rdflib>=7.5.0,<8.0.0", "pyshacl>=0.26"]
 gremlin = ["gremlinpython>=3.8.1,<4.0.0"]
@@ -102,10 +102,13 @@ dev = [
   # The RDF tier is optional at runtime but exercised by the test suite.
   "rdflib>=7.5.0,<8.0.0",
   "pyshacl>=0.26",
-  # Needed so the runnable NetworkX examples in the docs actually execute
-  # rather than skip. Pure Python and small; the heavier extras
-  # (gremlinpython, pandas) stay out and their examples skip instead.
+  # The ``ddigraph.backends`` adapters are tested, not just shipped, so
+  # their libraries are installed for the suite and the runnable doc
+  # examples execute rather than skip. gremlinpython only builds traversals
+  # in the tests; nothing needs a running Gremlin server.
   "networkx>=3.6.1",
+  "pandas>=2.3.3",
+  "gremlinpython>=3.8.1,<4.0.0",
   # Packaging audit tools used by the CI publish pipeline.
   "build>=1.2",
   "twine>=5.1",
@@ -190,6 +193,19 @@ module = ["lxml", "lxml.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
+# Optional backend extras, imported lazily by ``ddigraph.backends``. None of
+# them ships type information, and CI type-checks without the stub packages.
+module = [
+  "networkx",
+  "networkx.*",
+  "pandas",
+  "pandas.*",
+  "gremlin_python",
+  "gremlin_python.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 # ``textstat`` is an optional ``docs`` extra used only by the
 # advisory readability script. The script wraps the import in a
 # try/except so the missing-package case is handled at runtime.
@@ -238,6 +254,7 @@ ignore = [
   ".pre-commit-config.yaml",
   ".gitignore",
   "CHANGELOG.md",
+  "CLAUDE.md",
   "CODE_OF_CONDUCT.md",
   "Makefile",
   "SECURITY.md",

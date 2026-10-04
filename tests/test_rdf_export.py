@@ -305,6 +305,32 @@ def test_json_export_carries_a_summary(tmp_path: Path) -> None:
     assert payload["nodes"] and payload["relationships"]
 
 
+@pytest.mark.parametrize("fixture", [LIFECYCLE, CODEBOOK, CDI], ids=lambda p: p.stem)
+def test_json_relationships_join_to_exactly_one_node(fixture: Path, tmp_path: Path) -> None:
+    """``(node_label, node_id)`` must identify a node, composite identities included.
+
+    The endpoint ids used to be the *first* identity value alone. The
+    codebook fixture's fourteen ``DDIGenericIdentifiable`` nodes are keyed
+    on ``(dataset_id, element_tag, identifiable_id)`` and share their
+    ``dataset_id``, so every edge leaving any of them named the same start
+    and could not be joined back. The node type was also written under
+    ``label``, which the human-readable ``label`` property then overwrote.
+    """
+    out = tmp_path / "graph.json"
+    export(fixture, out, format="json")
+    payload = json.loads(out.read_text(encoding="utf-8"))
+
+    keys = [(node["node_label"], node["node_id"]) for node in payload["nodes"]]
+    assert len(keys) == len(set(keys)), "node keys must be unique"
+
+    labels = {label for label, _id in keys}
+    assert labels <= set(payload["summary"]["nodes_by_label"])
+    known = set(keys)
+    for rel in payload["relationships"]:
+        assert (rel["start_label"], rel["start_id"]) in known, rel
+        assert (rel["end_label"], rel["end_id"]) in known, rel
+
+
 def test_csv_export_writes_a_directory_of_two_files(tmp_path: Path) -> None:
     """A graph does not fit one rectangle, so CSV gets two."""
     out = tmp_path / "csvout"

@@ -100,6 +100,10 @@ class SchemaUnavailableError(RuntimeError):
     """Raised when no bundled schema covers a flavor or version."""
 
 
+class GraphParseError(ValueError):
+    """Raised when an RDF file cannot be parsed, so there is no graph to check."""
+
+
 def _lifecycle_version(root: _etree._Element) -> str:
     """Return the DDI-L version a document declares, from its namespaces."""
     for uri in root.nsmap.values():
@@ -253,11 +257,206 @@ def validate(
     )
 
 
+# ---------------------------------------------------------------------------
+# SHACL: is the *graph* the shape ddigraph claims to produce?
+# ---------------------------------------------------------------------------
+
+
+@dataclass(slots=True, frozen=True)
+class ShapeViolation:
+    """One SHACL result.
+
+    Attributes:
+        focus_node: The subject that failed, as an IRI or blank-node id.
+        path: The property the constraint is about, if it has one.
+        constraint: The SHACL constraint component, e.g. ``MinCountConstraintComponent``.
+        message: The validator's description of the failure.
+        severity: ``Violation``, ``Warning`` or ``Info``.
+        value: The offending value, where the constraint names one.
+    """
+
+    focus_node: str
+    path: str | None
+    constraint: str
+    message: str
+    severity: str = "Violation"
+    value: str | None = None
+
+    def __str__(self) -> str:
+        where = f"{self.focus_node} {self.path}" if self.path else self.focus_node
+        return f"{where}: {self.message}"
+
+
+@dataclass(slots=True)
+class ShapesResult:
+    """Outcome of checking one graph against the SHACL shapes.
+
+    Attributes:
+        valid: True when the graph conforms.
+        flavor: The flavor the shapes were scoped to, or ``None`` for all three.
+        triples: Size of the data graph that was checked.
+        total: How many results the validator reported, before truncation.
+        issues: The results kept, sorted so a report is stable between runs.
+    """
+
+    valid: bool
+    flavor: str | None
+    triples: int
+    total: int = 0
+    issues: list[ShapeViolation] = field(default_factory=list)
+
+    def __bool__(self) -> bool:
+        return self.valid
+
+
+def is_rdf_path(path: str | Path) -> bool:
+    """Return True when a path names an RDF serialisation rather than DDI XML.
+
+    Decided by extension, not by sniffing: Turtle and JSON-LD do not parse as
+    XML, so sniffing would treat the serialisations of one graph differently.
+    ``.xml`` is claimed by RDF/XML too, but DDI XML is the overwhelmingly
+    common case, so it stays with the XML parsers.
+    """
+    from ddigraph.rdf.reader import EXTENSION_FORMATS
+
+    suffix = Path(path).suffix.lower()
+    return suffix in EXTENSION_FORMATS and suffix != ".xml"
+
+
+def validate_shapes(
+    source: str | Path,
+    *,
+    flavor: str | None = None,
+    max_issues: int = 0,
+) -> ShapesResult:
+    """Check a graph against the SHACL shapes ddigraph derives from its schema.
+
+    An RDF file (``.ttl``, ``.nt``, ``.jsonld``, ``.rdf``...) is checked as
+    it is. A DDI XML file is first projected the way ``ddigraph export``
+    would, so this answers "does what ddigraph makes of this file have the
+    promised shape?" -- the question XSD validation cannot ask.
+
+    Args:
+        source: An RDF file, or a DDI XML file to project first.
+        flavor: Scope the shapes to one flavor. For DDI XML it defaults to
+            the detected flavor; for RDF, which does not record its flavor,
+            it defaults to the shapes for all three.
+        max_issues: Keep at most this many results. ``0`` keeps all of them.
+
+    Returns:
+        ShapesResult: Outcome, including every result kept.
+
+    Raises:
+        ImportError: If the ``[shacl]`` extra (``rdflib`` and ``pyshacl``)
+            is not installed.
+        GraphParseError: If an RDF file is not valid in its serialisation.
+    """
+    try:
+        import pyshacl
+        from rdflib import Graph
+    except ImportError as exc:
+        raise ImportError(
+            "SHACL validation needs rdflib and pyshacl, which are optional. "
+            'Install them with: pip install "ddigraph[shacl]"'
+        ) from exc
+
+    from ddigraph.rdf.shacl import shapes_graph
+
+    path = Path(source)
+    if is_rdf_path(path):
+        from ddigraph.rdf.reader import EXTENSION_FORMATS
+
+        rdf_format = EXTENSION_FORMATS[path.suffix.lower()]
+        try:
+            data = Graph().parse(str(path), format=rdf_format)
+        # rdflib's parsers raise unrelated exception types (BadSyntax,
+        # SAXParseException, JSONDecodeError...), so catch broadly and
+        # report them as one thing: this file is not valid RDF.
+        except Exception as exc:
+            raise GraphParseError(f"Not valid {rdf_format}: {exc}") from exc
+    else:
+        from ddigraph.graph.view import iter_graph
+        from ddigraph.ingest.fragment_loader import detect_ddi_format
+        from ddigraph.rdf.writer import build_graph
+
+        flavor = flavor or detect_ddi_format(str(path))
+        data = build_graph(iter_graph(path, flavor=flavor))
+
+    conforms, report, _text = pyshacl.validate(data, shacl_graph=shapes_graph(flavor=flavor))
+    issues = sorted(
+        _shape_violations(report),
+        key=lambda issue: (issue.focus_node, issue.path or "", issue.constraint),
+    )
+    total = len(issues)
+    if max_issues:
+        issues = issues[:max_issues]
+
+    logger.info(
+        "Validated against SHACL shapes",
+        extra={
+            "path": str(path),
+            "flavor": flavor,
+            "valid": bool(conforms),
+            "issues": total,
+        },
+    )
+
+    return ShapesResult(
+        valid=bool(conforms),
+        flavor=flavor,
+        triples=len(data),
+        total=total,
+        issues=issues,
+    )
+
+
+def _shape_violations(report: object) -> list[ShapeViolation]:
+    """Read ``sh:ValidationResult`` nodes out of a pyshacl report graph.
+
+    The report graph, not pyshacl's text rendering, is the stable interface:
+    the text format changes between pyshacl releases.
+    """
+    from rdflib import RDF, Graph, Namespace, URIRef
+    from rdflib.term import Node
+
+    assert isinstance(report, Graph)
+    sh = Namespace(SH_NAMESPACE)
+
+    def one(subject: Node, predicate: URIRef) -> str | None:
+        value = report.value(subject, predicate)
+        return None if value is None else str(value)
+
+    violations: list[ShapeViolation] = []
+    for result in report.subjects(RDF.type, sh.ValidationResult):
+        constraint = one(result, sh.sourceConstraintComponent) or ""
+        severity = one(result, sh.resultSeverity) or f"{SH_NAMESPACE}Violation"
+        violations.append(
+            ShapeViolation(
+                focus_node=one(result, sh.focusNode) or "",
+                path=one(result, sh.resultPath),
+                constraint=constraint.removeprefix(SH_NAMESPACE),
+                message=one(result, sh.resultMessage) or "",
+                severity=severity.removeprefix(SH_NAMESPACE),
+                value=one(result, sh.value),
+            )
+        )
+    return violations
+
+
+#: The SHACL namespace, for reading reports.
+SH_NAMESPACE = "http://www.w3.org/ns/shacl#"
+
+
 __all__ = [
     "DEFAULT_LIFECYCLE_VERSION",
+    "GraphParseError",
     "SchemaUnavailableError",
+    "ShapeViolation",
+    "ShapesResult",
     "ValidationIssue",
     "ValidationResult",
+    "is_rdf_path",
     "schema_path",
     "validate",
+    "validate_shapes",
 ]

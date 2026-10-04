@@ -114,13 +114,21 @@ Run `python scripts/xsd_coverage.py` to regenerate the audit or
 | **Neo4j** | Shipped. Read and write, all three DDI flavors | base install |
 | **RDF/SPARQL** | Shipped. Read and write, SHACL shapes | `ddigraph[rdf]` |
 | **JSON / CSV** | Shipped. Export only | base install |
-| **Gremlin** | Example script in `demo/`, not part of the package | `ddigraph[gremlin]` |
-| **NetworkX** | Example script in `demo/`, not part of the package | `ddigraph[networkx]` |
-| **pandas** | Example script in `demo/`, not part of the package | `ddigraph[pandas]` |
+| **Gremlin** | Shipped. Write, idempotent upserts | `ddigraph[gremlin]` |
+| **NetworkX** | Shipped. In-memory graph | `ddigraph[networkx]` |
+| **pandas** | Shipped. Node and relationship DataFrames | `ddigraph[pandas]` |
 
-`demo/` scripts ship in neither the wheel nor the source distribution. They
-are worked examples of driving another store from the parser tier, not
-supported backends. To build your own, use `ddigraph.iter_graph()`, which
+Every backend reads DDI XML of all three flavors, or an RDF export:
+
+```python
+from ddigraph.backends.networkx import to_networkx
+from ddigraph.backends.pandas import to_dataframes
+
+G = to_networkx("survey.xml")
+frames = to_dataframes("survey.ttl")
+```
+
+To feed a store ddigraph does not cover, use `ddigraph.iter_graph()`, which
 yields backend-neutral nodes and relationships for any DDI flavor.
 
 ## Docker Quick Start

@@ -363,7 +363,7 @@ pandas ou des fichiers CSV pour les équipes plus à l'aise avec ces outils :
 ```bash
 ddigraph export survey.xml --format json -o survey.json
 ddigraph export survey.xml --format csv -o out-dir/   # nodes.csv + relationships.csv
-python demo/load_pandas.py                            # DataFrames (script de démo)
+python -c "from ddigraph.backends.pandas import to_dataframes; print(to_dataframes('survey.xml').nodes)"
 ```
 
 ## Référence de comparaison des requêtes

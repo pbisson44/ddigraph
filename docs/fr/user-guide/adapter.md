@@ -295,31 +295,15 @@ queries = DDISchema.generate_constraint_queries(include_fragments=True)
 
 ## Exemples fonctionnels
 
-Le répertoire `demo/` contient des implémentations complètes d'adaptateurs que vous pouvez
-exécuter et modifier :
+ddigraph fournit des adaptateurs pour RDF, NetworkX, pandas et Gremlin. Ce
+sont les meilleures références pour en écrire un nouveau, car tous suivent
+le patron que recommande cette page : consommer `ddigraph.iter_graph()`,
+plutôt que le protocole ci-dessus.
 
-RDF n'en fait pas partie : il est fourni avec le package. Utilisez donc
-`ddigraph export` ou `ddigraph.export()` plutôt que d'écrire un
-adaptateur. Voyez le [guide du backend RDF](../backends/rdf.md).
-
-- **`load_gremlin.py`** - Adaptateur Gremlin utilisant TinkerGraph
-  - Requêtes de graphe basées sur les traversées
-  - Recherche de motifs et analyse de chemins
-  - Compatible avec JanusGraph, Amazon Neptune, Azure Cosmos DB
-
-- **`load_networkx.py`** - Adaptateur NetworkX pour l'analyse locale
-  - Analyse de graphe en mémoire
-  - Requêtes de chemins et analyse de connectivité
-  - Export GraphML
-
-- **`load_pandas.py`** - Adaptateur pandas pour l'analyse tabulaire
-  - DataFrames par type de nœud
-  - Analyse des relations
-  - Export Excel
-
-Chaque démonstration présente le patron complet d'implémentation d'un adaptateur avec l'analyse
-syntaxique, le chargement, l'analyse et l'export. Consultez le [répertoire demo sur GitHub](https://github.com/pbisson44/ddigraph/tree/main/demo)
-pour les instructions d'utilisation.
+- [`ddigraph/backends/networkx.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/backends/networkx.py) - le plus court : un passage, nœuds puis arêtes
+- [`ddigraph/backends/pandas.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/backends/pandas.py) - garde tout en mémoire, pour une cible qui veut toutes les lignes d'un coup
+- [`ddigraph/backends/gremlin.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/backends/gremlin.py) - un stockage distant : upserts groupés et idempotents
+- [`ddigraph/rdf/writer.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/rdf/writer.py) - une cible avec son propre vocabulaire
 
 Consultez [Architecture](architecture.md) pour la conception de bout en bout et
 [DDI-L FragmentInstance](fragments.md) pour les détails spécifiques aux fragments.

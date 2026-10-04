@@ -82,7 +82,7 @@ def test_many_to_one_alignment_stays_distinguishable() -> None:
 
 def test_standard_classes_only_use_published_namespaces() -> None:
     """A wrong alignment is worse than none, so pin the namespaces."""
-    published = (v.DISCO, v.SKOS, v.XKOS, v.FOAF, v.PROV, v.DCTERMS)
+    published = (v.DISCO, v.SKOS, v.XKOS, v.FOAF, v.PROV, v.DCTERMS, v.DCAT)
 
     for label in ALL_LABELS:
         standard = v.standard_class_iri(label)

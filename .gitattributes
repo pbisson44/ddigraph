@@ -1,2 +1,6 @@
+# LF everywhere, regardless of core.autocrlf. The schema checksums and
+# ruff format both compare bytes, so a CRLF checkout fails them on Windows.
+* text=auto eol=lf
+
 demo/*.xml filter=lfs diff=lfs merge=lfs -text
 demo/*.ttl filter=lfs diff=lfs merge=lfs -text

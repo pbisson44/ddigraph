@@ -31,6 +31,7 @@ nav:
       - RDF / SPARQL: backends/rdf.md
       - Gremlin: backends/gremlin.md
       - NetworkX: backends/networkx.md
+      - pandas: backends/pandas.md
   - Reference:
       - CLI: reference/cli.md
       - Configuration: reference/configuration.md
@@ -175,6 +176,7 @@ plugins:
             RDF / SPARQL: RDF / SPARQL
             Gremlin: Gremlin
             NetworkX: NetworkX
+            pandas: pandas
             Reference: Référence
             CLI: CLI
             Configuration: Configuration

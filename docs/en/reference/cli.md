@@ -206,8 +206,44 @@ ddigraph export survey.xml --validate -o out.ttl
 | Option | Description |
 | -------- | ------------- |
 | `--flavor` | Force `codebook`, `lifecycle` or `cdi` instead of detecting |
+| `--shapes` | Also check the graph against the SHACL shapes (needs `[shacl]`) |
 | `--max-issues` | Report at most N issues (default: 20, `0` reports all) |
 | `--json` | Print the result as JSON |
+
+### Checking the graph with SHACL
+
+XSD checks the XML. SHACL checks the *graph* ddigraph makes of it. Give
+`validate` an RDF file and it checks it against the shapes:
+
+<!-- runnable -->
+```bash
+ddigraph export "$FIXTURE" --format turtle -o survey.ttl
+ddigraph validate survey.ttl --flavor lifecycle
+```
+
+```text
+Shapes: lifecycle (56 triples)
+Shapes result: conforms
+```
+
+Pass `--flavor` with RDF input. An RDF file does not say which flavor it
+came from. Without one, the shapes for all three are used, and they skip
+the rules the flavors disagree on.
+
+For a DDI XML file, `--shapes` runs both checks:
+
+<!-- runnable -->
+```bash
+ddigraph validate "$FIXTURE" --shapes || true
+```
+
+The exit status tells a script what happened:
+
+| Exit | Meaning |
+| ------ | --------- |
+| `0` | Every check passed |
+| `1` | The file does not conform |
+| `2` | The file could not be checked: no schema, or the `[shacl]` extra is missing |
 
 **Validation is off by default, deliberately.** Published DDI is often
 imperfect: it parses, it loads, it does not strictly validate. Every XML

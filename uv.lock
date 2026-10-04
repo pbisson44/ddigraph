@@ -596,7 +596,7 @@ wheels = [
 
 [[package]]
 name = "ddigraph"
-version = "0.5.0"
+version = "0.5.1"
 source = { editable = "." }
 dependencies = [
     { name = "lxml" },
@@ -619,8 +619,10 @@ all = [
 dev = [
     { name = "build" },
     { name = "check-manifest" },
+    { name = "gremlinpython" },
     { name = "mypy" },
     { name = "networkx" },
+    { name = "pandas" },
     { name = "pre-commit" },
     { name = "psutil" },
     { name = "pyroma" },
@@ -667,6 +669,7 @@ requires-dist = [
     { name = "build", marker = "extra == 'dev'", specifier = ">=1.2" },
     { name = "check-manifest", marker = "extra == 'dev'", specifier = ">=0.50" },
     { name = "gremlinpython", marker = "extra == 'all'", specifier = ">=3.8.1,<4.0.0" },
+    { name = "gremlinpython", marker = "extra == 'dev'", specifier = ">=3.8.1,<4.0.0" },
     { name = "gremlinpython", marker = "extra == 'gremlin'", specifier = ">=3.8.1,<4.0.0" },
     { name = "lxml", specifier = ">=5.1" },
     { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.6,<2" },
@@ -681,6 +684,7 @@ requires-dist = [
     { name = "openpyxl", marker = "extra == 'pandas'", specifier = ">=3.1.5" },
     { name = "orjson", specifier = ">=3.10" },
     { name = "pandas", marker = "extra == 'all'", specifier = ">=2.3.3" },
+    { name = "pandas", marker = "extra == 'dev'", specifier = ">=2.3.3" },
     { name = "pandas", marker = "extra == 'pandas'", specifier = ">=2.3.3" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3.7" },
     { name = "psutil", marker = "extra == 'dev'", specifier = ">=5.9" },

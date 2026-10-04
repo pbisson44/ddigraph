@@ -22,6 +22,7 @@ from ddigraph.schema.ddi_graph import DDIIngestGraph
 from ddigraph.schema.neo4j_adapter import Neo4jGraphAdapter
 from ddigraph.utils.chunking import as_dicts as _as_dicts
 from ddigraph.utils.parsing import (
+    any_namespace,
     close_iterparse_context,
     extract_reference_value,
     extract_references_by_suffix,
@@ -2400,13 +2401,13 @@ class BatchBuilder:
             ),
             "studies",
         )
-        for universe in elem.findall(".//universe"):
+        for universe in elem.findall(any_namespace(".//universe")):
             self._ingest_universe(universe, fallback_prefix=study_id)
-        for series in elem.findall(".//serName"):
+        for series in elem.findall(any_namespace(".//serName")):
             self.ingest_series(series)
-        for group in elem.findall(".//group"):
+        for group in elem.findall(any_namespace(".//group")):
             self.ingest_group(group)
-        for event in elem.findall(".//collDate"):
+        for event in elem.findall(any_namespace(".//collDate")):
             self.ingest_data_collection_event(event)
 
     def ingest_file(self, elem: etree._Element) -> None:
@@ -2449,7 +2450,9 @@ class BatchBuilder:
                 "code_schemes",
             )
 
-        for category in elem.findall(".//catgry") + elem.findall(".//Category"):
+        for category in elem.findall(any_namespace(".//catgry")) + elem.findall(
+            any_namespace(".//Category")
+        ):
             self._ingest_category(category, code_scheme_id=scheme_id)
 
     def ingest_question(self, elem: etree._Element) -> None:
@@ -2523,7 +2526,7 @@ class BatchBuilder:
         self.seen_variable_ids.add(variable_id)
         label = _first_text(elem, "labl")
         concept = _first_text(elem, "concept") or _first_text(elem, "catgry//labl")
-        question_elem = elem.find("qstn")
+        question_elem = elem.find(any_namespace("qstn"))
         question_text = _question_text(question_elem)
         question_id = None
         if question_elem is not None:
@@ -2555,23 +2558,23 @@ class BatchBuilder:
                     "questions",
                 )
 
-        universe_elem = elem.find("universe")
+        universe_elem = elem.find(any_namespace("universe"))
         universe_id = None
         if universe_elem is not None:
             universe_id = self._ingest_universe(universe_elem, fallback_prefix=variable_id)
 
         file_id = None
-        location = elem.find("location")
+        location = elem.find(any_namespace("location"))
         if location is not None:
             file_id = location.get("fileid") or location.get("FILEID")
 
         category_ids: list[str] = []
-        for category in elem.findall("catgry"):
+        for category in elem.findall(any_namespace("catgry")):
             category_id = self._ingest_category(category, code_scheme_id=None)
             if category_id:
                 category_ids.append(category_id)
 
-        concept_elem = elem.find("concept")
+        concept_elem = elem.find(any_namespace("concept"))
         if concept and concept not in self.seen_concepts:
             self.seen_concepts.add(concept)
             concept_textual = _textual_metadata(concept_elem)
@@ -2758,11 +2761,11 @@ class BatchBuilder:
         var_attr = elem.get("var")
         if var_attr:
             variable_ids.extend([vid for vid in var_attr.split() if vid])
-        for var_ref in elem.findall(".//varRef"):
+        for var_ref in elem.findall(any_namespace(".//varRef")):
             ref_id = var_ref.get("IDREF") or var_ref.get("idref")
             if ref_id:
                 variable_ids.append(ref_id)
-        for var in elem.findall(".//var"):
+        for var in elem.findall(any_namespace(".//var")):
             ref_id = _get_identifier(var)
             if ref_id:
                 variable_ids.append(ref_id)
@@ -2803,11 +2806,15 @@ class BatchBuilder:
         cat_attr = elem.get("catgry")
         if cat_attr:
             category_ids.extend([cid for cid in cat_attr.split() if cid])
-        for cat_ref in elem.findall(".//catgryRef") + elem.findall(".//CategoryRef"):
+        for cat_ref in elem.findall(any_namespace(".//catgryRef")) + elem.findall(
+            any_namespace(".//CategoryRef")
+        ):
             ref_id = cat_ref.get("IDREF") or cat_ref.get("idref")
             if ref_id:
                 category_ids.append(ref_id)
-        for cat in elem.findall(".//catgry") + elem.findall(".//Category"):
+        for cat in elem.findall(any_namespace(".//catgry")) + elem.findall(
+            any_namespace(".//Category")
+        ):
             ref_id = _get_identifier(cat)
             if ref_id:
                 category_ids.append(ref_id)
@@ -3496,7 +3503,7 @@ class BatchBuilder:
 
 
 def _first_text(elem: etree._Element, path: str) -> str | None:
-    target = elem.find(path)
+    target = elem.find(any_namespace(path))
     if isinstance(target, etree._Element):
         text: str | None = target.text
         if text:

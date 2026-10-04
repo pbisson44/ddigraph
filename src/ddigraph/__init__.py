@@ -1,11 +1,12 @@
 """ddigraph - DDI to Knowledge Graph transformation toolkit.
 
 This package transforms DDI (Data Documentation Initiative) XML
-metadata into a Neo4j knowledge graph, and reads and writes RDF. Any DDI
+metadata into a Neo4j knowledge graph, reads and writes RDF, and writes to
+NetworkX, pandas and Gremlin through :mod:`ddigraph.backends`. Any DDI
 flavor can also be streamed as backend-neutral nodes and relationships
 through :func:`ddigraph.iter_graph`, which is how you drive a store this
-package does not ship an adapter for; ``demo/load_gremlin.py``,
-``demo/load_networkx.py`` and ``demo/load_pandas.py`` are worked examples.
+package does not ship an adapter for; the modules in
+:mod:`ddigraph.backends` are worked examples.
 The high-level entry points are:
 
 * :func:`ddigraph.load` -- sync load of a DDI file into a Neo4j target.

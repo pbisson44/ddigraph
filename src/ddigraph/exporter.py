@@ -24,7 +24,7 @@ from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
-from ddigraph.graph.view import GraphChunk, iter_graph
+from ddigraph.graph.view import GraphChunk, iter_graph, node_key
 from ddigraph.logging import get_logger
 from ddigraph.schema.ddi_graph import Node, Relationship
 
@@ -172,23 +172,31 @@ def _export_rdf(
 
 
 def _node_record(node: Node) -> dict[str, object]:
-    """Flatten a node for JSON or CSV."""
-    record: dict[str, object] = {"label": node.label}
+    """Flatten a node for JSON or CSV.
+
+    ``node_label`` is the node type and ``node_id`` is
+    :func:`~ddigraph.graph.view.node_key` -- the pair a relationship's
+    ``start_label``/``start_id`` and ``end_label``/``end_id`` refer to, so
+    the two files join whatever shape the identity has. Both are written
+    last: most nodes carry a ``label`` *property* (the human-readable one),
+    and writing the type under that name let the property overwrite it.
+    """
+    record: dict[str, object] = {}
     record.update(node.identity)
     record.update(node.properties)
+    record["node_label"] = node.label
+    record["node_id"] = node_key(node)
     return record
 
 
 def _relationship_record(relationship: Relationship) -> dict[str, object]:
     """Flatten a relationship for JSON or CSV."""
-    start = next(iter(relationship.start.identity.values()), "")
-    end = next(iter(relationship.end.identity.values()), "")
     return {
         "start_label": relationship.start.label,
-        "start_id": start,
+        "start_id": node_key(relationship.start),
         "type": relationship.type,
         "end_label": relationship.end.label,
-        "end_id": end,
+        "end_id": node_key(relationship.end),
     }
 
 
@@ -203,7 +211,7 @@ def _export_json(chunks: Iterable[GraphChunk], destination: Path) -> ExportResul
 
     by_label: dict[str, int] = {}
     for record in nodes:
-        label = str(record["label"])
+        label = str(record["node_label"])
         by_label[label] = by_label.get(label, 0) + 1
     by_type: dict[str, int] = {}
     for record in relationships:

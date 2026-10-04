@@ -1,210 +1,110 @@
-# Gremlin
+# Backend Gremlin
 
-ddigraph prend en charge les bases de données graphe compatibles Gremlin via le framework Apache TinkerPop.
+ddigraph écrit dans toute base de données graphe qui parle Gremlin, le
+langage de requête d'Apache TinkerPop.
 
 ## Bases de données prises en charge
 
-| Base de données | Connexion | Cas d'utilisation |
-| --------------- | --------- | ----------------- |
-| **Apache TinkerGraph** | En mémoire | Tests locaux, développement |
-| **JanusGraph** | WebSocket/HTTP | Production, distribué |
+| Base de données | Connexion | Usage |
+| --------------- | --------- | ----- |
+| **Apache TinkerGraph** | En mémoire, via Gremlin Server | Tests locaux, développement |
+| **JanusGraph** | WebSocket | Production, distribué |
 | **Amazon Neptune** | WebSocket | Cloud AWS, service géré |
 | **Azure Cosmos DB** | WebSocket | Cloud Azure, API Gremlin |
 
 ## Dépendances
 
-GremlinPython est un extra optionnel :
+gremlinpython est un extra optionnel :
 
 ```bash
 pip install "ddigraph[gremlin]"
 ```
 
-## Utilisation de base
+Pour essayer en local, lancez l'image officielle du serveur :
 
-### Connexion au serveur Gremlin
-
-```python
-from gremlin_python.process.anonymous_traversal import traversal
-from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
-
-# Serveur TinkerPop local
-connection = DriverRemoteConnection("ws://localhost:8182/gremlin", "g")
-g = traversal().withRemote(connection)
-
-# AWS Neptune
-# connection = DriverRemoteConnection(
-#     'wss://your-neptune-endpoint:8182/gremlin',
-#     'g'
-# )
+```bash
+docker run --rm -p 8182:8182 tinkerpop/gremlin-server:3.8.2
 ```
 
-### Charger des données DDI
+## Charger du DDI
+
+`write_gremlin` prend une source de traversée et un fichier. Elle renvoie le
+nombre de sommets et d'arêtes écrits.
 
 ```python
-from ddigraph import iter_graph
+from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
+from gremlin_python.process.anonymous_traversal import traversal
 
+from ddigraph.backends.gremlin import write_gremlin
 
-def node_key(node):
-    """Une clé stable tirée de toute l'identité, pas du premier champ."""
-    return "|".join(f"{k}={v}" for k, v in sorted(node.identity.items()))
+connection = DriverRemoteConnection("ws://localhost:8182/gremlin", "g")
+g = traversal().with_(connection)
 
-
-vertices = {}
-edges = []
-
-# Première passe : tous les nœuds arrivent avant la première relation.
-# On collecte donc les sommets avant de câbler quoi que ce soit.
-for chunk in iter_graph("survey.xml"):
-    for node in chunk.nodes:
-        vertices[node_key(node)] = (
-            g.addV(node.label)
-            .property("id", node_key(node))
-            .property("name", node.properties.get("label", ""))
-            .next()
-        )
-    edges.extend(
-        (node_key(edge.start), edge.type, node_key(edge.end)) for edge in chunk.relationships
-    )
-
-# Seconde passe : les extrémités sont désormais toutes dans `vertices`.
-for start, rel_type, end in edges:
-    if start in vertices and end in vertices:
-        g.V(vertices[start]).addE(rel_type).to(vertices[end]).iterate()
+result = write_gremlin(g, "survey.xml")
+print(result.nodes, "sommets,", result.relationships, "arêtes")
 
 connection.close()
 ```
 
-## Exemple complet
+Le fichier peut être du DDI XML de n'importe quelle variante, ou un export
+RDF comme `survey.ttl`. Vous pouvez aussi passer des blocs déjà obtenus avec
+`ddigraph.iter_graph()`.
 
-Consultez `demo/load_gremlin.py` pour un exemple complet :
+## Ce qui est écrit
 
-```python
-"""Load DDI into Gremlin-compatible graph database."""
+- **Chaque sommet a une `node_key`.** C'est l'identité du nœud, sous forme
+  de chaîne. Trouvez un sommet par son label et sa clé :
+  `g.V().has("Variable", "node_key", "v1")`.
+- **Le chargement peut être répété.** Chaque écriture est un upsert. Un
+  sommet n'est créé que si aucun sommet n'a déjà ce label et cette clé. Une
+  arête n'est créée que si le même type ne relie pas déjà les deux mêmes
+  sommets. Chargez un fichier deux fois : rien ne change.
+- **`label` et `id` sont renommés** en `ddi_label` et `ddi_id`. Certaines
+  bases traitent ces noms comme le label et l'identifiant de l'élément
+  lui-même. Cosmos DB les refuse purement et simplement.
+- **Les listes deviennent des chaînes**, jointes avec `|`. Les bases
+  diffèrent trop dans leur façon de stocker les listes pour s'y fier.
 
-from gremlin_python.process.anonymous_traversal import traversal
-from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
-from gremlin_python.process.graph_traversal import __
+## Options
 
-from ddigraph import iter_graph
+| Option | Défaut | Description |
+| -------- | -------- | ------------- |
+| `batch_size` | `50` | Sommets ou arêtes par requête |
+| `cardinality` | `"single"` | Remplacer une valeur au rechargement. Passez `None` si votre base ne gère que les propriétés de type liste |
+| `flavor` | détectée | Forcer une variante DDI |
+| `dataset_id` | nom du fichier | Identifiant du jeu de données pour un Codebook |
 
+Le résultat a aussi un compte `skipped`. Il compte les arêtes non écrites
+faute de sommet d'extrémité. Il doit valoir zéro. Sinon, le journal indique
+combien.
 
-def load_ddi_to_gremlin(ddi_path: str, gremlin_endpoint: str = "ws://localhost:8182/gremlin"):
-    """Parse DDI-L file and load into Gremlin database."""
+## Vitesse
 
-    connection = DriverRemoteConnection(gremlin_endpoint, "g")
-    g = traversal().withRemote(connection)
-
-    try:
-        # Clear existing data (optional)
-        g.V().drop().iterate()
-
-        fragment_ids = set()
-
-        # First pass: create all vertices
-        for chunk in iter_graph(ddi_path):
-            for fragment in chunk.nodes:
-                props = fragment.to_dict()
-
-                vertex = g.addV(fragment.element_type)
-                vertex = vertex.property("fragment_id", fragment.fragment_id)
-
-                if fragment.label:
-                    vertex = vertex.property("label", fragment.label)
-                if fragment.urn:
-                    vertex = vertex.property("urn", fragment.urn)
-                if fragment.agency:
-                    vertex = vertex.property("agency", fragment.agency)
-                if fragment.version:
-                    vertex = vertex.property("version", fragment.version)
-
-                # Add type-specific properties
-                if fragment.element_type == "QuestionItem":
-                    if props.get("question_text"):
-                        vertex = vertex.property("question_text", props["question_text"])
-                elif fragment.element_type == "Category":
-                    if props.get("category_label"):
-                        vertex = vertex.property("category_label", props["category_label"])
-
-                vertex.next()
-                fragment_ids.add(fragment.fragment_id)
-
-        print(f"Created {len(fragment_ids)} vertices")
-
-        # Second pass: create edges
-        edge_count = 0
-        for chunk in iter_graph(ddi_path):
-            for fragment in chunk.nodes:
-                for rel_type, ref in fragment.references:
-                    if ref.id in fragment_ids:
-                        g.V().has("fragment_id", fragment.fragment_id).addE(rel_type).to(
-                            __.V().has("fragment_id", ref.id)
-                        ).iterate()
-                        edge_count += 1
-
-        print(f"Created {edge_count} edges")
-
-    finally:
-        connection.close()
-
-
-def query_examples(gremlin_endpoint: str = "ws://localhost:8182/gremlin"):
-    """Example Gremlin queries."""
-
-    connection = DriverRemoteConnection(gremlin_endpoint, "g")
-    g = traversal().withRemote(connection)
-
-    try:
-        # Count vertices by type
-        counts = g.V().groupCount().by(__.label()).next()
-        print("Vertex counts by type:")
-        for label, count in counts.items():
-            print(f"  {label}: {count}")
-
-        # Find all questions
-        questions = g.V().hasLabel("QuestionItem").valueMap(True).toList()
-        print(f"\nFound {len(questions)} questions")
-
-        # Traverse from instrument to questions
-        paths = (
-            g.V()
-            .hasLabel("Instrument")
-            .repeat(__.out("HAS_CONSTRUCT"))
-            .until(__.hasLabel("QuestionConstruct"))
-            .out("ASKS_QUESTION")
-            .path()
-            .toList()
-        )
-
-        print(f"\nFound {len(paths)} paths from Instrument to Question")
-
-    finally:
-        connection.close()
-
-
-if __name__ == "__main__":
-    load_ddi_to_gremlin("data/Ireland_LabourSurvey.xml")
-    query_examples()
-```
+Chaque requête coûte un aller-retour vers le serveur : les écritures sont
+donc groupées. Sur un grand graphe, indexez d'abord `node_key` : chaque
+upsert cherche un sommet par cette propriété. La façon d'ajouter un index
+dépend de la base. JanusGraph passe par son API de gestion. Neptune indexe
+déjà chaque propriété.
 
 ## Requêtes Gremlin
 
 ### Traversées de base
 
 ```groovy
-// Compter les sommets par libellé
+// Compter les sommets par label
 g.V().groupCount().by(label)
 
 // Trouver tous les QuestionItems
 g.V().hasLabel('QuestionItem').valueMap(true)
 
-// Obtenir un fragment spécifique par ID
-g.V().has('fragment_id', 'abc-123').valueMap(true)
+// Obtenir un nœud par sa clé
+g.V().has('QuestionItem', 'node_key', 'urn:ddi:test.org:q1:1.0').valueMap(true)
 ```
 
 ### Traversées de relations
 
 ```groovy
-// De l'Instrument à tous les constructs
+// De l'Instrument à toutes ses constructions
 g.V().hasLabel('Instrument').out('HAS_CONSTRUCT').valueMap(true)
 
 // Questions avec leurs listes de codes
@@ -213,11 +113,11 @@ g.V().hasLabel('QuestionItem')
     .out('USES_CODELIST')
     .as('cl')
     .select('q', 'cl')
-    .by(valueMap('label', 'question_text'))
-    .by(valueMap('label'))
+    .by(valueMap('ddi_label', 'question_text'))
+    .by(valueMap('ddi_label'))
 
-// Catégories dans une liste de codes
-g.V().has('fragment_id', 'codelist-123')
+// Catégories d'une liste de codes
+g.V().has('CodeList', 'node_key', 'urn:ddi:test.org:cl1:1.0')
     .out('HAS_CATEGORY')
     .valueMap('category_label')
 ```
@@ -225,23 +125,22 @@ g.V().has('fragment_id', 'codelist-123')
 ### Requêtes de chemins
 
 ```groovy
-// Chemin complet de l'Instrument aux Questions
+// Chemin complet de l'Instrument aux questions
 g.V().hasLabel('Instrument')
     .repeat(out('HAS_CONSTRUCT'))
     .until(hasLabel('QuestionConstruct'))
-    .out('ASKS_QUESTION')
+    .out('REFERENCES_QUESTION')
     .path()
-    .by('label')
+    .by('ddi_label')
 
-// Branchements conditionnels
+// Branches conditionnelles
 g.V().hasLabel('IfThenElse')
-    .project('condition', 'then', 'else')
-    .by('condition')
-    .by(out('THEN').values('label'))
-    .by(out('ELSE').values('label'))
+    .project('then', 'else')
+    .by(out('THEN').values('ddi_label').fold())
+    .by(out('ELSE').values('ddi_label').fold())
 ```
 
-## Configuration spécifique aux bases de données
+## Configuration propre à chaque base
 
 ### JanusGraph
 
@@ -256,64 +155,31 @@ connection = DriverRemoteConnection(
 ### Amazon Neptune
 
 ```python
-from gremlin_python.driver import client
-
-# Authentification IAM
-import boto3
-from botocore.auth import SigV4Auth
-from botocore.awsrequest import AWSRequest
-
-# Connexion WebSocket avec SigV4
 connection = DriverRemoteConnection(
     "wss://your-cluster.region.neptune.amazonaws.com:8182/gremlin", "g"
 )
 ```
 
+Avec l'authentification IAM, signez la requête WebSocket avec SigV4. La
+documentation AWS explique comment.
+
 ### Azure Cosmos DB
 
 ```python
-from gremlin_python.driver import client, serializer
+from gremlin_python.driver import serializer
 
-# Cosmos DB nécessite un sérialiseur spécifique
 connection = DriverRemoteConnection(
     "wss://your-account.gremlin.cosmos.azure.com:443/",
     "g",
     username="/dbs/your-database/colls/your-graph",
     password="your-primary-key",
+    message_serializer=serializer.GraphSONSerializersV2d0(),
 )
-```
-
-## Chargement par lots
-
-Pour les fichiers DDI volumineux, utilisez des écritures par lots :
-
-```python
-BATCH_SIZE = 100
-
-vertices_batch = []
-for i, fragment in enumerate(
-    node for chunk in iter_graph("large_survey.xml") for node in chunk.nodes
-):
-    vertices_batch.append(fragment)
-
-    if len(vertices_batch) >= BATCH_SIZE:
-        # Soumettre le lot
-        for f in vertices_batch:
-            g.addV(f.element_type).property("fragment_id", f.fragment_id).property(
-                "label", f.label or ""
-            ).iterate()
-        vertices_batch = []
-        print(f"Processed {i + 1} vertices")
-
-# Dernier lot
-for f in vertices_batch:
-    g.addV(f.element_type).property("fragment_id", f.fragment_id).property(
-        "label", f.label or ""
-    ).iterate()
 ```
 
 ## Voir aussi
 
-- [Architecture des adaptateurs](../user-guide/adapter.md) - Construction d'adaptateurs personnalisés
+- [NetworkX](networkx.md) - Le même graphe, en mémoire
+- [pandas](pandas.md) - Le même graphe, en deux tableaux
 - [Modèle de relations](../user-guide/relationships.md) - Types de relations DDI
 - [Documentation Apache TinkerPop](https://tinkerpop.apache.org/docs/current/)

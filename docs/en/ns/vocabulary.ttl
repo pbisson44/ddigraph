@@ -73,7 +73,8 @@ ddigraph:CDICategory a owl:Class ;
     rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
 
 ddigraph:CDICategorySet a owl:Class ;
-    rdfs:label "CDICategorySet"@en .
+    rdfs:label "CDICategorySet"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
 
 ddigraph:CDIClassificationFamily a owl:Class ;
     rdfs:label "CDIClassificationFamily"@en .
@@ -82,7 +83,8 @@ ddigraph:CDIClassificationIndex a owl:Class ;
     rdfs:label "CDIClassificationIndex"@en .
 
 ddigraph:CDIClassificationItem a owl:Class ;
-    rdfs:label "CDIClassificationItem"@en .
+    rdfs:label "CDIClassificationItem"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
 
 ddigraph:CDIClassificationSeries a owl:Class ;
     rdfs:label "CDIClassificationSeries"@en .
@@ -99,24 +101,28 @@ ddigraph:CDIConcept a owl:Class ;
     rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
 
 ddigraph:CDIConceptMap a owl:Class ;
-    rdfs:label "CDIConceptMap"@en .
+    rdfs:label "CDIConceptMap"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#ConceptAssociation> .
 
 ddigraph:CDIConceptSystem a owl:Class ;
     rdfs:label "CDIConceptSystem"@en ;
     rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
 
 ddigraph:CDIConceptSystemCorrespondence a owl:Class ;
-    rdfs:label "CDIConceptSystemCorrespondence"@en .
+    rdfs:label "CDIConceptSystemCorrespondence"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#Correspondence> .
 
 ddigraph:CDIConceptualVariable a owl:Class ;
     rdfs:label "CDIConceptualVariable"@en ;
     rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/discovery#RepresentedVariable> .
 
 ddigraph:CDICorrespondenceTable a owl:Class ;
-    rdfs:label "CDICorrespondenceTable"@en .
+    rdfs:label "CDICorrespondenceTable"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#Correspondence> .
 
 ddigraph:CDIDataSet a owl:Class ;
-    rdfs:label "CDIDataSet"@en .
+    rdfs:label "CDIDataSet"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/dcat#Dataset> .
 
 ddigraph:CDIDataStore a owl:Class ;
     rdfs:label "CDIDataStore"@en .
@@ -155,7 +161,7 @@ ddigraph:CDIRepresentedVariable a owl:Class ;
 
 ddigraph:CDIStatisticalClassification a owl:Class ;
     rdfs:label "CDIStatisticalClassification"@en ;
-    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#ClassificationLevel> .
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
 
 ddigraph:CDIUnitType a owl:Class ;
     rdfs:label "CDIUnitType"@en .
@@ -189,7 +195,8 @@ ddigraph:Citation a owl:Class ;
     rdfs:label "Citation"@en .
 
 ddigraph:ClassificationCorrespondenceTable a owl:Class ;
-    rdfs:label "ClassificationCorrespondenceTable"@en .
+    rdfs:label "ClassificationCorrespondenceTable"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#Correspondence> .
 
 ddigraph:ClassificationFamily a owl:Class ;
     rdfs:label "ClassificationFamily"@en .
@@ -198,10 +205,12 @@ ddigraph:ClassificationIndex a owl:Class ;
     rdfs:label "ClassificationIndex"@en .
 
 ddigraph:ClassificationItem a owl:Class ;
-    rdfs:label "ClassificationItem"@en .
+    rdfs:label "ClassificationItem"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#Concept> .
 
 ddigraph:ClassificationLevel a owl:Class ;
-    rdfs:label "ClassificationLevel"@en .
+    rdfs:label "ClassificationLevel"@en ;
+    rdfs:subClassOf <http://rdf-vocabulary.ddialliance.org/xkos#ClassificationLevel> .
 
 ddigraph:ClassificationSeries a owl:Class ;
     rdfs:label "ClassificationSeries"@en .
@@ -326,11 +335,12 @@ ddigraph:DataRelationship a owl:Class ;
     rdfs:label "DataRelationship"@en .
 
 ddigraph:DataSet a owl:Class ;
-    rdfs:label "DataSet"@en .
+    rdfs:label "DataSet"@en ;
+    rdfs:subClassOf <http://www.w3.org/ns/dcat#Dataset> .
 
 ddigraph:Dataset a owl:Class ;
     rdfs:label "Dataset"@en ;
-    rdfs:subClassOf <http://purl.org/dc/terms/Dataset> .
+    rdfs:subClassOf <http://www.w3.org/ns/dcat#Dataset> .
 
 ddigraph:DefaultAccess a owl:Class ;
     rdfs:label "DefaultAccess"@en .
@@ -739,7 +749,8 @@ ddigraph:StatementItem a owl:Class ;
     rdfs:label "StatementItem"@en .
 
 ddigraph:StatisticalClassification a owl:Class ;
-    rdfs:label "StatisticalClassification"@en .
+    rdfs:label "StatisticalClassification"@en ;
+    rdfs:subClassOf <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
 
 ddigraph:Study a owl:Class ;
     rdfs:label "Study"@en ;
@@ -1139,7 +1150,8 @@ ddigraph:hasCategory a owl:ObjectProperty ;
     owl:inverseOf <http://www.w3.org/2004/02/skos/core#inScheme> .
 
 ddigraph:hasClassificationItem a owl:ObjectProperty ;
-    rdfs:label "HAS_CLASSIFICATION_ITEM"@en .
+    rdfs:label "HAS_CLASSIFICATION_ITEM"@en ;
+    owl:inverseOf <http://www.w3.org/2004/02/skos/core#inScheme> .
 
 ddigraph:hasCode a owl:ObjectProperty ;
     rdfs:label "HAS_CODE"@en ;
@@ -1159,7 +1171,8 @@ ddigraph:hasConceptFrom a owl:ObjectProperty ;
     rdfs:label "HAS_CONCEPT_FROM"@en .
 
 ddigraph:hasConceptMap a owl:ObjectProperty ;
-    rdfs:label "HAS_CONCEPT_MAP"@en .
+    rdfs:label "HAS_CONCEPT_MAP"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/xkos#madeOf> .
 
 ddigraph:hasConstruct a owl:ObjectProperty ;
     rdfs:label "HAS_CONSTRUCT"@en .
@@ -1389,7 +1402,8 @@ ddigraph:isOwnedBy a owl:ObjectProperty ;
     rdfs:label "IS_OWNED_BY"@en .
 
 ddigraph:isPredecessorOf a owl:ObjectProperty ;
-    rdfs:label "IS_PREDECESSOR_OF"@en .
+    rdfs:label "IS_PREDECESSOR_OF"@en ;
+    owl:inverseOf <http://rdf-vocabulary.ddialliance.org/xkos#follows> .
 
 ddigraph:isRepresentedBy a owl:ObjectProperty ;
     rdfs:label "IS_REPRESENTED_BY"@en .
@@ -1401,7 +1415,8 @@ ddigraph:isStructuredBy a owl:ObjectProperty ;
     rdfs:label "IS_STRUCTURED_BY"@en .
 
 ddigraph:isSuccessorOf a owl:ObjectProperty ;
-    rdfs:label "IS_SUCCESSOR_OF"@en .
+    rdfs:label "IS_SUCCESSOR_OF"@en ;
+    rdfs:subPropertyOf <http://rdf-vocabulary.ddialliance.org/xkos#follows> .
 
 ddigraph:isVariantOf a owl:ObjectProperty ;
     rdfs:label "IS_VARIANT_OF"@en .

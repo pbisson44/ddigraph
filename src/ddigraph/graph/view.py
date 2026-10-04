@@ -328,4 +328,30 @@ def _cdi_relationships(batch: CDIBatch) -> list[Relationship]:
     ]
 
 
-__all__ = ["GraphChunk", "iter_graph"]
+def node_key(node: Node) -> str:
+    """Return one string that identifies a node within its label.
+
+    Most nodes have a single identity value, and the key is that value, so
+    it reads the same as the identity a consumer already sees. A composite
+    identity -- ``DDIGenericIdentifiable`` is keyed on ``(dataset_id,
+    element_tag, identifiable_id)`` -- joins every part with ``|``, in
+    field-name order. Using
+    only the first part would collapse every such node in a dataset onto
+    one key, because they share their ``dataset_id``.
+
+    Pair it with ``node.label`` for a key that is unique across the graph.
+
+    Args:
+        node: The node to key.
+
+    Returns:
+        The node's key.
+    """
+    # Sorted by field name, as the RDF writer does: two dicts holding the same
+    # identity in different insertion orders must give the same key, or an
+    # edge's endpoint stub stops matching its node.
+    values = [str(value) for _field, value in sorted(node.identity.items())]
+    return values[0] if len(values) == 1 else "|".join(values)
+
+
+__all__ = ["GraphChunk", "iter_graph", "node_key"]

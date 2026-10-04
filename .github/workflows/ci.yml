@@ -11,11 +11,26 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    # The 3.15 leg tracks a release candidate; it reports but cannot fail CI.
+    continue-on-error: ${{ matrix.experimental == true }}
+    defaults:
+      run:
+        # Git Bash on Windows, so every step is the same script on both.
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest]
         python-version: ["3.12", "3.13", "3.14.4"]
+        include:
+          # Nothing caught a CRLF checkout or a WSL bash before this leg.
+          - os: windows-latest
+            python-version: "3.12"
+          - os: ubuntu-latest
+            python-version: "3.15"
+            experimental: true
 
     steps:
       - uses: actions/checkout@v7
@@ -25,6 +40,7 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
 
       - name: Cache pip
         uses: actions/cache@v6
@@ -37,7 +53,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[dev,docs]
+          # requires-python caps at <3.15 until 3.15.0 final passes, so the
+          # release-candidate leg has to step past the cap to test anything.
+          pip install ${{ matrix.experimental && '--ignore-requires-python' || '' }} -e .[dev,docs]
           pip install build
 
       - name: Validate bundled schemas
@@ -45,6 +63,9 @@ jobs:
 
       - name: Validate generated schema definitions
         run: python scripts/generate_schema_definitions.py --check
+
+      - name: Validate the served RDF vocabulary
+        run: python scripts/generate_vocabulary.py --check
 
       - name: XSD structural relationship coverage (blocking, 100%)
         run: python scripts/xsd_coverage.py --structural --structural-threshold 100
@@ -56,7 +77,7 @@ jobs:
         run: ruff format --check .
 
       - name: Markdownlint
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && runner.os == 'Linux'
         run: npx --yes markdownlint-cli2@0.18.1 "**/*.md" "!**/site-packages/**" "!**/.venv/**"
 
       - name: Mypy
@@ -64,14 +85,16 @@ jobs:
 
       - name: Pytest + coverage
         run: pytest --cov=ddigraph --cov-report=term-missing --cov-report=xml
-        timeout-minutes: 5
+        # The doc examples each start a Python process, which is several
+        # times slower on Windows.
+        timeout-minutes: ${{ runner.os == 'Windows' && 10 || 5 }}
 
       - name: Readability gate (docs/en Grade-10)
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && runner.os == 'Linux'
         run: python scripts/check_readability.py docs/en --threshold 10 --fail-on-error
 
       - name: Upload coverage report
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && runner.os == 'Linux'
         uses: actions/upload-artifact@v7
         with:
           name: coverage-xml
@@ -79,7 +102,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload coverage to Codecov
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && runner.os == 'Linux'
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -87,11 +110,11 @@ jobs:
           fail_ci_if_error: false
 
       - name: Build source distribution
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && runner.os == 'Linux'
         run: python -m build --sdist
 
       - name: Verify sdist contents
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && runner.os == 'Linux'
         run: |
           python - <<'PY'
           import glob
@@ -121,7 +144,7 @@ jobs:
           PY
 
       - name: Build docs
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && runner.os == 'Linux'
         run: mkdocs build --strict
 
   audit:

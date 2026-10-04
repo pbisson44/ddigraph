@@ -135,11 +135,16 @@ Ce n'est pas une contradiction : ce sont les deux questions qui sont
 réellement différentes. L'analyseur est tolérant, il lit donc un fichier
 légèrement non conforme et produit malgré tout un graphe bien formé.
 
-Ou depuis la ligne de commande :
+Ou depuis la ligne de commande, en une étape :
 
+<!-- runnable -->
 ```bash
-ddigraph shapes -o shapes.ttl --flavor lifecycle
+ddigraph export "$FIXTURE" --format turtle -o survey.ttl
+ddigraph validate survey.ttl --flavor lifecycle
 ```
+
+`ddigraph shapes -o shapes.ttl --flavor lifecycle` écrit les formes dans un
+fichier, pour tout autre outil SHACL.
 
 ## Pourquoi `--flavor` compte ici
 

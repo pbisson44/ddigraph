@@ -132,11 +132,16 @@ not a contradiction — it is the two questions being genuinely different.
 The parser is forgiving, so it reads a slightly non-conformant file and
 still produces a well-formed graph.
 
-Or from the command line:
+Or from the command line, in one step:
 
+<!-- runnable -->
 ```bash
-ddigraph shapes -o shapes.ttl --flavor lifecycle
+ddigraph export "$FIXTURE" --format turtle -o survey.ttl
+ddigraph validate survey.ttl --flavor lifecycle
 ```
+
+`ddigraph shapes -o shapes.ttl --flavor lifecycle` writes the shapes out,
+for any other SHACL tool you want to use.
 
 ## Why `--flavor` matters here
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import inspect
+import sys
 import tomllib
 from collections.abc import Sequence
 from pathlib import Path
@@ -467,12 +468,9 @@ def _detect_load_format(path: str) -> str:
     Returns:
         ``"rdf"``, or the DDI flavor reported by ``detect_ddi_format``.
     """
-    from ddigraph.rdf.reader import EXTENSION_FORMATS
+    from ddigraph.validation import is_rdf_path
 
-    suffix = Path(path).suffix.lower()
-    # ``.xml`` appears in both maps; DDI XML is the overwhelmingly common
-    # case for this command, so it stays with the XML parsers.
-    if suffix in EXTENSION_FORMATS and suffix != ".xml":
+    if is_rdf_path(path):
         return "rdf"
     return detect_ddi_format(path)
 
@@ -612,50 +610,123 @@ def _preflight_validate(args: argparse.Namespace) -> None:
 
 
 def _validate_command(args: argparse.Namespace, settings: Settings) -> None:
-    """Validate a DDI file against the XSD its flavor and version call for.
+    """Validate a file against the official XSD, the SHACL shapes, or both.
 
-    Exits non-zero when the document does not conform, so it drops into a
-    shell pipeline or a CI step without extra glue.
+    DDI XML is checked against its XSD, and with ``--shapes`` the graph
+    ddigraph makes of it is checked against the SHACL shapes as well. An RDF
+    file is checked against the shapes alone -- it has no XSD.
+
+    Exit status: 0 when every check passes, 1 when the input does not
+    conform, 2 when it could not be checked at all (a missing optional
+    extra, or no bundled schema for the flavor). Scripts can tell "bad
+    data" from "broken setup" without parsing the output.
     """
-    from ddigraph.validation import SchemaUnavailableError, validate
+    from ddigraph.validation import (
+        GraphParseError,
+        SchemaUnavailableError,
+        is_rdf_path,
+        validate,
+        validate_shapes,
+    )
+
+    flavor = None if args.flavor == "auto" else args.flavor
+    rdf_input = is_rdf_path(args.xml_path)
 
     try:
-        result = validate(
-            args.xml_path,
-            flavor=None if args.flavor == "auto" else args.flavor,
-            max_issues=args.max_issues,
+        xsd = (
+            None
+            if rdf_input
+            else validate(args.xml_path, flavor=flavor, max_issues=args.max_issues)
         )
-    except SchemaUnavailableError as exc:
-        raise SystemExit(str(exc)) from exc
+        shapes = (
+            validate_shapes(
+                args.xml_path,
+                flavor=flavor or (xsd.flavor if xsd else None),
+                max_issues=args.max_issues,
+            )
+            if rdf_input or args.shapes
+            else None
+        )
+    except (SchemaUnavailableError, ImportError) as exc:
+        print(str(exc), file=sys.stderr)
+        raise SystemExit(2) from exc
+    except GraphParseError as exc:
+        # Malformed RDF is bad data, not a broken setup: it does not conform.
+        if getattr(args, "json_output", False):
+            failure = {"path": str(args.xml_path), "valid": False, "error": str(exc)}
+            print(orjson.dumps(failure).decode())
+        else:
+            print(f"File:   {args.xml_path}")
+            print("Result: not valid RDF")
+            print(f"  {exc}")
+        raise SystemExit(1) from exc
+
+    valid = (xsd is None or xsd.valid) and (shapes is None or shapes.valid)
 
     if getattr(args, "json_output", False):
-        payload = {
-            "path": str(args.xml_path),
-            "flavor": result.flavor,
-            "version": result.version,
-            "schema": str(result.schema),
-            "valid": result.valid,
-            "issues": [
-                {"line": issue.line, "column": issue.column, "message": issue.message}
-                for issue in result.issues
-            ],
-        }
+        payload: dict[str, Any] = {"path": str(args.xml_path), "valid": valid}
+        if xsd is not None:
+            payload.update(
+                flavor=xsd.flavor,
+                version=xsd.version,
+                schema=str(xsd.schema),
+                issues=[
+                    {"line": issue.line, "column": issue.column, "message": issue.message}
+                    for issue in xsd.issues
+                ],
+            )
+        if shapes is not None:
+            payload["shapes"] = {
+                "valid": shapes.valid,
+                "flavor": shapes.flavor,
+                "triples": shapes.triples,
+                "total": shapes.total,
+                "issues": [
+                    {
+                        "focus_node": issue.focus_node,
+                        "path": issue.path,
+                        "constraint": issue.constraint,
+                        "severity": issue.severity,
+                        "message": issue.message,
+                        "value": issue.value,
+                    }
+                    for issue in shapes.issues
+                ],
+            }
         print(orjson.dumps(payload).decode())
-        raise SystemExit(0 if result.valid else 1)
+        raise SystemExit(0 if valid else 1)
 
-    version = f" {result.version.replace('_', '.')}" if result.version else ""
     print(f"File:   {args.xml_path}")
-    print(f"Flavor: {result.flavor}{version}")
-    print(f"Schema: {result.schema}")
+    if xsd is not None:
+        version = f" {xsd.version.replace('_', '.')}" if xsd.version else ""
+        print(f"Flavor: {xsd.flavor}{version}")
+        print(f"Schema: {xsd.schema}")
+        if xsd.valid:
+            print("Result: valid")
+        else:
+            print(f"Result: invalid ({len(xsd.issues)} issue(s))")
+            for issue in xsd.issues:
+                print(f"  {issue}")
 
-    if result.valid:
-        print("Result: valid")
-        return
+    if shapes is not None:
+        print(f"Shapes: {shapes.flavor or 'all flavors'} ({shapes.triples} triples)")
+        if shapes.valid:
+            print("Shapes result: conforms")
+        else:
+            shown = len(shapes.issues)
+            more = f", showing {shown}" if shown < shapes.total else ""
+            print(f"Shapes result: does not conform ({shapes.total} result(s){more})")
+            for violation in shapes.issues:
+                print(f"  {violation}")
+        if rdf_input and flavor is None:
+            print(
+                "Note: RDF does not record its flavor, so the shapes for all three "
+                "were used; they skip constraints the flavors disagree on. Pass "
+                "--flavor for the full set."
+            )
 
-    print(f"Result: invalid ({len(result.issues)} issue(s))")
-    for issue in result.issues:
-        print(f"  {issue}")
-    raise SystemExit(1)
+    if not valid:
+        raise SystemExit(1)
 
 
 def _preview_command(args: argparse.Namespace, settings: Settings) -> None:
@@ -920,12 +991,23 @@ def build_parser() -> argparse.ArgumentParser:
     # loads perfectly well would make the tool less useful, not more.
     validate_parser = subcommands.add_parser(
         "validate",
-        help="Validate a DDI file against its official XSD",
+        help="Validate DDI XML against its official XSD, or RDF against the SHACL shapes",
     )
     validate_parser.add_argument(
         "xml_path",
         type=resolve_xml_path,
-        help="Path to a DDI Codebook, DDI-L FragmentInstance, or DDI-CDI file",
+        help=(
+            "A DDI Codebook, DDI-L FragmentInstance or DDI-CDI file, or an RDF "
+            "export (.ttl, .nt, .jsonld, .rdf) to check against the shapes"
+        ),
+    )
+    validate_parser.add_argument(
+        "--shapes",
+        action="store_true",
+        help=(
+            "Also check the graph ddigraph makes of a DDI XML file against the "
+            "SHACL shapes (needs the [shacl] extra). Always on for RDF input"
+        ),
     )
     validate_parser.add_argument(
         "--flavor",
