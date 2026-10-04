@@ -12,8 +12,8 @@ on:
   # Lets the docs be deployed on demand. `publish` succeeds exactly once
   # per version -- afterwards detect-release finds the tag and reports
   # should_release=false -- so a docs deploy that fails for its own
-  # reasons has no way back without this
-  workflow_dispatch: 
+  # reasons has no way back without this.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -56,6 +56,9 @@ jobs:
 
       - name: Validate generated schema definitions
         run: python scripts/generate_schema_definitions.py --check
+
+      - name: Validate the served RDF vocabulary
+        run: python scripts/generate_vocabulary.py --check
 
       - name: XSD structural relationship coverage (blocking, 100%)
         run: python scripts/xsd_coverage.py --structural --structural-threshold 100
@@ -255,6 +258,11 @@ jobs:
         || github.event_name == 'workflow_dispatch'
       )
     runs-on: ubuntu-latest
+    # `mkdocs gh-deploy` publishes by pushing a commit to the gh-pages
+    # branch, so it needs contents: write. The workflow-level block grants
+    # contents: read plus pages/id-token, which is what the *other* Pages
+    # method (actions/deploy-pages with an artifact upload) wants -- this
+    # job would inherit it and fail the push with a 403.
     permissions:
       contents: write
     steps:

@@ -97,11 +97,11 @@ class MyBackendAdapter(GraphWriteAdapter):
         ...
 ```
 
-Consultez les adaptateurs existants dans `demo/` pour des implémentations de référence :
+Consultez les adaptateurs fournis dans `src/ddigraph/backends/` pour des implémentations de référence :
 
-- `demo/load_gremlin.py` -- Adaptateur Gremlin
-- `demo/load_networkx.py` -- Adaptateur NetworkX
-- `demo/load_pandas.py` -- Adaptateur pandas
+- `src/ddigraph/backends/gremlin.py` -- Adaptateur Gremlin
+- `src/ddigraph/backends/networkx.py` -- Adaptateur NetworkX
+- `src/ddigraph/backends/pandas.py` -- Adaptateur pandas
 
 ## Signaler des problèmes
 

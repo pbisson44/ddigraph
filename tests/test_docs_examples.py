@@ -100,14 +100,17 @@ def test_documented_example_runs(page: str, language: str, source: str, tmp_path
     for package in sorted(_required_third_party(source)):
         pytest.importorskip(package, reason=f"{page} example needs the {package} extra")
 
-    script = tmp_path / ("example.py" if language == "python" else "example.sh")
+    if language == "python":
+        script = tmp_path / "example.py"
+        command = [sys.executable, str(script)]
+    else:
+        bash = _bash()
+        if bash is None:
+            pytest.skip("no bash that can run the examples (Windows needs Git Bash on PATH)")
+        script = tmp_path / "example.sh"
+        # Relative to ``cwd``: a Windows path loses its backslashes in bash.
+        command = [bash, "-euo", "pipefail", script.name]
     script.write_text(source, encoding="utf-8")
-
-    command = (
-        [sys.executable, str(script)]
-        if language == "python"
-        else ["bash", "-euo", "pipefail", str(script)]
-    )
 
     result = subprocess.run(
         command,
@@ -307,6 +310,24 @@ def test_documented_repo_paths_exist() -> None:
             offenders[str(page.relative_to(REPO_ROOT))] = gone
 
     assert not offenders, f"docs point at files that do not exist: {offenders}"
+
+
+def _bash() -> str | None:
+    r"""Return a bash that shares this interpreter's environment, if any.
+
+    Resolved through ``PATH`` rather than left to ``subprocess``: on Windows
+    a bare ``"bash"`` finds ``System32\bash.exe`` -- the WSL launcher -- before
+    ``PATH`` is searched, and WSL cannot see the venv's ``ddigraph``. If the
+    WSL launcher is still all ``PATH`` offers, there is no usable bash.
+    """
+    import shutil
+
+    bash = shutil.which("bash")
+    if bash is None:
+        return None
+    if sys.platform == "win32" and Path(bash).parent.name.lower() == "system32":
+        return None
+    return bash
 
 
 def _env() -> dict[str, str]:

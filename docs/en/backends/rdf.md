@@ -72,12 +72,17 @@ ddigraph uses it. That is what lets your data join to other people's data.
 | DataFile | `disco:DataFile` |
 | CodeList, CodeScheme | `skos:ConceptScheme` |
 | Category, Concept | `skos:Concept` |
-| CategoryGroup | `xkos:ClassificationLevel` |
+| StatisticalClassification | `skos:ConceptScheme` |
+| ClassificationItem | `skos:Concept` |
+| ClassificationLevel, CategoryGroup | `xkos:ClassificationLevel` |
+| Correspondence tables | `xkos:Correspondence` |
+| Dataset, DataSet | `dcat:Dataset` |
 | Organization | `foaf:Organization` |
 
 [DISCO][disco] is the DDI Alliance's own RDF vocabulary, built from DDI
 Codebook and DDI Lifecycle. [XKOS][xkos] extends SKOS for statistical
-classifications.
+classifications. The same rules apply to the DDI-CDI types: a
+`CDIStatisticalClassification` is a `skos:ConceptScheme` too.
 
 DDI has about 250 node types and DISCO defines 16 classes. Everything with
 no published equivalent gets a term in the ddigraph namespace.

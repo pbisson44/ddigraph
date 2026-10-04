@@ -276,10 +276,9 @@ print(f"Noeuds : {G.number_of_nodes()}, Arêtes : {G.number_of_edges()}")
     RDF est fourni avec le package : utilisez `ddigraph export`. Voyez le
     [guide du backend RDF](../backends/rdf.md).
 
-    Pour les autres, le répertoire `demo/` propose des exemples pour
-    [Gremlin](https://github.com/pbisson44/ddigraph/blob/main/demo/load_gremlin.py) et
-    [pandas](https://github.com/pbisson44/ddigraph/blob/main/demo/load_pandas.py).
-    Ce sont des exemples, pas des adaptateurs fournis.
+    NetworkX, pandas et Gremlin sont fournis aussi, dans `ddigraph.backends`.
+    Voyez les guides [pandas](../backends/pandas.md) et
+    [Gremlin](../backends/gremlin.md).
 
 ---
 

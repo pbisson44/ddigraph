@@ -295,28 +295,14 @@ queries = DDISchema.generate_constraint_queries(include_fragments=True)
 
 ## Working Examples
 
-The `demo/` directory includes complete adapter implementations that you can run and modify:
+ddigraph ships adapters for RDF, NetworkX, pandas and Gremlin. They are the
+best reference for a new one, because they all follow the pattern this page
+recommends: consume `ddigraph.iter_graph()`, not the protocol above.
 
-RDF is not among them: it ships with the package, so use `ddigraph export`
-or `ddigraph.export()` rather than writing an adapter for it. See the
-[RDF backend guide](../backends/rdf.md).
-
-- **`load_gremlin.py`** - Gremlin adapter using TinkerGraph
-  - Traversal-based graph queries
-  - Pattern matching and path analysis
-  - Compatible with JanusGraph, Amazon Neptune, Azure Cosmos DB
-
-- **`load_networkx.py`** - NetworkX adapter for local analysis
-  - In-memory graph analysis
-  - Path queries and connectivity analysis
-  - GraphML export
-
-- **`load_pandas.py`** - pandas adapter for tabular analysis
-  - DataFrames per node type
-  - Relationship analysis
-  - Excel export
-
-Each demo shows the complete adapter implementation pattern with parsing, loading, analysis, and export. See the [demo directory on GitHub](https://github.com/pbisson44/ddigraph/tree/main/demo) for usage instructions.
+- [`ddigraph/backends/networkx.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/backends/networkx.py) - the shortest: one pass, nodes then edges
+- [`ddigraph/backends/pandas.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/backends/pandas.py) - buffers everything, for a target that needs all rows at once
+- [`ddigraph/backends/gremlin.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/backends/gremlin.py) - a remote store: batched, idempotent upserts
+- [`ddigraph/rdf/writer.py`](https://github.com/pbisson44/ddigraph/blob/main/src/ddigraph/rdf/writer.py) - a target with its own vocabulary
 
 See [Architecture](architecture.md) for end-to-end design and [DDI-L FragmentInstance](fragments.md)
 for fragment-specific details.

@@ -64,24 +64,22 @@ fully featured option and the easiest to get started with.
     no separate database required. Use this for quick local analysis or prototyping.
 
     ```python
-    import networkx as nx
+    from ddigraph.backends.networkx import to_networkx
 
-    from ddigraph import iter_graph
-
-
-    def node_id(node):
-        return "|".join(str(v) for _k, v in sorted(node.identity.items()))
-
-
-    G = nx.MultiDiGraph()
-
-    for chunk in iter_graph("survey.xml"):
-        for node in chunk.nodes:
-            G.add_node(node_id(node), node_type=node.label, **node.properties)
-        for edge in chunk.relationships:
-            G.add_edge(node_id(edge.start), node_id(edge.end), key=edge.type)
-
+    G = to_networkx("survey.xml")
     print(f"Loaded {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
+    ```
+
+=== "pandas"
+
+    **What is this?** pandas holds the graph as two tables, one row per node and one per
+    relationship. Use this when the next step is a spreadsheet or a report.
+
+    ```python
+    from ddigraph.backends.pandas import to_dataframes
+
+    frames = to_dataframes("survey.xml")
+    print(frames.nodes["node_label"].value_counts())
     ```
 
 === "Gremlin"
@@ -90,19 +88,16 @@ fully featured option and the easiest to get started with.
     JanusGraph, Amazon Neptune, and Azure Cosmos DB.
 
     ```python
-    from gremlin_python.process.anonymous_traversal import traversal
     from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
-    from ddigraph import iter_graph
+    from gremlin_python.process.anonymous_traversal import traversal
+
+    from ddigraph.backends.gremlin import write_gremlin
 
     connection = DriverRemoteConnection("ws://localhost:8182/gremlin", "g")
-    g = traversal().withRemote(connection)
+    g = traversal().with_(connection)
 
-    for chunk in iter_graph("survey.xml"):
-        for node in chunk.nodes:
-            node_id = next(iter(node.identity.values()))
-            g.addV(node.label).property("id", node_id).property(
-                "name", node.properties.get("label", "")
-            ).iterate()
+    result = write_gremlin(g, "survey.xml")  # safe to run twice
+    print(result.nodes, "vertices,", result.relationships, "edges")
 
     connection.close()
     ```

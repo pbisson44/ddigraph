@@ -2,13 +2,15 @@
 
 Defines the interface a graph write adapter implements so the ingestion
 pipeline can persist a batch of records and purge a dataset against
-its target. The only shipped implementation is
-``Neo4jGraphAdapter``; other backends (RDF, Gremlin, NetworkX, pandas)
-are not adapter-driven -- they consume the parser tier (``DDILoader``,
-``DDIFragmentLoader``, ``DDIFragmentParser``) and write through their
-own backend-specific code, as shown in the ``demo/load_*.py`` scripts.
-A consumer who wants to plug a new backend into the ingestion pipeline
-implements this protocol; otherwise they use the parser tier directly.
+its target. The only implementation is ``Neo4jGraphAdapter``, and it
+takes a ``DDIIngestGraph``, which only the codebook parser produces.
+
+The other backends do not implement this protocol. RDF, NetworkX, pandas
+and Gremlin (``ddigraph.rdf`` and ``ddigraph.backends``) consume the
+backend-neutral ``GraphChunk`` stream from ``ddigraph.iter_graph()``
+instead, which every DDI flavor and RDF input produce. A new backend is
+simplest to build the same way; implement this protocol only to plug
+into the codebook ingestion pipeline itself.
 """
 
 from __future__ import annotations

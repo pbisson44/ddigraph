@@ -11,14 +11,16 @@ from __future__ import annotations
 
 from collections import Counter
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 from ddigraph.exporter import EXTENSIONS, export
-from ddigraph.graph.view import iter_graph
+from ddigraph.graph.view import GraphChunk, iter_graph
 from ddigraph.rdf import vocabulary as v
 from ddigraph.rdf.reader import EXTENSION_FORMATS, read_graph
 from ddigraph.rdf.writer import build_graph
+from ddigraph.schema.ddi_graph import Node, Relationship
 
 rdflib = pytest.importorskip("rdflib")
 
@@ -87,6 +89,69 @@ def test_ambiguous_predicates_recover_their_relationship_type(tmp_path: Path) ->
     rels = {(r.start.label, r.type, r.end.label) for c in read_graph(out) for r in c.relationships}
 
     assert ("CodeList", "HAS_CATEGORY", "Category") in rels
+
+
+def _classification_chunk() -> GraphChunk:
+    """A DDI-CDI classification graph: no fixture has one."""
+
+    def node(label: str, cdi_id: str) -> Node:
+        return Node(label=label, identity={"cdi_id": cdi_id}, properties={})
+
+    old, new = (
+        node("CDIStatisticalClassification", "nace-1.1"),
+        node("CDIStatisticalClassification", "nace-2"),
+    )
+    item = node("CDIClassificationItem", "nace-2-A")
+    table = node("CDIConceptSystemCorrespondence", "nace-1.1-to-2")
+    association = node("CDIConceptMap", "A-to-A")
+    return GraphChunk(
+        nodes=[old, new, item, table, association],
+        relationships=[
+            Relationship("HAS_CLASSIFICATION_ITEM", new, item),
+            Relationship("IS_SUCCESSOR_OF", new, old),
+            Relationship("IS_PREDECESSOR_OF", old, new),
+            Relationship("HAS_CONCEPT_MAP", table, association),
+        ],
+    )
+
+
+def test_xkos_classification_edges_point_the_published_way() -> None:
+    """XKOS: "NACE rev. 2 followed NACE rev. 1.1" -- the newer one is the subject.
+
+    Both CDI succession edges must say the same thing in XKOS, and an item
+    sits in its classification the way a SKOS concept sits in its scheme.
+    """
+    graph = build_graph([_classification_chunk()])
+    uri = rdflib.URIRef
+
+    def subject(label: str, cdi_id: str) -> Any:
+        return uri(v.subject_iri(label, [cdi_id]))
+
+    nace_1 = subject("CDIStatisticalClassification", "nace-1.1")
+    nace_2 = subject("CDIStatisticalClassification", "nace-2")
+
+    follows = set(graph.subject_objects(uri(v.XKOS + "follows")))
+    assert follows == {(nace_2, nace_1)}
+    item = subject("CDIClassificationItem", "nace-2-A")
+    assert (item, uri(v.SKOS + "inScheme"), nace_2) in graph
+    assert (nace_2, rdflib.RDF.type, uri(v.SKOS + "ConceptScheme")) in graph
+    table = subject("CDIConceptSystemCorrespondence", "nace-1.1-to-2")
+    association = subject("CDIConceptMap", "A-to-A")
+    assert (table, uri(v.XKOS + "madeOf"), association) in graph
+
+
+def test_xkos_classification_edges_round_trip(tmp_path: Path) -> None:
+    """Two types share xkos:follows and one is reversed; both must come back."""
+    chunk = _classification_chunk()
+    out = tmp_path / "classification.ttl"
+    build_graph([chunk]).serialize(out, format="turtle")
+
+    expected = {(r.start.label, r.type, r.end.label) for r in chunk.relationships}
+    reparsed = {
+        (r.start.label, r.type, r.end.label) for c in read_graph(out) for r in c.relationships
+    }
+
+    assert reparsed == expected
 
 
 def test_companion_triples_are_written_only_where_needed(tmp_path: Path) -> None:

@@ -20,112 +20,58 @@ pip install pyvis       # interactive HTML visualization
 
 ## Basic Usage
 
-### Load DDI to NetworkX
-
 <!-- runnable -->
 ```python
 import os
 
-import networkx as nx
+from ddigraph.backends.networkx import to_networkx
 
-from ddigraph import iter_graph
-
-
-def node_id(node):
-    """Nodes are keyed on identity, which may have more than one part."""
-    return "|".join(str(value) for _key, value in sorted(node.identity.items()))
-
-
-G = nx.MultiDiGraph()  # Directed graph with parallel edges
-
-for chunk in iter_graph(os.environ["FIXTURE"]):
-    for node in chunk.nodes:
-        # ``node_type``, not ``label``: DDI records carry their own
-        # ``label`` property, and it would collide.
-        G.add_node(node_id(node), node_type=node.label, **node.properties)
-    for edge in chunk.relationships:
-        G.add_edge(
-            node_id(edge.start),
-            node_id(edge.end),
-            key=edge.type,
-            relationship=edge.type,
-        )
+G = to_networkx(os.environ["FIXTURE"])
 
 print(f"Graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 ```
 
-## Full Example
+The source can be DDI XML of any flavor, or an RDF export such as
+`survey.ttl`. You can also pass chunks you already have from
+`ddigraph.iter_graph()`.
 
-See `demo/load_networkx.py` for a complete example:
+## What Is in the Graph
+
+`G` is a `MultiDiGraph`. It is directed, because DDI links are. It is
+*multi*, because two nodes can be joined by more than one kind of link.
+
+- **Node ids** look like `"Variable:v1"`: the node's type, then its key. The
+  type is part of the id because a key is only unique within its type. A
+  codebook may use `c1` for a category and for a concept.
+- **Node attributes** are `node_type`, `node_key`, the identity fields and
+  every property that has a value. The type is called `node_type`, not
+  `label`, because most DDI records have a `label` of their own: the
+  human-readable one.
+- **Edges** carry `relationship`, their type. The edge key is the type too,
+  so loading the same file twice does not double any edge.
+
+<!-- runnable -->
+```python
+import os
+from collections import Counter
+
+from ddigraph.backends.networkx import to_networkx
+
+G = to_networkx(os.environ["FIXTURE"])
+
+types = Counter(data["node_type"] for _, data in G.nodes(data=True))
+for node_type, count in types.most_common():
+    print(f"{node_type}: {count}")
+```
+
+## Several Files, One Graph
+
+Pass `graph=` to add to a graph you already have. Nodes the files share
+merge into one:
 
 ```python
-"""Load DDI into NetworkX for graph analysis."""
-
-import networkx as nx
-from collections import Counter
-from ddigraph import iter_graph
-
-
-def load_ddi_to_networkx(ddi_path: str) -> nx.MultiDiGraph:
-    """Parse DDI-L file and create NetworkX graph."""
-
-    G = nx.MultiDiGraph()
-
-    # iter_graph streams nodes first, then relationships, so a single pass
-    # is enough: every endpoint is already a node by the time edges arrive.
-    for chunk in iter_graph(ddi_path):
-        for node in chunk.nodes:
-            G.add_node(
-                node_id(node),
-                node_type=node.label,
-                **{k: v for k, v in node.properties.items() if v is not None},
-            )
-        for edge in chunk.relationships:
-            G.add_edge(
-                node_id(edge.start),
-                node_id(edge.end),
-                key=edge.type,
-                relationship=edge.type,
-            )
-
-    return G
-
-
-def analyze_graph(G: nx.MultiDiGraph):
-    """Perform basic graph analysis."""
-
-    print(f"Nodes: {G.number_of_nodes()}")
-    print(f"Edges: {G.number_of_edges()}")
-
-    # Node types
-    types = Counter(data.get("node_type") for _, data in G.nodes(data=True))
-    print("\nNode types:")
-    for node_type, count in types.most_common(10):
-        print(f"  {node_type}: {count}")
-
-    # Relationship types
-    rels = Counter(data.get("relationship") for _, _, data in G.edges(data=True))
-    print("\nRelationship types:")
-    for rel_type, count in rels.most_common(10):
-        print(f"  {rel_type}: {count}")
-
-    # Degree centrality
-    centrality = nx.degree_centrality(G)
-    top_nodes = sorted(centrality.items(), key=lambda x: x[1], reverse=True)[:5]
-    print("\nMost connected nodes:")
-    for node_id, score in top_nodes:
-        node_type = G.nodes[node_id].get("node_type", "Unknown")
-        label = G.nodes[node_id].get("label", "")
-        print(f"  {node_type} ({label}): {score:.4f}")
-
-
-if __name__ == "__main__":
-    G = load_ddi_to_networkx("data/Ireland_LabourSurvey.xml")
-    analyze_graph(G)
-
-    # Export
-    nx.write_graphml(G, "ddi_graph.graphml")
-    print("\nExported to ddi_graph.graphml")
+G = to_networkx("wave1.xml")
+G = to_networkx("wave2.xml", graph=G)
 ```
 
 ## Graph Analysis
@@ -248,64 +194,49 @@ net.show("ddi_interactive.html")
 
 ## Export Formats
 
+GraphML and GEXF cannot store lists, and some DDI properties are lists.
+Build the graph with `flatten_lists=True` to join them with `|` first:
+
+<!-- runnable -->
 ```python
-# GraphML (supports attributes)
-nx.write_graphml(G, "graph.graphml")
+import os
 
-# GEXF (Gephi format)
-nx.write_gexf(G, "graph.gexf")
+import networkx as nx
 
-# JSON (node-link format)
+from ddigraph.backends.networkx import to_networkx
+
+G = to_networkx(os.environ["FIXTURE"], flatten_lists=True)
+nx.write_graphml(G, "survey.graphml")
+nx.write_gexf(G, "survey.gexf")  # for Gephi
+```
+
+Node-link JSON keeps lists as they are:
+
+```python
 import json
 
-data = nx.node_link_data(G, edges="edges")
 with open("graph.json", "w") as f:
-    json.dump(data, f, indent=2)
-
-# Adjacency list
-nx.write_adjlist(G, "graph.adjlist")
-
-# Edge list
-nx.write_edgelist(G, "graph.edgelist")
+    json.dump(nx.node_link_data(G, edges="edges"), f, indent=2)
 ```
 
-## Integration with pandas
+## As Tables Instead
+
+For tables, use the [pandas backend](pandas.md). It reads the same file
+into one DataFrame of nodes and one of relationships.
+
+## Memory
+
+The whole graph lives in memory, attributes included. If you only need the
+structure, drop the attributes you will not use:
 
 ```python
-import pandas as pd
-
-# Nodes to DataFrame
-nodes_df = pd.DataFrame([{"id": n, **data} for n, data in G.nodes(data=True)])
-print(nodes_df.head())
-
-# Edges to DataFrame
-edges_df = pd.DataFrame([{"source": u, "target": v, **data} for u, v, data in G.edges(data=True)])
-print(edges_df.head())
-
-# Export to CSV
-nodes_df.to_csv("nodes.csv", index=False)
-edges_df.to_csv("edges.csv", index=False)
-```
-
-## Memory Considerations
-
-For large DDI files, consider:
-
-```python
-# Use DiGraph instead of MultiDiGraph if parallel edges aren't needed
-G = nx.DiGraph()
-
-# Process in chunks
-for chunk in iter_graph("large_file.xml"):
-    for node in chunk.nodes:
-        G.add_node(node_id(node), node_type=node.label)
-
-    if i % 1000 == 0:
-        print(f"Processed {i} fragments")
+for _, data in G.nodes(data=True):
+    for key in [k for k in data if k not in ("node_type", "node_key")]:
+        del data[key]
 ```
 
 ## See Also
 
-- [Adapter Architecture](../user-guide/adapter.md) - Building custom adapters
-- [pandas demo](https://github.com/pbisson44/ddigraph/blob/main/demo/load_pandas.py) - Tabular analysis alternative
+- [pandas](pandas.md) - The same graph, as two tables
+- [Gremlin](gremlin.md) - The same graph, in a database
 - [NetworkX Documentation](https://networkx.org/documentation/stable/)

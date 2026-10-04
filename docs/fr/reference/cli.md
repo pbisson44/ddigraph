@@ -213,8 +213,45 @@ ddigraph export survey.xml --validate -o out.ttl
 | Option | Description |
 | -------- | ------------- |
 | `--flavor` | Forcer `codebook`, `lifecycle` ou `cdi` au lieu de détecter |
+| `--shapes` | Vérifier aussi le graphe contre les formes SHACL (requiert `[shacl]`) |
 | `--max-issues` | Signaler au plus N problèmes (défaut : 20, `0` = tous) |
 | `--json` | Afficher le résultat en JSON |
+
+### Vérifier le graphe avec SHACL
+
+Le XSD vérifie le XML. SHACL vérifie le *graphe* que ddigraph en tire.
+Donnez un fichier RDF à `validate` et il le vérifie contre les formes :
+
+<!-- runnable -->
+```bash
+ddigraph export "$FIXTURE" --format turtle -o survey.ttl
+ddigraph validate survey.ttl --flavor lifecycle
+```
+
+```text
+Shapes: lifecycle (56 triples)
+Shapes result: conforms
+```
+
+Passez `--flavor` avec une entrée RDF. Un fichier RDF n'indique pas de
+quelle variante il provient. Sans elle, les formes des trois variantes
+sont utilisées, et elles omettent les règles sur lesquelles les variantes
+divergent.
+
+Pour un fichier DDI XML, `--shapes` lance les deux vérifications :
+
+<!-- runnable -->
+```bash
+ddigraph validate "$FIXTURE" --shapes || true
+```
+
+Le code de sortie indique à un script ce qui s'est passé :
+
+| Code | Signification |
+| ------ | --------------- |
+| `0` | Toutes les vérifications ont réussi |
+| `1` | Le fichier n'est pas conforme |
+| `2` | Le fichier n'a pas pu être vérifié : pas de schéma, ou l'extra `[shacl]` manque |
 
 **La validation est désactivée par défaut, volontairement.** Le DDI publié
 est souvent imparfait : il s'analyse, il se charge, il n'est pas

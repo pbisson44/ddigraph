@@ -7,7 +7,210 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ---
 
-## 0.5.0 — 2026-08-15
+## 0.5.1 — unreleased
+
+Finishes what 0.5.0 deferred, and fixes what turned up on the way. Every
+backend the README names now ships, is tested and reads all three DDI
+flavors; `ddigraph validate` checks graphs as well as XML; and the RDF
+vocabulary covers statistical classifications. Three silent data-loss bugs
+are fixed: namespaced DDI-Codebook input, and two in the JSON/CSV export.
+
+Of the 0.5.0 "Deferred to 0.6.0" list, all but content negotiation on the
+vocabulary namespace landed here; that one needs hosting the project does
+not have.
+
+This entry grows as the release lands; it is not yet dated or published.
+
+### Upgrading from 0.5.0
+
+Four changes alter output that 0.5.0 users may already depend on. Each one
+fixes something that was wrong, but check them before upgrading.
+
+- **JSON and CSV exports:** node records carry the type as `node_label`,
+  not `label`, plus a new `node_id`. In 0.5.0, `label` held the type for
+  some nodes and the display name for most. It is now always the display
+  name, the node's own property.
+- **Composite-identity relationships** in JSON and CSV name their
+  endpoints by every identity part, joined with `|`. Single-key endpoints
+  are unchanged.
+- **RDF types:** `Dataset` nodes are `dcat:Dataset`, not
+  `dcterms:Dataset`, and `CDIStatisticalClassification` is
+  `skos:ConceptScheme`, not `xkos:ClassificationLevel`. Queries that
+  matched the old types need updating. The `ddigraph:` project types are
+  unchanged.
+- **`ddigraph validate` exits 2**, not 1, when it cannot check a file at
+  all, such as a flavor with no bundled schema.
+
+### Added
+
+- **`ddigraph validate` checks graphs against the SHACL shapes.** XSD
+  answers "is this valid DDI?"; SHACL answers "is this the graph ddigraph
+  promises?", which is the question whoever receives an export is asking.
+  Until now it took `ddigraph shapes`, a `pyshacl` install and a script.
+
+  ```bash
+  ddigraph validate survey.ttl --flavor lifecycle   # an RDF export
+  ddigraph validate survey.xml --shapes             # XSD, then SHACL
+  ```
+
+  RDF input is recognised by extension and checked against the shapes
+  alone. DDI XML is projected the way `export` would and checked against
+  the shapes for its detected flavor. Results are read from pyshacl's
+  report graph rather than its text, sorted so a report is stable, and
+  `--json` carries each one's focus node, path and constraint. An RDF file
+  that does not parse is reported as not conforming (exit 1), not as a
+  traceback. Also available as `ddigraph.validation.validate_shapes()`,
+  which raises `GraphParseError` for such a file. Needs the `[shacl]`
+  extra.
+
+- **NetworkX, pandas and Gremlin adapters ship in the package**
+  (`ddigraph.backends`). Before, they were `demo/` scripts outside both
+  the wheel and the sdist, and the Gremlin and pandas ones only read
+  DDI-L. Each is one call, takes DDI XML of any flavor or an RDF export,
+  and is tested:
+
+  ```python
+  from ddigraph.backends.networkx import to_networkx
+  from ddigraph.backends.pandas import to_dataframes
+  from ddigraph.backends.gremlin import write_gremlin
+
+  G = to_networkx("survey.xml")  # nx.MultiDiGraph
+  frames = to_dataframes("survey.xml")  # frames.nodes, frames.relationships
+  result = write_gremlin(g, "survey.xml")  # any TinkerPop server
+  ```
+
+  - **NetworkX**: node ids are `"<label>:<key>"`, because a key is only
+    unique within its label; the type is `node_type`, so it cannot
+    collide with a record's own `label`. Edges are keyed by type, so a
+    reload adds nothing. `flatten_lists=True` makes the graph writable
+    as GraphML or GEXF.
+  - **pandas**: the same columns as the CSV export, and `frames.of(label)`
+    for one type with only the columns it uses.
+  - **Gremlin**: idempotent upserts in batched requests. Vertices are
+    found by label and a `node_key` property; edges are written after
+    every vertex, so a codebook edge that points at a later batch is
+    not lost. `label` and `id` properties become `ddi_label` and
+    `ddi_id`, because Cosmos DB and others reserve them; lists are
+    joined with `|`. The result counts any edge skipped for a missing
+    endpoint. Verified against Apache TinkerPop Gremlin Server 3.8.2 by
+    `tests/test_backends_gremlin_live.py`, which runs when
+    `GREMLIN_URL` is set.
+
+  New backend pages for pandas, rewritten NetworkX and Gremlin pages, and
+  quickstart tabs for all three, in both languages. The Gremlin page's
+  "full example" called `fragment.element_type`, `.references` and
+  `.to_dict()`, none of which exist, and its path query used a
+  relationship type DDI-L does not emit (`ASKS_QUESTION`, not
+  `REFERENCES_QUESTION`).
+
+- **Classification structure is aligned to XKOS, for DDI-L and DDI-CDI
+  alike.** Each alignment was checked against the XKOS specification
+  rather than inferred from names; a wrong alignment is worse than none,
+  because consumers act on it.
+
+  - Classes: `StatisticalClassification` and its CDI twin are
+    `skos:ConceptScheme` ("each major version of a classification is
+    represented in XKOS by a `skos:ConceptScheme`"); `ClassificationItem`
+    and `CDIClassificationItem` are `skos:Concept`; `ClassificationLevel`
+    is `xkos:ClassificationLevel`; the three correspondence-table types
+    are `xkos:Correspondence` and `CDIConceptMap` is
+    `xkos:ConceptAssociation`; `CDICategorySet` is `skos:ConceptScheme`;
+    `DataSet` and `CDIDataSet` are `dcat:Dataset`.
+  - Predicates: `HAS_CLASSIFICATION_ITEM` becomes `skos:inScheme` from
+    the item's side, like `HAS_CATEGORY`; `HAS_CONCEPT_MAP` becomes
+    `xkos:madeOf`; `IS_SUCCESSOR_OF` becomes `xkos:follows`, and
+    `IS_PREDECESSOR_OF` the same predicate turned around, because XKOS
+    reads "NACE rev. 2 followed NACE rev. 1.1".
+
+  Left unaligned on purpose: XKOS defines no class for a classification
+  series or family, and `MAPS`/`MAPS_TO` also join record relations to
+  logical records, where `xkos:compares` would be wrong. 18 of the 32
+  curated DDI-CDI types were unaligned; 11 still are.
+
+### Changed
+
+- **`ddigraph validate` exits 2 when it cannot check a file** -- no
+  bundled schema for the flavor, or the `[shacl]` extra missing -- where
+  it used to exit 1, the same as a file that fails. Scripts can now tell
+  bad data from a broken setup. `0` and `1` are unchanged.
+- **`pandas` and `gremlinpython` are in `[dev]`**, so the new adapters'
+  tests and runnable doc examples execute in CI rather than skip.
+
+### Fixed
+
+- **JSON and CSV exports wrote the node type where the display label
+  belonged, and could not be joined.** Two faults in the same record:
+
+  - The node type went under `label`, and the node's own `label`
+    *property* -- its human-readable name, which most nodes have -- then
+    overwrote it. The type column held names like "Test Instrument", and
+    the JSON summary's `nodes_by_label` counted those names.
+  - A relationship named its endpoints by their *first* identity value
+    alone. A composite identity's first part is shared: all fourteen
+    `DDIGenericIdentifiable` nodes in the sample codebook are keyed on
+    `(dataset_id, element_tag, identifiable_id)`, so every edge leaving
+    any of them named the same start node.
+
+  Node records now carry **`node_label`** (the type) and **`node_id`**,
+  written after the properties so nothing can overwrite them, and
+  `start_id`/`end_id` use the same key. `node_id` is the identity value
+  itself for single-key nodes, so those edges read exactly as before; a
+  composite key joins its parts with `|`. The `label` key is now always
+  the property. The key function is public as
+  `ddigraph.graph.node_key()`. RDF output was never affected: its writer
+  already used every identity part.
+
+- **`Dataset` nodes were typed with a class that does not exist.**
+  `dcterms:Dataset` is not in DCMI Metadata Terms -- `Dataset` lives in
+  the separate DCMI Type vocabulary -- so every exported dataset carried
+  an undefined type. It is now `dcat:Dataset`, the W3C class data
+  catalogs read, and `dcat:` is a bound prefix.
+- **`CDIStatisticalClassification` was typed `xkos:ClassificationLevel`.**
+  A level is a layer *within* a classification; the classification itself
+  is a `skos:ConceptScheme`. Both shipped in 0.5.0, so RDF exported with
+  it carries the old types; re-export to get the corrected ones.
+- **A DDI-Codebook file in its official namespace silently lost data.**
+  Real codebooks declare `ddi:codebook:2_5` (or `2_6`); the test fixtures
+  do not, and the demo corpus is all DDI-L, so no namespaced codebook had
+  ever been parsed in CI. The top-level dispatch ignored namespaces, but a
+  dozen nested lookups -- questions, universes, categories, concepts,
+  series, groups, collection events, and every label -- matched bare tag
+  names only. On the sample codebook, 9 of 62 nodes and 17 of 73
+  relationships disappeared with no error. Lookups now match in any
+  namespace, and a test requires a namespaced copy of each codebook
+  fixture to project an identical graph, properties included.
+
+  The same change fills two labels the parser had been dropping on mixed
+  documents: a `<l:labl>` inside a DDI-L `logicalRecord` or
+  `physicalStructure` embedded in a codebook was invisible to the bare
+  `labl` lookup.
+
+### Removed
+
+- **`demo/load_networkx.py`, `demo/load_pandas.py` and
+  `demo/load_gremlin.py`**, superseded by `ddigraph.backends`, as
+  `demo/load_rdf.py` was by `ddigraph export` in 0.5.0.
+
+### Testing
+
+- **Line endings are LF on every checkout.** `.gitattributes` now sets
+  `eol=lf`, so a Windows clone with `core.autocrlf=true` no longer fails
+  the schema checksum and `ruff format` gates on bytes nobody changed.
+- **CI runs on Windows** (Python 3.12, every blocking gate), alongside the
+  three Linux legs. The two failures above were invisible to a
+  Linux-only matrix.
+- **The served RDF vocabulary is checked in CI.** `vocabulary.ttl` is
+  generated from the alignment tables and published at the namespace IRI,
+  but nothing caught it drifting from them.
+- **Python 3.15 release candidates run in CI**, non-blocking. The
+  `requires-python` cap stays at `<3.15` until 3.15.0 final passes.
+- **Documented bash examples run on Windows.** A bare `"bash"` in
+  `subprocess` resolves to the WSL launcher in `System32` before `PATH` is
+  searched, and WSL cannot see the virtualenv. The test now finds bash on
+  `PATH` (Git Bash) and skips the bash examples when only the WSL
+  launcher is available.
+
+## 0.5.0 — 2026-08-16
 
 Makes the RDF story real. The package advertised five graph backends and
 shipped one, and the RDF surface that did exist was spread across four
@@ -15,8 +218,6 @@ mutually inconsistent namespaces and three predicate conventions, so
 nothing it produced could be joined to anyone else's data. This release
 settles the vocabulary, gives every DDI flavor one graph shape, and
 removes the CLI verbs deprecated in 0.4.0rc1.
-
-This entry grows as the release lands; it is not yet dated or published.
 
 ### Added
 

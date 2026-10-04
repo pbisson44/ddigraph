@@ -7,6 +7,8 @@ duplication.
 
 from __future__ import annotations
 
+import re
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -39,6 +41,28 @@ def strip_namespace(tag: str | bytes | bytearray | Any) -> str:
     if tag_value.startswith("{"):
         return tag_value.split("}", 1)[1]
     return tag_value
+
+
+# A name step in an ElementPath expression: a tag at the start or after ``/``.
+_PATH_STEP = re.compile(r"(^|/)([A-Za-z_][\w.-]*)")
+
+
+@lru_cache(maxsize=256)
+def any_namespace(path: str) -> str:
+    """Make every name step of an ElementPath match in any namespace.
+
+    lxml's ``{*}tag`` matches ``tag`` in any namespace *or none*, so a path
+    written against the synthetic, namespace-free fixtures keeps working on
+    real DDI-Codebook, which declares ``ddi:codebook:2_5``. A bare
+    ``find("qstn")`` silently matches nothing there.
+
+    Examples:
+        >>> any_namespace(".//titl")
+        './/{*}titl'
+        >>> any_namespace("catgry//labl")
+        '{*}catgry//{*}labl'
+    """
+    return _PATH_STEP.sub(r"\1{*}\2", path)
 
 
 def get_text(elem: etree._Element | None) -> str | None:

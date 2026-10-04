@@ -50,43 +50,22 @@ python audit_graph_standalone.py \
     --user neo4j --password "secret"
 ```
 
-### NetworkX (Local Analysis)
+### NetworkX, pandas and Gremlin
 
-Load DDI into NetworkX for local graph analysis without a database:
+These ship with the package as of 0.5.1, in `ddigraph.backends`, so the
+scripts that used to live here are gone. One call each:
 
-```bash
-# Requires: pip install networkx matplotlib
-python load_networkx.py
+```python
+from ddigraph.backends.networkx import to_networkx
+from ddigraph.backends.pandas import to_dataframes
 
-# With specific file
-python load_networkx.py /path/to/ddi.xml
+G = to_networkx("Ireland_LabourSurvey.xml")
+frames = to_dataframes("Ireland_LabourSurvey.xml")
 ```
 
-Output:
-
-- Graph statistics (nodes, edges, connectivity)
-- Path analysis from entry point
-- Export to GraphML format
-- Optional visualization (PNG)
-
-### pandas (DataFrame Analysis)
-
-Load DDI into pandas DataFrames for data analysis:
-
-```bash
-# Requires: pip install pandas openpyxl
-python load_pandas.py
-
-# With specific file
-python load_pandas.py /path/to/ddi.xml
-```
-
-Output:
-
-- One DataFrame per node type (QuestionItem, CodeList, etc.)
-- Relationship DataFrame
-- Question text analysis
-- Export to Excel workbook
+See the [NetworkX](../docs/en/backends/networkx.md),
+[pandas](../docs/en/backends/pandas.md) and
+[Gremlin](../docs/en/backends/gremlin.md) guides.
 
 ### Preview (no database)
 
@@ -121,209 +100,6 @@ The vocabulary, the SKOS mapping and the subject IRIs are all handled for
 you. See [the RDF backend guide](../docs/en/backends/rdf.md) for what comes
 out and how to query it.
 
-### Gremlin (Graph Traversals)
-
-Load DDI into Gremlin for traversal-based graph queries:
-
-```bash
-# Requires: pip install gremlinpython
-python load_gremlin.py
- 
-# With specific file
-python load_gremlin.py /path/to/ddi.xml
-```
-
-Output:
-
-- In-memory TinkerGraph for testing
-- Gremlin traversal query examples
-- Path analysis and pattern matching
-- Compatible with JanusGraph, Amazon Neptune, Azure Cosmos DB
-
-### JSON/CSV Export
-
-Also part of the package as of 0.5.0, and needing no optional extra:
-
-```bash
-ddigraph export /path/to/ddi.xml --format json -o graph.json
-ddigraph export /path/to/ddi.xml --format csv -o ./my_export
-```
-
-Output:
-
-- `graph.json` - nodes, relationships, and a summary in one document
-- `nodes.csv` / `relationships.csv` - the same graph as two tables
-
-`ddigraph export` works on Codebook, Lifecycle and CDI alike.
-
-## Sample Output (Neo4j)
-
-```bash
-File: Ireland_LabourSurvey.xml
-Format: lifecycle
-Connected to: bolt://localhost:7687
-Schema ready
-Loading...
-
-Results:
-  Category: 1065
-  CodeList: 196
-  ComputationItem: 1
-  IfThenElse: 357
-  Instrument: 1
-  QuestionConstruct: 376
-  QuestionGrid: 3
-  QuestionItem: 373
-  Sequence: 388
-  StatementItem: 2
-
-Total parsed nodes: 2762
-```
-
-> **Note — version-aware identity.** DDI identity is agency+id+**version** (the URN). The sample contains
-> two distinct `Category` fragments that share an id (`23a02ae0-…`) but differ in version — version 3 "C6"
-> and version 4 "C7" — and two different code lists each reference a specific version. Fragment nodes are
-> therefore keyed on a **version-aware `fragment_id` (the URN, e.g. `urn:ddi:ie.cso:23a02ae0-…:3`)**, with
-> the bare DDI id preserved as `ddi_id`. Both versions are kept as separate nodes and each reference
-> resolves to the correct version, so every backend agrees at **2762 nodes / Category 1065** with no
-> dangling edges. (Genuine duplicates — same id *and* version — are still collapsed, with a warning.)
-
-## Sample Output (NetworkX)
-
-```bash
-============================================================
- NETWORKX GRAPH ANALYSIS
-============================================================
-
-Basic Stats:
-  Nodes: 2762
-  Edges: 2904
-
-Nodes by Label:
-  Category: 1065
-  Sequence: 388
-  QuestionConstruct: 376
-  QuestionItem: 373
-  IfThenElse: 357
-  CodeList: 196
-
-Relationships by Type:
-  HAS_CATEGORY: 1096
-  HAS_CONSTRUCT: 767
-  REFERENCES_QUESTION: 376
-  THEN: 357
-  USES_CODELIST: 296
-
-Entry Point: e274cbba-78ea-4a7b-bf06-e6fef1e570e1
-  Reachable nodes: 2761
-  Maximum depth: 5
-
-Connected Components: 2
-```
-
-## Sample Output (pandas)
-
-```bash
-============================================================
- PANDAS DATAFRAME ANALYSIS
-============================================================
-
-DataFrames Created:
-  QuestionItem: 373 rows, 8 columns
-  CodeList: 196 rows, 7 columns
-  Category: 1065 rows, 6 columns
-  Sequence: 388 rows, 6 columns
-  _relationships: 2904 rows, 3 columns
-
---- QuestionItem Analysis ---
-Total questions: 373
-
-Response types:
-  code       299
-  numeric     42
-  text        29
-  datetime     3
-
-Question text length:
-  Mean: 87 chars
-  Max: 412 chars
-```
-
-## Sample Output (RDF/SPARQL)
-
-This is `ddigraph export --format turtle` on
-`tests/fixtures/fragment_instance.xml`, a six-node file kept small enough to
-read. The numbers scale, the shape does not change.
-
-```text
-Nodes: 6  Relationships: 5
-Triples: 56
-```
-
-Every node carries two types — the published class for interoperability and
-the project class for identity:
-
-```text
-disco:Instrument            1     ddigraph:Instrument         1
-disco:Question              1     ddigraph:QuestionItem       1
-skos:Concept                1     ddigraph:Category           1
-                                  ddigraph:Sequence           1
-                                  ddigraph:QuestionConstruct  1
-```
-
-`Category` becomes a `skos:Concept`, `QuestionItem` a `disco:Question`.
-Predicates are published terms where one exists and `lowerCamelCase`
-otherwise — never the Neo4j relationship name:
-
-```text
-rdf:type              10
-owl:versionInfo        6
-dcterms:publisher      6
-ddigraph:ddiId         6
-ddigraph:fragmentId    6
-dcterms:identifier     5
-rdfs:label             3
-ddigraph:hasConstruct  2
-```
-
-No Neo4j relationship name reaches the output, and the DDI URN survives
-intact as the subject. Those two properties are what make the file worth
-sending to another system.
-
-## Sample Output (Gremlin)
-
-```bash
-============================================================
- GREMLIN GRAPH ANALYSIS
-============================================================
- 
-Basic Stats:
-  Vertices: 2762
-  Edges: 2904
- 
-Vertices by Label:
-  Category: 1065
-  Sequence: 388
-  QuestionItem: 373
-  IfThenElse: 357
-  CodeList: 196
- 
-Edges by Type:
-  HAS_CATEGORY: 1096
-  HAS_CONSTRUCT: 767
-  REFERENCES_QUESTION: 376
-  THEN: 357
- 
-============================================================
- GREMLIN TRAVERSAL EXAMPLES
-============================================================
- 
---- Query 4: Reachability from Instrument ---
-  1 hop from Instrument: 1 vertices
-  2 hops from Instrument: 388 vertices
-  3 hops from Instrument: 765 vertices
-```
-
 ## Files
 
 | File | Description |
@@ -331,9 +107,6 @@ Edges by Type:
 | `load_ddi.py` | Load DDI into Neo4j (auto-detects format) |
 | `audit_graph.py` | Audit Neo4j graph structure |
 | `audit_graph_standalone.py` | Standalone audit (no ddigraph dependency) |
-| `load_networkx.py` | Load DDI into NetworkX for local analysis |
-| `load_pandas.py` | Load DDI into pandas DataFrames |
-| `load_gremlin.py` | Load DDI into Gremlin for traversal queries |
 | `load_sdmx_lfs.py` | Load the SDMX companion files |
 | `sdmx_from_physical_instance.py` | Derive an SDMX DSD from a DDI PhysicalInstance |
 | `search_lfs_metadata.py` | Search the loaded graph from the command line |

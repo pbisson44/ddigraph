@@ -27,6 +27,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from ddigraph.ingest import loader as _loader
+from ddigraph.utils.parsing import any_namespace
 
 if TYPE_CHECKING:
     from lxml import etree
@@ -87,7 +88,7 @@ def attr(elem: etree._Element | None, name: str, *fallbacks: str) -> str | None:
 
 def count(elem: etree._Element, child_tag: str) -> int:
     """Number of direct ``child_tag`` children of ``elem``."""
-    return len(elem.findall(child_tag))
+    return len(elem.findall(any_namespace(child_tag)))
 
 
 def metadata(elem: etree._Element | None) -> dict[str, str | None]:
@@ -149,7 +150,7 @@ def child_texts(elem: etree._Element, *paths: str) -> list[str]:
     """
     out: list[str] = []
     for path in paths:
-        for node in elem.findall(path):
+        for node in elem.findall(any_namespace(path)):
             raw = node.text
             if raw:
                 stripped = raw.strip()

@@ -8,7 +8,7 @@ from ddigraph.graph.bootstrap import (
     ensure_schema,
     fragment_bootstrap_queries,
 )
-from ddigraph.graph.view import GraphChunk, iter_graph
+from ddigraph.graph.view import GraphChunk, iter_graph, node_key
 
 __all__ = [
     "CONSTRAINT_QUERIES",
@@ -19,4 +19,5 @@ __all__ = [
     "ensure_schema",
     "fragment_bootstrap_queries",
     "iter_graph",
+    "node_key",
 ]

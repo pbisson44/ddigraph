@@ -76,12 +76,18 @@ autres.
 | DataFile | `disco:DataFile` |
 | CodeList, CodeScheme | `skos:ConceptScheme` |
 | Category, Concept | `skos:Concept` |
-| CategoryGroup | `xkos:ClassificationLevel` |
+| StatisticalClassification | `skos:ConceptScheme` |
+| ClassificationItem | `skos:Concept` |
+| ClassificationLevel, CategoryGroup | `xkos:ClassificationLevel` |
+| Tables de correspondance | `xkos:Correspondence` |
+| Dataset, DataSet | `dcat:Dataset` |
 | Organization | `foaf:Organization` |
 
 [DISCO][disco] est le vocabulaire RDF de l'Alliance DDI, construit à partir
 de DDI Codebook et DDI Lifecycle. [XKOS][xkos] étend SKOS pour les
-classifications statistiques.
+classifications statistiques. Les mêmes règles valent pour les types
+DDI-CDI : une `CDIStatisticalClassification` est aussi un
+`skos:ConceptScheme`.
 
 DDI compte environ 250 types de nœuds et DISCO définit 16 classes. Tout ce
 qui n'a pas d'équivalent publié reçoit un terme dans l'espace de noms

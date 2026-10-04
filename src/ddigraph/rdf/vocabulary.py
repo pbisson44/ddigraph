@@ -64,6 +64,7 @@ DISCO = "http://rdf-vocabulary.ddialliance.org/discovery#"
 XKOS = "http://rdf-vocabulary.ddialliance.org/xkos#"
 SKOS = "http://www.w3.org/2004/02/skos/core#"
 DCTERMS = "http://purl.org/dc/terms/"
+DCAT = "http://www.w3.org/ns/dcat#"
 FOAF = "http://xmlns.com/foaf/0.1/"
 PROV = "http://www.w3.org/ns/prov#"
 OWL = "http://www.w3.org/2002/07/owl#"
@@ -79,6 +80,7 @@ PREFIXES: dict[str, str] = {
     "xkos": XKOS,
     "skos": SKOS,
     "dcterms": DCTERMS,
+    "dcat": DCAT,
     "foaf": FOAF,
     "prov": PROV,
     "owl": OWL,
@@ -132,13 +134,22 @@ _STANDARD_CLASSES: dict[str, str] = {
     "ConceptScheme": SKOS + "ConceptScheme",
     "Category": SKOS + "Concept",
     "Concept": SKOS + "Concept",
-    # XKOS -- statistical classification structure on top of SKOS.
+    # XKOS -- statistical classification structure on top of SKOS. A
+    # classification is a skos:ConceptScheme and its items skos:Concepts.
+    "StatisticalClassification": SKOS + "ConceptScheme",
+    "ClassificationItem": SKOS + "Concept",
+    "ClassificationLevel": XKOS + "ClassificationLevel",
+    "ClassificationCorrespondenceTable": XKOS + "Correspondence",
     "CategoryGroup": XKOS + "ClassificationLevel",
     "ConceptGroup": XKOS + "ClassificationLevel",
     # General-purpose vocabularies.
     "Organization": FOAF + "Organization",
     "Individual": FOAF + "Person",
-    "Dataset": DCTERMS + "Dataset",
+    # Not dcterms:Dataset -- DCMI Terms defines no such class; ``Dataset``
+    # lives in the separate DCMI Type vocabulary. DCAT is what data catalogs
+    # read.
+    "Dataset": DCAT + "Dataset",
+    "DataSet": DCAT + "Dataset",
     "ProcessingEvent": PROV + "Activity",
     "DataCollectionEvent": PROV + "Activity",
     "Software": PROV + "SoftwareAgent",
@@ -153,7 +164,17 @@ _STANDARD_CLASSES: dict[str, str] = {
     "CDIUniverse": DISCO + "Universe",
     "CDIPopulation": DISCO + "Universe",
     "CDILogicalRecord": DISCO + "LogicalDataSet",
-    "CDIStatisticalClassification": XKOS + "ClassificationLevel",
+    # XKOS: "Each major version of a classification is represented ... by a
+    # skos:ConceptScheme". A ClassificationLevel is a level *within* one.
+    "CDIStatisticalClassification": SKOS + "ConceptScheme",
+    "CDIClassificationItem": SKOS + "Concept",
+    "CDICategorySet": SKOS + "ConceptScheme",
+    "CDIDataSet": DCAT + "Dataset",
+    # XKOS correspondence tables: a Correspondence is made of
+    # ConceptAssociations, each linking source and target concepts.
+    "CDICorrespondenceTable": XKOS + "Correspondence",
+    "CDIConceptSystemCorrespondence": XKOS + "Correspondence",
+    "CDIConceptMap": XKOS + "ConceptAssociation",
     "CDIActivity": PROV + "Activity",
     "CDIAgent": PROV + "Agent",
     "CDIProcessingAgent": PROV + "SoftwareAgent",
@@ -209,11 +230,22 @@ _STANDARD_PREDICATES: dict[str, str] = {
     "HAS_CATEGORY": SKOS + "inScheme",
     "HAS_CODE": SKOS + "inScheme",
     "HAS_CONCEPT": SKOS + "inScheme",
+    "HAS_CLASSIFICATION_ITEM": SKOS + "inScheme",
+    # DDI-CDI classification structure (XKOS).
+    "HAS_CONCEPT_MAP": XKOS + "madeOf",
+    # "NACE rev. 2 followed NACE rev. 1.1": A xkos:follows B when A comes
+    # after B, which is IS_SUCCESSOR_OF as it stands and IS_PREDECESSOR_OF
+    # turned around.
+    "IS_SUCCESSOR_OF": XKOS + "follows",
+    "IS_PREDECESSOR_OF": XKOS + "follows",
 }
 
 # Relationship types whose RDF form runs opposite to the graph edge. The
-# graph points container -> member; SKOS wants member -> container.
-_INVERTED_PREDICATES: frozenset[str] = frozenset({"HAS_CATEGORY", "HAS_CODE", "HAS_CONCEPT"})
+# graph points container -> member; SKOS wants member -> container. And
+# IS_PREDECESSOR_OF is xkos:follows read from the other end.
+_INVERTED_PREDICATES: frozenset[str] = frozenset(
+    {"HAS_CATEGORY", "HAS_CODE", "HAS_CONCEPT", "HAS_CLASSIFICATION_ITEM", "IS_PREDECESSOR_OF"}
+)
 
 
 def to_lower_camel(name: str) -> str:
