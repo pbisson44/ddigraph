@@ -7,7 +7,7 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ---
 
-## 0.5.1 — unreleased
+## 0.5.1 — 2026-10-04
 
 Finishes what 0.5.0 deferred, and fixes what turned up on the way. Every
 backend the README names now ships, is tested and reads all three DDI
