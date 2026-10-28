@@ -188,7 +188,7 @@ jobs:
           hatch build
 
       - name: Publish package via OIDC Trusted Publishing
-        uses: pypa/gh-action-pypi-publish@v1.14.2
+        uses: pypa/gh-action-pypi-publish@v1.14.3
         with:
           # A version can be uploaded to PyPI exactly once. Without this, any
           # re-run -- a manually published release, a re-pushed tag, a retried
